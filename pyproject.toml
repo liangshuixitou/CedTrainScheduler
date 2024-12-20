@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "cedschedulersimulator"
+version = "0.1.0"
+description = "A Scheduler Simulator for CedScheduler."
+authors = ["l1hy <1151824226@qq.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.8.1"
+pre-commit = "^2.17.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+fix = true
+show-fixes = true
+output-format = "full"
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "B",  # flake8-bugbear
+    "E",  # pycodestyle error
+    "F",  # pyflakes
+    "I",  # isort
+    "UP", # pyupgrade
+    "W",  # pycodestyle warning
+]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+order-by-type = false
