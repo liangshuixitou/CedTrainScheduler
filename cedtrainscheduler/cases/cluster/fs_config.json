@@ -1,0 +1,162 @@
+{
+  "tasks": [
+    {
+      "model_name": "ResNet50",
+      "task_type": "Image Classification",
+      "batch_sizes": [
+        16,
+        32,
+        64
+      ],
+      "dataset": {
+        "size_mb": 1000000,
+        "storage_nodes": [
+          "192.168.55.199",
+          "192.168.87.49"
+        ]
+      },
+      "model": {
+        "size_mb": 98,
+        "storage_nodes": [
+          "192.168.87.100"
+        ]
+      }
+    },
+    {
+      "model_name": "VGG19",
+      "task_type": "Image Classification",
+      "batch_sizes": [
+        16,
+        32
+      ],
+      "dataset": {
+        "size_mb": 1200000,
+        "storage_nodes": [
+          "192.168.87.49",
+          "192.168.72.243",
+          "192.168.193.77"
+        ]
+      },
+      "model": {
+        "size_mb": 549,
+        "storage_nodes": [
+          "192.168.5.246"
+        ]
+      }
+    },
+    {
+      "model_name": "InceptionV3",
+      "task_type": "Image Classification",
+      "batch_sizes": [
+        16,
+        32
+      ],
+      "dataset": {
+        "size_mb": 1500000,
+        "storage_nodes": [
+          "192.168.87.49",
+          "192.168.5.246"
+        ]
+      },
+      "model": {
+        "size_mb": 92,
+        "storage_nodes": [
+          "192.168.244.192",
+          "192.168.68.229"
+        ]
+      }
+    },
+    {
+      "model_name": "DenseNet161",
+      "task_type": "Image Classification",
+      "batch_sizes": [
+        8,
+        16
+      ],
+      "dataset": {
+        "size_mb": 800000,
+        "storage_nodes": [
+          "192.168.254.150",
+          "192.168.42.178"
+        ]
+      },
+      "model": {
+        "size_mb": 110,
+        "storage_nodes": [
+          "192.168.55.69"
+        ]
+      }
+    },
+    {
+      "model_name": "DCGAN",
+      "task_type": "Image-to-Image Translation",
+      "batch_sizes": [
+        64,
+        128,
+        256
+      ],
+      "dataset": {
+        "size_mb": 500000,
+        "storage_nodes": [
+          "192.168.174.196",
+          "192.168.140.57"
+        ]
+      },
+      "model": {
+        "size_mb": 45,
+        "storage_nodes": [
+          "192.168.87.49",
+          "192.168.55.69"
+        ]
+      }
+    },
+    {
+      "model_name": "LSTM",
+      "task_type": "Language Modeling",
+      "batch_sizes": [
+        10,
+        20,
+        40,
+        80
+      ],
+      "dataset": {
+        "size_mb": 2000000,
+        "storage_nodes": [
+          "192.168.223.49",
+          "192.168.210.50"
+        ]
+      },
+      "model": {
+        "size_mb": 35,
+        "storage_nodes": [
+          "192.168.92.103",
+          "192.168.210.50"
+        ]
+      }
+    },
+    {
+      "model_name": "Transformer",
+      "task_type": "Language Modeling",
+      "batch_sizes": [
+        16,
+        32,
+        64,
+        128
+      ],
+      "dataset": {
+        "size_mb": 3000000,
+        "storage_nodes": [
+          "192.168.20.235",
+          "192.168.55.69",
+          "192.168.68.229"
+        ]
+      },
+      "model": {
+        "size_mb": 550,
+        "storage_nodes": [
+          "192.168.191.73"
+        ]
+      }
+    }
+  ]
+}

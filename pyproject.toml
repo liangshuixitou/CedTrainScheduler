@@ -1,13 +1,15 @@
 [tool.poetry]
-name = "cedschedulersimulator"
+name = "cedtrainscheduler"
 version = "0.1.0"
-description = "A Scheduler Simulator for CedScheduler."
+description = "A Train Task Scheduler for Ced."
 authors = ["l1hy <1151824226@qq.com>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+numpy = "^2.2.3"
+pandas = "^2.2.3"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.8.1"
