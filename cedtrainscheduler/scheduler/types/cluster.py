@@ -30,6 +30,6 @@ class Cluster:
     cluster_id: str
     cluster_name: str
     cluster_type: ClusterType
-    nodes: list[Node] = []
+    nodes: list[Node]
 
 

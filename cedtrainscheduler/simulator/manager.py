@@ -20,7 +20,7 @@ class ClusterManager:
         for cluster in self.clusters.values():
             for node in cluster.nodes:
                 for gpu in node.gpus:
-                    gpu_queues[gpu.gpu_id] = GPUExecutor(gpu.gpu_id)
+                    gpu_queues[gpu.gpu_id] = GPUExecutor(gpu.gpu_id, gpu.gpu_type)
         return gpu_queues
 
     def init_gpu_node_map(self):

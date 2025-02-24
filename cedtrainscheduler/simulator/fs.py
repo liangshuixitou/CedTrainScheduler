@@ -51,9 +51,9 @@ class FileSystem:
 
             self.task_data_info[task["task_name"]] = task_data_info
 
-    def get_task(self, task_name: str) -> Optional[TaskDataInfo]:
+    def get_task_data_info(self, task_name: str) -> Optional[TaskDataInfo]:
         """获取指定任务的数据信息"""
-        return self.tasks.get(task_name)
+        return self.task_data_info.get(task_name)
 
     def get_dataset_locations(self, model_name: str) -> list[str]:
         """获取指定模型的数据集存储位置"""

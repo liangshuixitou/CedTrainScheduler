@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from cedtrainscheduler.simulator.manager import GPUType
+from cedtrainscheduler.scheduler.types.cluster import GPUType
 
 
 class TaskStatus(str, Enum):
@@ -10,16 +10,19 @@ class TaskStatus(str, Enum):
     Running = "running"
     Finished = "finished"
 
+
 class TaskInstStatus(str, Enum):
     Pending = "pending"
     Ready = "ready"
     Running = "running"
     Finished = "finished"
 
+
 class TaskInstDataStatus(str, Enum):
     Pending = "pending"
     Running = "running"
     Finished = "finished"
+
 
 @dataclass
 class TaskInst:
@@ -27,16 +30,16 @@ class TaskInst:
     inst_id: int
     inst_status: TaskStatus
 
+
 @dataclass
 class TaskMeta:
     # task metadata
     task_id: str
+    task_name: str
     task_inst_num: int
     task_plan_cpu: float
     task_plan_mem: float
     task_plan_gpu: int
-    task_runtime: float
-    task_gpu_type: GPUType
     task_status: TaskStatus
     task_runtime: dict[GPUType, float]
 
@@ -46,7 +49,8 @@ class ScheduleInfo:
     # for each inst in task
     gpu_list: list[str]
 
-@ dataclass
+
+@dataclass
 class TaskWrapRuntimeInfo:
     task_meta: TaskMeta
     schedule_infos: dict[int, ScheduleInfo]
@@ -55,5 +59,3 @@ class TaskWrapRuntimeInfo:
     task_submit_time: float
     task_start_time: float
     task_end_time: float
-
-
