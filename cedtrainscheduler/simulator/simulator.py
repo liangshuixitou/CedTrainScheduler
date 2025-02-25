@@ -28,50 +28,60 @@ class Simulator:
         self.task_record.log_task_submit(event.task, self.current_time)
         task = event.task
         task_id = task.task_meta.task_id
-        task_meta = task.task_meta
-        for inst_id, inst_schedule_info in task_meta.schedule_infos.items():
-            if self.cluster_manager.gpu_task_queue[inst_schedule_info.schedule_gpu_id].empty():
-                self.handle_task_ready(task, inst_id)
-            self.cluster_manager.gpu_task_queue[inst_schedule_info.schedule_gpu_id].put(
-                TaskInst(task_id, inst_id, TaskInstStatus.Pending)
-            )
+        for inst_id, inst_schedule_info in task.schedule_infos.items():
+            if self.cluster_manager.gpu_task_queue[inst_schedule_info.gpu_id].empty():
+                self.cluster_manager.gpu_task_queue[inst_schedule_info.gpu_id].put(
+                    TaskInst(task_id, inst_id, TaskInstStatus.Pending)
+                )
+                self.handle_task_inst_ready(task, inst_id)
+            else:
+                self.cluster_manager.gpu_task_queue[inst_schedule_info.gpu_id].put(
+                    TaskInst(task_id, inst_id, TaskInstStatus.Pending)
+                )
 
-    def handle_task_ready(self, task: TaskWrapRuntimeInfo, inst_id: int):
+    def handle_task_inst_ready(self, task: TaskWrapRuntimeInfo, inst_id: int):
         self.task_record.log_task_inst_ready(task, inst_id)
         if self.task_record.check_task_inst_ready(task):
-            self.event_loop_manager.add_event(
-                EventDataArrival(
-                    self.current_time
-                    + self.file_system.get_data_arival_time(
+            for inst_id in range(task.task_meta.task_inst_num):
+                # 添加所有节点的数据到达事件
+                self.event_loop_manager.add_event(
+                    EventDataArrival(
+                        self.current_time
+                        + self.file_system.get_data_arival_time(
+                            task,
+                            self.cluster_manager.gpu_node_map[task.schedule_infos[inst_id].gpu_id].node_id,
+                        ),
                         task,
-                        self.cluster_manager.gpu_node_map[
-                            task.task_meta.schedule_infos[inst_id].schedule_gpu_id
-                        ].node_id,
-                    ),
-                    task,
-                    inst_id,
+                        inst_id,
+                    )
                 )
-            )
 
-    def handle_data_arival(self, event: EventDataArrival):
+    def handle_data_inst_arival(self, event: EventDataArrival):
         self.task_record.log_task_inst_data_arival(event.task, event.inst_id)
         if self.task_record.check_task_inst_data_arival(event.task):
+            self.task_record.log_task_start(self.current_time, event.task)
+            for inst_id in range(event.task.task_meta.task_inst_num):
+                self.cluster_manager.gpu_task_queue[event.task.schedule_infos[inst_id].gpu_id].run_next_task_inst()
             self.event_loop_manager.add_event(
                 EventTaskFinish(
-                    self.current_time + event.task.task_meta.task_runtime[event.task.task_meta.task_gpu_type],
+                    self.current_time
+                    + event.task.task_meta.task_runtime[
+                        self.cluster_manager.gpu_task_queue[event.task.schedule_infos[event.inst_id].gpu_id].gpu_type
+                    ],
                     event.task,
                 )
             )
 
     def handle_task_finish(self, event: EventTaskFinish):
         self.task_record.log_task_finish(event.task, self.current_time)
-        self.task_record.save_task_result(event.task, self.output_path)
-        for inst_id in event.task.task_meta.schedule_infos.keys():
+        for inst_id in range(event.task.task_meta.task_inst_num):
             next_task_inst = self.cluster_manager.gpu_task_queue[
-                event.task.task_meta.schedule_infos[inst_id].schedule_gpu_id
-            ].run_next_task()
+                event.task.schedule_infos[inst_id].gpu_id
+            ].get_next_task_inst()
             if next_task_inst:
-                self.handle_task_ready(self.task_record.get_task_record(next_task_inst.task_id), next_task_inst.inst_id)
+                self.handle_task_inst_ready(
+                    self.task_record.get_task_record(next_task_inst.task_id), next_task_inst.inst_id
+                )
 
     def simulation(self):
         while True:
@@ -89,25 +99,46 @@ class Simulator:
             # 事件处理循环
             while self.event_loop_manager.has_events():
                 event = self.event_loop_manager.get_next_event()
-                self.current_time = event.current_time
+                self.current_time = event.time
                 if event is None:
                     break
                 if event.event_type == EventType.TaskSubmit:
                     self.handle_task_submit(event)
                 elif event.event_type == EventType.DataArrival:
-                    self.handle_data_arrival(event)
+                    self.handle_data_inst_arival(event)
                 elif event.event_type == EventType.TaskFinish:
                     self.handle_task_finish(event)
 
                 # 在每次事件处理后立即尝试调度
                 task, is_finished = self.scheduler.schedule(
+                    self.current_time,
                     self.cluster_manager.clusters.copy(),
                     self.cluster_manager.gpu_task_queue.copy(),
                     self.file_system.task_data_info.copy(),
+                    self.task_record.task_record.copy(),
                 )
                 if task:
                     self.event_loop_manager.add_event(EventTaskSubmit(self.current_time, task))
 
             # 结束条件：没有事件且调度器返回已完成状态
             if not self.event_loop_manager.has_events() and is_finished:
+                self.task_record.save_task_result(self.output_path)
+                self.count_task_runtime(self.task_record.task_record)
                 break
+
+    def count_task_runtime(self, task_record: dict[str, TaskWrapRuntimeInfo]):
+        total_runtime = self.current_time
+
+        avg_queue_time = 0
+        for task in task_record.values():
+            avg_queue_time += task.task_start_time - task.task_submit_time
+        avg_queue_time /= len(task_record)
+
+        avg_running_time = 0
+        for task in task_record.values():
+            avg_running_time += task.task_end_time - task.task_submit_time
+        avg_running_time /= len(task_record)
+
+        print(f"total_runtime: {total_runtime}")
+        print(f"avg_queue_time: {avg_queue_time}")
+        print(f"avg_running_time: {avg_running_time}")

@@ -47,7 +47,8 @@ class TaskMeta:
 @dataclass
 class ScheduleInfo:
     # for each inst in task
-    gpu_list: list[str]
+    inst_id: int
+    gpu_id: str
 
 
 @dataclass

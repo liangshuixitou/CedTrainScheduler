@@ -2,6 +2,7 @@ import pandas as pd
 
 from cedtrainscheduler.scheduler.types.cluster import Cluster
 from cedtrainscheduler.scheduler.types.task import TaskMeta
+from cedtrainscheduler.scheduler.types.task import TaskStatus
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.simulator.executor import GPUExecutor
 from cedtrainscheduler.simulator.fs import TaskDataInfo
@@ -19,10 +20,10 @@ class SchedulerBase:
                 task_id=row["job_name"],
                 task_name=row["task_name"],
                 task_inst_num=int(row["inst_num"]),
-                task_cpu=float(row["plan_cpu"]),
-                task_mem=float(row["plan_mem"]),
-                task_gpu=float(row["plan_gpu"]),
-                task_gpu_type=row["gpu_type"],
+                task_plan_cpu=float(row["plan_cpu"]),
+                task_plan_mem=float(row["plan_mem"]),
+                task_plan_gpu=float(row["plan_gpu"]) / 100,
+                task_status=TaskStatus.Pending,
                 # 创建运行时间字典
                 task_runtime={
                     "T4": float(row["runtime_T4"]),

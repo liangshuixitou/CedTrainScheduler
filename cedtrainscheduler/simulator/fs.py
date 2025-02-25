@@ -47,9 +47,9 @@ class FileSystem:
 
             model_info = ModelInfo(size_mb=task["model"]["size_mb"], storage_nodes=task["model"]["storage_nodes"])
 
-            task_data_info = TaskDataInfo(task_name=task["task_name"], dataset=dataset_info, model=model_info)
+            task_data_info = TaskDataInfo(task_name=task["model_name"], dataset=dataset_info, model=model_info)
 
-            self.task_data_info[task["task_name"]] = task_data_info
+            self.task_data_info[task["model_name"]] = task_data_info
 
     def get_task_data_info(self, task_name: str) -> Optional[TaskDataInfo]:
         """获取指定任务的数据信息"""

@@ -19,15 +19,24 @@ class GPUExecutor:
         self.task_map[task.task_id] = task
         self.pending_queue.put(task)
 
-    def run_next_task(self) -> TaskInst:
+    def run_next_task_inst(self):
+        if self.pending_queue.empty():
+            self.running_task = None
+        else:
+            task = self.pending_queue.get()
+            self.running_task = task
+
+    def get_next_task_inst(self) -> TaskInst:
         if self.pending_queue.empty():
             return None
-        task = self.pending_queue.get()
-        self.running_task = task
+        task = self.pending_queue.queue[0]
         return task
 
     def queue_time(self, current_time: float, task_record: dict[str, TaskWrapRuntimeInfo]) -> float:
-        execute_time = current_time - task_record[self.running_task.task_id].task_start_time
+        if self.running_task:
+            execute_time = current_time - task_record[self.running_task.task_id].task_start_time
+        else:
+            execute_time = 0
         pending_time = 0
         for task in list(self.pending_queue.queue):
             pending_time += task_record[task.task_id].task_meta.task_runtime[self.gpu_type]

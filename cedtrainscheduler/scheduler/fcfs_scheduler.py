@@ -1,3 +1,5 @@
+import math
+
 from cedtrainscheduler.scheduler.factory import SchedulerType
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
 from cedtrainscheduler.scheduler.types.cluster import Cluster
@@ -26,12 +28,14 @@ class FCFScheduler(SchedulerBase):
 
         task = self.task_queue[0]
         # 查找所有的数据所在的节点的集群
-        nodes = task_data_info[task.task_id].dataset.storage_nodes + task_data_info[task.task_id].model.storage_nodes
-        cluster_ids = []
+        nodes = (
+            task_data_info[task.task_name].dataset.storage_nodes + task_data_info[task.task_name].model.storage_nodes
+        )
+        cluster_ids: set[str] = set()
         for cluster in clusters.values():
             for node in cluster.nodes:
                 if node.ip_address in nodes:
-                    cluster_ids.append(cluster.cluster_id)
+                    cluster_ids.add(cluster.cluster_id)
 
         # 寻找集群内的所有GPU
         cluster_gpus = []
@@ -40,6 +44,8 @@ class FCFScheduler(SchedulerBase):
             for node in nodes:
                 for gpu in node.gpus:
                     cluster_gpus.append(gpu.gpu_id)
+                    if gpu.gpu_id == "455d574f-2365-477d-ab87-d498b7aa8102":
+                        print(f"gpu {gpu.gpu_id} is in cluster {cluster_id}")
 
         # 按照队列总体运行时间排序，选择运行时间最短的节点
         cluster_gpus.sort(key=lambda gpu_id: gpu_task_queue[gpu_id].queue_time(current_time, task_record))
@@ -52,28 +58,44 @@ class FCFScheduler(SchedulerBase):
                 gpu_groups[gpu_type] = []
             gpu_groups[gpu_type].append(gpu_id)
 
-        # 选择等待时间最短的GPU组
-        selected_group = min(
-            gpu_groups.values(),
-            key=lambda group: sum(gpu_task_queue[gpu_id].queue_time(current_time, task_record) for gpu_id in group),
-        )
+        # 选择执行时间最短的GPU组
+        min_execution_time = float("inf")
+        selected_group = None
+
+        for gpu_type, group in gpu_groups.items():
+            # 选择所需数量的GPU
+            selected_gpus = group[: task.task_inst_num]
+            if len(selected_gpus) < task.task_inst_num:
+                continue  # 如果当前组的GPU数量不足，跳过
+
+            # 计算当前组的任务执行时间
+            max_wait_time = max(
+                gpu_task_queue[gpu_id].queue_time(current_time, task_record) for gpu_id in selected_gpus
+            )
+            execution_time = max_wait_time + task.task_runtime[gpu_type]
+
+            # 更新最短执行时间的组
+            if execution_time < min_execution_time:
+                min_execution_time = execution_time
+                selected_group = selected_gpus
 
         # 给inst分配等待时间最短的节点
         schedule_infos = {}
-        for inst_id in range(task.inst_count):
-            plan_gpu = task.task_plan_gpu
-            # 动态选择合适的GPU
-            selected_gpus = selected_group[:plan_gpu]
+        for inst_id, gpu_id in enumerate(selected_group):
             schedule_infos[inst_id] = ScheduleInfo(
-                gpu_list=selected_gpus,
+                inst_id=inst_id,
+                gpu_id=gpu_id,
             )
-            # 移除已分配的GPU，避免重复分配
-            selected_group = selected_group[plan_gpu:]
 
         # 创建任务运行时信息
         runtime_info = TaskWrapRuntimeInfo(
             task_meta=task,
             schedule_infos=schedule_infos,
+            inst_status={},
+            inst_data_status={},
+            task_submit_time=current_time,
+            task_start_time=-math.inf,
+            task_end_time=-math.inf,
         )
 
         self.task_queue.pop(0)

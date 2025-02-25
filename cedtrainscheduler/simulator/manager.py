@@ -1,5 +1,4 @@
 import json
-import uuid
 
 from cedtrainscheduler.scheduler.types.cluster import Cluster
 from cedtrainscheduler.scheduler.types.cluster import GPU
@@ -13,9 +12,9 @@ class ClusterManager:
         self.init_cluster(config_path)
 
         self.gpu_node_map: dict[str, Node] = self.init_gpu_node_map()
-        self.gpu_task_queue: dict[str, GPUExecutor] = self.init_gpu_task_queue()
+        self.gpu_task_queue: dict[str, GPUExecutor] = self.init_gpu_task_queues()
 
-    def init_gpu_queues(self):
+    def init_gpu_task_queues(self):
         gpu_queues = {}
         for cluster in self.clusters.values():
             for node in cluster.nodes:
@@ -43,11 +42,17 @@ class ClusterManager:
                 nodes: list[Node] = []
                 for node_info in cluster_info["nodes"]:
                     gpus: list[GPU] = []
-                    for _ in range(node_info["gpu_count"]):
-                        # 为每个GPU生成唯一ID
-                        gpu_id = str(uuid.uuid4())
-                        gpus.append(GPU(gpu_id=gpu_id, gpu_type=node_info["gpu_model"]))
-                    nodes.append(node_info)
+                    for gpu_info in node_info["gpus"]:
+                        gpus.append(GPU(gpu_id=gpu_info["gpu_id"], gpu_type=gpu_info["gpu_type"]))
+                    nodes.append(
+                        Node(
+                            node_id=node_info["node_id"],
+                            cpu_cores=node_info["cpu_cores"],
+                            memory=node_info["memory"],
+                            ip_address=node_info["ip_address"],
+                            gpus=gpus,
+                        )
+                    )
 
                 # 创建 Cluster 对象
                 cluster = Cluster(
