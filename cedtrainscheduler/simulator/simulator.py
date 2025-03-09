@@ -61,8 +61,8 @@ class Simulator:
                 )
 
     def handle_data_inst_arival(self, event: EventDataArrival):
-        self.task_record.log_task_inst_data_arival(event.task, event.inst_id)
-        if self.task_record.check_task_inst_data_arival(event.task):
+        self.task_record.log_task_inst_data_arrival(event.task, event.inst_id)
+        if self.task_record.check_task_inst_data_arrival(event.task):
             self.task_record.log_task_start(self.current_time, event.task)
             for inst_id in range(event.task.task_meta.task_inst_num):
                 self.cluster_manager.gpu_task_queue[event.task.schedule_infos[inst_id].gpu_id].run_next_task_inst()

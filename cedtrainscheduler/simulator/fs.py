@@ -2,7 +2,6 @@ import json
 from dataclasses import dataclass
 from typing import Optional
 
-from cedtrainscheduler.scheduler.factory import SchedulerType
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.simulator.manager import ClusterManager
 
@@ -92,8 +91,6 @@ class FileSystem:
     def get_data_arival_time(
         self, task: TaskWrapRuntimeInfo, target_node_id: str, cluster_manager: ClusterManager, scheduler_name: str
     ) -> float:
-        if scheduler_name == SchedulerType.CED:
-            return 10
         # 获取模型和数据集的存储节点
         task_data_info = self.get_task_data_info(task.task_meta.task_name)
         model_nodes = task_data_info.model.storage_nodes

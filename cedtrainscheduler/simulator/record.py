@@ -1,4 +1,5 @@
 import json
+import os
 from enum import Enum
 
 from cedtrainscheduler.scheduler.types.task import TaskInstDataStatus
@@ -23,7 +24,7 @@ class Record:
     def log_task_inst_ready(self, task: TaskWrapRuntimeInfo, inst_id: int):
         self.task_record[task.task_meta.task_id].inst_status[inst_id] = TaskInstStatus.Ready
 
-    def log_task_inst_data_arival(self, task: TaskWrapRuntimeInfo, inst_id: int):
+    def log_task_inst_data_arrival(self, task: TaskWrapRuntimeInfo, inst_id: int):
         self.task_record[task.task_meta.task_id].inst_data_status[inst_id] = TaskInstDataStatus.Finished
 
     def check_task_inst_ready(self, task: TaskWrapRuntimeInfo) -> bool:
@@ -32,7 +33,7 @@ class Record:
                 return False
         return True
 
-    def check_task_inst_data_arival(self, task: TaskWrapRuntimeInfo) -> bool:
+    def check_task_inst_data_arrival(self, task: TaskWrapRuntimeInfo) -> bool:
         for inst_id in range(task.task_meta.task_inst_num):
             if self.task_record[task.task_meta.task_id].inst_data_status[inst_id] != TaskInstDataStatus.Finished:
                 return False
@@ -52,7 +53,7 @@ class Record:
             task.inst_status[inst_id] = TaskInstStatus.Finished
         self.task_record[task.task_meta.task_id] = task
 
-    def save_task_result(self, output_path: str):
+    def save_task_result(self, output_path: str, scheduler_name: str):
         def serialize(obj):
             if isinstance(obj, TaskWrapRuntimeInfo):
                 return {
@@ -71,5 +72,14 @@ class Record:
             else:
                 raise TypeError(f"Object of type {obj.__class__.__name__} is not JSON serializable")
 
-        with open(output_path, "w") as f:
+        # Get total number of tasks
+        total_tasks = len(self.task_record)
+
+        # Create filename with scheduler name and task count info
+        filename = f"simulation_{scheduler_name}_tasks_{total_tasks}.json"
+
+        # Join directory path with filename
+        full_path = os.path.join(output_path, filename)
+
+        with open(full_path, "w") as f:
             json.dump(self.task_record, f, default=serialize, indent=4)

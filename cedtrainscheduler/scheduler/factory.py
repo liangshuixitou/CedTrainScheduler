@@ -20,14 +20,12 @@ class SchedulerFactory:
         from cedtrainscheduler.scheduler.fcfs_scheduler import FCFSScheduler
         from cedtrainscheduler.scheduler.sjf_data_scheduler import SJFDataScheduler
         from cedtrainscheduler.scheduler.sjf_scheduler import SJFScheduler
-        from cedtrainscheduler.scheduler.themis_scheduler import ThemisScheduler
 
         scheduler_map = {
             "k8s-data": FCFSDataScheduler,
             "k8s": FCFSScheduler,
             "sjf-data": SJFDataScheduler,
             "sjf": SJFScheduler,
-            "themis": ThemisScheduler,
             "ced": CEDScheduler,
         }
 
