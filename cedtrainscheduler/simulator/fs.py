@@ -2,7 +2,9 @@ import json
 from dataclasses import dataclass
 from typing import Optional
 
+from cedtrainscheduler.scheduler.factory import SchedulerType
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
+from cedtrainscheduler.simulator.manager import ClusterManager
 
 
 @dataclass
@@ -10,7 +12,7 @@ class DatasetInfo:
     """数据集信息"""
 
     size_mb: int  # 数据集大小(MB)
-    storage_nodes: list[str]  # 存储节点IP列表
+    storage_nodes: list[str]  # 存储节点id列表
 
 
 @dataclass
@@ -18,7 +20,7 @@ class ModelInfo:
     """模型信息"""
 
     size_mb: int  # 模型大小(MB)
-    storage_nodes: list[str]  # 存储节点IP列表
+    storage_nodes: list[str]  # 存储节点id列表
 
 
 @dataclass
@@ -57,28 +59,28 @@ class FileSystem:
 
     def get_dataset_locations(self, model_name: str) -> list[str]:
         """获取指定模型的数据集存储位置"""
-        task = self.get_task(model_name)
+        task = self.get_task_data_info(model_name)
         if task:
             return task.dataset.storage_nodes
         return []
 
     def get_model_locations(self, model_name: str) -> list[str]:
         """获取指定模型的模型文件存储位置"""
-        task = self.get_task(model_name)
+        task = self.get_task_data_info(model_name)
         if task:
             return task.model.storage_nodes
         return []
 
     def get_dataset_size(self, model_name: str) -> int:
         """获取指定模型的数据集大小(MB)"""
-        task = self.get_task(model_name)
+        task = self.get_task_data_info(model_name)
         if task:
             return task.dataset.size_mb
         return 0
 
     def get_model_size(self, model_name: str) -> int:
         """获取指定模型的模型文件大小(MB)"""
-        task = self.get_task(model_name)
+        task = self.get_task_data_info(model_name)
         if task:
             return task.model.size_mb
         return 0
@@ -87,12 +89,43 @@ class FileSystem:
         """获取所有模型名称列表"""
         return list(self.tasks.keys())
 
-    def get_task_type(self, model_name: str) -> str:
-        """获取指定模型的任务类型"""
-        task = self.get_task(model_name)
-        if task:
-            return task.task_type
-        return ""
+    def get_data_arival_time(
+        self, task: TaskWrapRuntimeInfo, target_node_id: str, cluster_manager: ClusterManager, scheduler_name: str
+    ) -> float:
+        if scheduler_name == SchedulerType.CED:
+            return 10
+        # 获取模型和数据集的存储节点
+        task_data_info = self.get_task_data_info(task.task_meta.task_name)
+        model_nodes = task_data_info.model.storage_nodes
+        model_size = task_data_info.model.size_mb
+        dataset_nodes = task_data_info.dataset.storage_nodes
+        dataset_size = task_data_info.dataset.size_mb
 
-    def get_data_arival_time(self, task: TaskWrapRuntimeInfo, node_id: str) -> float:
-        return 0
+        # 初始化最大带宽和对应的节点
+        max_model_bandwidth = 0
+        max_dataset_bandwidth = 0
+
+        # 遍历模型存储节点，寻找带宽最大的节点
+        for node_id in model_nodes:
+            bandwidth = cluster_manager.get_bandwidth(node_id, target_node_id)
+            if bandwidth > max_model_bandwidth:
+                max_model_bandwidth = bandwidth
+
+        # 遍历数据集存储节点，寻找带宽最大的节点
+        for node_id in dataset_nodes:
+            bandwidth = cluster_manager.get_bandwidth(node_id, target_node_id)
+            if bandwidth > max_dataset_bandwidth:
+                max_dataset_bandwidth = bandwidth
+
+        # 计算模型数据到达时间
+        model_arrival_time = float("inf")
+        if max_model_bandwidth > 0:
+            model_arrival_time = (model_size * 8) / max_model_bandwidth
+
+        # 计算数据集到达时间
+        dataset_arrival_time = float("inf")
+        if max_dataset_bandwidth > 0:
+            dataset_arrival_time = (dataset_size * 8) / max_dataset_bandwidth
+
+        # 返回最大到达时间
+        return max(model_arrival_time, dataset_arrival_time)

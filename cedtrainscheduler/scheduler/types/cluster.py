@@ -31,5 +31,7 @@ class Cluster:
     cluster_name: str
     cluster_type: ClusterType
     nodes: list[Node]
+    intra_domain_bandwidth: int  # 集群内带宽(Mbps)
+    inter_domain_bandwidth: int  # 集群间带宽(Mbps)
 
 

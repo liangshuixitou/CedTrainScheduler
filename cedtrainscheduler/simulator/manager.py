@@ -11,6 +11,7 @@ class ClusterManager:
         self.clusters: dict[str, Cluster] = {}
         self.init_cluster(config_path)
 
+        self.node_cluster_map: dict[str, Cluster] = self.init_node_cluster_map()
         self.gpu_node_map: dict[str, Node] = self.init_gpu_node_map()
         self.gpu_task_queue: dict[str, GPUExecutor] = self.init_gpu_task_queues()
 
@@ -21,6 +22,13 @@ class ClusterManager:
                 for gpu in node.gpus:
                     gpu_queues[gpu.gpu_id] = GPUExecutor(gpu.gpu_id, gpu.gpu_type)
         return gpu_queues
+
+    def init_node_cluster_map(self):
+        node_cluster_map = {}
+        for cluster in self.clusters.values():
+            for node in cluster.nodes:
+                node_cluster_map[node.node_id] = cluster
+        return node_cluster_map
 
     def init_gpu_node_map(self):
         gpu_node_map = {}
@@ -60,6 +68,21 @@ class ClusterManager:
                     cluster_name=cluster_info["cluster_name"],
                     cluster_type=cluster_info["cluster_type"],
                     nodes=nodes,
+                    intra_domain_bandwidth=cluster_info["intra_domain_bandwidth"],
+                    inter_domain_bandwidth=cluster_info["inter_domain_bandwidth"],
                 )
                 # 将 Cluster 对象添加到字典中
                 self.clusters[cluster.cluster_id] = cluster
+
+    def get_bandwidth(self, node_id: str, target_node_id: str) -> float:
+        """获取节点之间的带宽"""
+        # 获取节点所在的集群
+        node_cluster = self.node_cluster_map[node_id]
+        target_cluster = self.node_cluster_map[target_node_id]
+
+        # 如果节点在同一个集群内，则直接返回集群内带宽
+        if node_cluster == target_cluster:
+            return node_cluster.intra_domain_bandwidth
+
+        # 如果节点在不同集群内，则返回最小的域间带宽
+        return min(node_cluster.inter_domain_bandwidth, target_cluster.inter_domain_bandwidth)

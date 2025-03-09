@@ -3,7 +3,11 @@ from enum import Enum
 
 
 class SchedulerType(Enum):
+    FCFS_DATA = auto()
     FCFS = auto()
+    SJF_DATA = auto()
+    SJF = auto()
+    THEMIS = auto()
     CED = auto()
 
 
@@ -12,11 +16,24 @@ class SchedulerFactory:
     def create_scheduler(scheduler_name: str):
         # 延迟导入以避免循环依赖
         from cedtrainscheduler.scheduler.ced_scheduler import CEDScheduler
-        from cedtrainscheduler.scheduler.fcfs_scheduler import FCFScheduler
+        from cedtrainscheduler.scheduler.fcfs_data_scheduler import FCFSDataScheduler
+        from cedtrainscheduler.scheduler.fcfs_scheduler import FCFSScheduler
+        from cedtrainscheduler.scheduler.sjf_data_scheduler import SJFDataScheduler
+        from cedtrainscheduler.scheduler.sjf_scheduler import SJFScheduler
+        from cedtrainscheduler.scheduler.themis_scheduler import ThemisScheduler
 
-        scheduler_map = {"fcfs": FCFScheduler, "ced": CEDScheduler}
+        scheduler_map = {
+            "k8s-data": FCFSDataScheduler,
+            "k8s": FCFSScheduler,
+            "sjf-data": SJFDataScheduler,
+            "sjf": SJFScheduler,
+            "themis": ThemisScheduler,
+            "ced": CEDScheduler,
+        }
 
         if scheduler_name.lower() not in scheduler_map:
+            print(scheduler_map.keys())
+            print(scheduler_name)
             raise ValueError(f"Unknown scheduler type: {scheduler_name}")
 
         return scheduler_map[scheduler_name.lower()]()

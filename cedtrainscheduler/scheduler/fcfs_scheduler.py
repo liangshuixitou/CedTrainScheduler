@@ -10,7 +10,7 @@ from cedtrainscheduler.simulator.executor import GPUExecutor
 from cedtrainscheduler.simulator.fs import TaskDataInfo
 
 
-class FCFScheduler(SchedulerBase):
+class FCFSScheduler(SchedulerBase):
     def __init__(self):
         super().__init__(SchedulerType.FCFS)
         self.task_queue: list[TaskMeta] = []
@@ -27,25 +27,14 @@ class FCFScheduler(SchedulerBase):
             return None, True
 
         task = self.task_queue[0]
-        # 查找所有的数据所在的节点的集群
-        nodes = (
-            task_data_info[task.task_name].dataset.storage_nodes + task_data_info[task.task_name].model.storage_nodes
-        )
-        cluster_ids: set[str] = set()
-        for cluster in clusters.values():
-            for node in cluster.nodes:
-                if node.ip_address in nodes:
-                    cluster_ids.add(cluster.cluster_id)
 
         # 寻找集群内的所有GPU
         cluster_gpus = []
-        for cluster_id in cluster_ids:
-            nodes = clusters[cluster_id].nodes
+        for cluster in clusters.values():
+            nodes = cluster.nodes
             for node in nodes:
                 for gpu in node.gpus:
                     cluster_gpus.append(gpu.gpu_id)
-                    if gpu.gpu_id == "455d574f-2365-477d-ab87-d498b7aa8102":
-                        print(f"gpu {gpu.gpu_id} is in cluster {cluster_id}")
 
         # 按照队列总体运行时间排序，选择运行时间最短的节点
         cluster_gpus.sort(key=lambda gpu_id: gpu_task_queue[gpu_id].queue_time(current_time, task_record))

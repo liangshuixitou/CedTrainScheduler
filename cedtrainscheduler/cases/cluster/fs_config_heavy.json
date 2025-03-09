@@ -1,0 +1,162 @@
+{
+  "tasks": [
+    {
+      "model_name": "ResNet50",
+      "task_type": "Image Classification",
+      "batch_sizes": [
+        16,
+        32,
+        64
+      ],
+      "dataset": {
+        "size_mb": 100000,
+        "storage_nodes": [
+          "edge_node_3352",
+          "terminal_node_4328",
+          "cloud_node_4178"
+        ]
+      },
+      "model": {
+        "size_mb": 980,
+        "storage_nodes": [
+          "terminal_node_5844"
+        ]
+      }
+    },
+    {
+      "model_name": "VGG19",
+      "task_type": "Image Classification",
+      "batch_sizes": [
+        16,
+        32
+      ],
+      "dataset": {
+        "size_mb": 120000,
+        "storage_nodes": [
+          "terminal_node_1883",
+          "terminal_node_7443"
+        ]
+      },
+      "model": {
+        "size_mb": 5490,
+        "storage_nodes": [
+          "terminal_node_6894",
+          "edge_node_6396",
+          "edge_node_7145"
+        ]
+      }
+    },
+    {
+      "model_name": "InceptionV3",
+      "task_type": "Image Classification",
+      "batch_sizes": [
+        16,
+        32
+      ],
+      "dataset": {
+        "size_mb": 150000,
+        "storage_nodes": [
+          "terminal_node_4681",
+          "terminal_node_6894"
+        ]
+      },
+      "model": {
+        "size_mb": 920,
+        "storage_nodes": [
+          "cloud_node_8547"
+        ]
+      }
+    },
+    {
+      "model_name": "DenseNet161",
+      "task_type": "Image Classification",
+      "batch_sizes": [
+        8,
+        16
+      ],
+      "dataset": {
+        "size_mb": 80000,
+        "storage_nodes": [
+          "cloud_node_8547",
+          "cloud_node_8875",
+          "edge_node_6520"
+        ]
+      },
+      "model": {
+        "size_mb": 1100,
+        "storage_nodes": [
+          "edge_node_5585",
+          "cloud_node_2323"
+        ]
+      }
+    },
+    {
+      "model_name": "DCGAN",
+      "task_type": "Image-to-Image Translation",
+      "batch_sizes": [
+        64,
+        128,
+        256
+      ],
+      "dataset": {
+        "size_mb": 50000,
+        "storage_nodes": [
+          "terminal_node_3272"
+        ]
+      },
+      "model": {
+        "size_mb": 450,
+        "storage_nodes": [
+          "cloud_node_7420",
+          "terminal_node_2642"
+        ]
+      }
+    },
+    {
+      "model_name": "LSTM",
+      "task_type": "Language Modeling",
+      "batch_sizes": [
+        10,
+        20,
+        40,
+        80
+      ],
+      "dataset": {
+        "size_mb": 200000,
+        "storage_nodes": [
+          "edge_node_9143",
+          "terminal_node_7443"
+        ]
+      },
+      "model": {
+        "size_mb": 350,
+        "storage_nodes": [
+          "terminal_node_3926",
+          "edge_node_8595"
+        ]
+      }
+    },
+    {
+      "model_name": "Transformer",
+      "task_type": "Language Modeling",
+      "batch_sizes": [
+        16,
+        32,
+        64,
+        128
+      ],
+      "dataset": {
+        "size_mb": 300000,
+        "storage_nodes": [
+          "cloud_node_3552"
+        ]
+      },
+      "model": {
+        "size_mb": 5500,
+        "storage_nodes": [
+          "cloud_node_7420"
+        ]
+      }
+    }
+  ]
+}

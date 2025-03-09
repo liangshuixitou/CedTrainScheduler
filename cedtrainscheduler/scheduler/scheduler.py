@@ -33,6 +33,9 @@ class SchedulerBase:
             )
             self.task_queue.append(task_meta)
 
+        self.sort_task_queue()
+
+    def sort_task_queue(self):
         self.task_queue.sort(key=lambda x: x.task_id)
 
     def schedule(

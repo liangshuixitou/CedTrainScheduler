@@ -1,4 +1,5 @@
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
+from cedtrainscheduler.scheduler.scheduler import SchedulerBase
 from cedtrainscheduler.scheduler.types.task import TaskInst
 from cedtrainscheduler.scheduler.types.task import TaskInstStatus
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
@@ -11,13 +12,14 @@ from cedtrainscheduler.simulator.event import EventType
 from cedtrainscheduler.simulator.fs import FileSystem
 from cedtrainscheduler.simulator.manager import ClusterManager
 from cedtrainscheduler.simulator.record import Record
+from cedtrainscheduler.simulator.types import Metrics
 
 
 class Simulator:
     def __init__(self, config: SimulatorConfig):
         self.cluster_manager = ClusterManager(config.cluster_config_path)
         self.file_system = FileSystem(config.fs_config_path)
-        self.scheduler = SchedulerFactory.create_scheduler(config.scheduler_name)
+        self.scheduler: SchedulerBase = SchedulerFactory.create_scheduler(config.scheduler_name)
         self.scheduler.load_config(config.task_config_path)
         self.task_record = Record()
         self.event_loop_manager = EventLoopManager()
@@ -50,6 +52,8 @@ class Simulator:
                         + self.file_system.get_data_arival_time(
                             task,
                             self.cluster_manager.gpu_node_map[task.schedule_infos[inst_id].gpu_id].node_id,
+                            self.cluster_manager,
+                            self.scheduler.scheduler_name,
                         ),
                         task,
                         inst_id,
@@ -83,7 +87,7 @@ class Simulator:
                     self.task_record.get_task_record(next_task_inst.task_id), next_task_inst.inst_id
                 )
 
-    def simulation(self):
+    def simulation(self) -> Metrics:
         while True:
             # 初始调度
             task, is_finished = self.scheduler.schedule(
@@ -123,10 +127,10 @@ class Simulator:
             # 结束条件：没有事件且调度器返回已完成状态
             if not self.event_loop_manager.has_events() and is_finished:
                 self.task_record.save_task_result(self.output_path)
-                self.count_task_runtime(self.task_record.task_record)
-                break
+                metrics = self.count_metrics(self.task_record.task_record)
+                return metrics
 
-    def count_task_runtime(self, task_record: dict[str, TaskWrapRuntimeInfo]):
+    def count_metrics(self, task_record: dict[str, TaskWrapRuntimeInfo]) -> Metrics:
         total_runtime = self.current_time
 
         avg_queue_time = 0
@@ -139,6 +143,17 @@ class Simulator:
             avg_running_time += task.task_end_time - task.task_submit_time
         avg_running_time /= len(task_record)
 
-        print(f"total_runtime: {total_runtime}")
-        print(f"avg_queue_time: {avg_queue_time}")
-        print(f"avg_running_time: {avg_running_time}")
+        avg_execution_time = 0
+        for task in task_record.values():
+            avg_execution_time += task.task_end_time - task.task_start_time
+        avg_execution_time /= len(task_record)
+
+        metrics: Metrics = Metrics(
+            scheduler_name=self.scheduler.scheduler_name,
+            task_count=len(task_record),
+            total_runtime=total_runtime,
+            avg_queue_time=avg_queue_time,
+            avg_running_time=avg_running_time,
+            avg_execution_time=avg_execution_time,
+        )
+        return metrics
