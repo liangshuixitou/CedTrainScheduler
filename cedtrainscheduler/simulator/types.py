@@ -9,3 +9,6 @@ class Metrics:
     avg_queue_time: float
     avg_running_time: float
     avg_execution_time: float
+    cloud_count: int
+    edge_count: int
+    terminal_count: int

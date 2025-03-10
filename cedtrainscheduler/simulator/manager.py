@@ -13,6 +13,7 @@ class ClusterManager:
 
         self.node_cluster_map: dict[str, Cluster] = self.init_node_cluster_map()
         self.gpu_node_map: dict[str, Node] = self.init_gpu_node_map()
+
         self.gpu_task_queue: dict[str, GPUExecutor] = self.init_gpu_task_queues()
 
     def init_gpu_task_queues(self):
@@ -74,11 +75,11 @@ class ClusterManager:
                 # 将 Cluster 对象添加到字典中
                 self.clusters[cluster.cluster_id] = cluster
 
-    def get_bandwidth(self, node_id: str, target_node_id: str) -> float:
+    def get_bandwidth(self, node_id: str, target_cluster_id: str) -> float:
         """获取节点之间的带宽"""
         # 获取节点所在的集群
         node_cluster = self.node_cluster_map[node_id]
-        target_cluster = self.node_cluster_map[target_node_id]
+        target_cluster = self.clusters[target_cluster_id]
 
         # 如果节点在同一个集群内，则直接返回集群内带宽
         if node_cluster == target_cluster:

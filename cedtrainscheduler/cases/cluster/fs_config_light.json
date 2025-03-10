@@ -9,25 +9,17 @@
         64
       ],
       "dataset": {
-        "size_mb": 10000,
+        "size_mb": 5000,
         "storage_nodes": [
-          "edge_node_3126",
-          "terminal_node_8059",
-          "terminal_node_6933",
-          "cloud_node_4981",
-          "cloud_node_7544",
-          "edge_node_4559"
+          "cloud_node_3645",
+          "terminal_node_4686"
         ]
       },
       "model": {
         "size_mb": 98,
         "storage_nodes": [
-          "edge_node_9143",
-          "terminal_node_8741",
-          "terminal_node_3919",
-          "edge_node_2212",
-          "terminal_node_8653",
-          "terminal_node_1883"
+          "edge_node_8699",
+          "terminal_node_7488"
         ]
       }
     },
@@ -39,22 +31,17 @@
         32
       ],
       "dataset": {
-        "size_mb": 12000,
+        "size_mb": 6000,
         "storage_nodes": [
-          "terminal_node_9577",
-          "cloud_node_8715",
-          "terminal_node_9741",
-          "edge_node_9569",
-          "edge_node_8910"
+          "terminal_node_7547",
+          "edge_node_2285"
         ]
       },
       "model": {
         "size_mb": 549,
         "storage_nodes": [
-          "terminal_node_4097",
-          "cloud_node_1657",
-          "terminal_node_9419",
-          "cloud_node_5103"
+          "terminal_node_1291",
+          "edge_node_1783"
         ]
       }
     },
@@ -66,24 +53,17 @@
         32
       ],
       "dataset": {
-        "size_mb": 15000,
+        "size_mb": 8000,
         "storage_nodes": [
-          "cloud_node_1911",
-          "cloud_node_1657",
-          "cloud_node_5253",
-          "edge_node_2212",
-          "edge_node_5748"
+          "cloud_node_7236",
+          "edge_node_9928"
         ]
       },
       "model": {
         "size_mb": 92,
         "storage_nodes": [
-          "edge_node_1254",
-          "cloud_node_7122",
-          "cloud_node_1152",
-          "terminal_node_7443",
-          "terminal_node_8653",
-          "terminal_node_6870"
+          "edge_node_6123",
+          "cloud_node_6457"
         ]
       }
     },
@@ -95,23 +75,17 @@
         16
       ],
       "dataset": {
-        "size_mb": 8000,
+        "size_mb": 4000,
         "storage_nodes": [
-          "edge_node_7373",
-          "edge_node_2591",
-          "edge_node_6116",
-          "cloud_node_4844",
-          "cloud_node_3221",
-          "edge_node_4853"
+          "cloud_node_3425",
+          "edge_node_6080"
         ]
       },
       "model": {
         "size_mb": 110,
         "storage_nodes": [
-          "terminal_node_3919",
-          "terminal_node_1826",
-          "terminal_node_7607",
-          "edge_node_5585"
+          "terminal_node_1291",
+          "terminal_node_1824"
         ]
       }
     },
@@ -124,23 +98,17 @@
         256
       ],
       "dataset": {
-        "size_mb": 5000,
+        "size_mb": 3000,
         "storage_nodes": [
-          "cloud_node_8715",
-          "edge_node_3941",
-          "edge_node_3126",
-          "cloud_node_2323"
+          "terminal_node_4812",
+          "edge_node_8419"
         ]
       },
       "model": {
         "size_mb": 45,
         "storage_nodes": [
-          "edge_node_5814",
-          "terminal_node_9741",
-          "edge_node_6116",
-          "cloud_node_3273",
-          "edge_node_2100",
-          "cloud_node_3221"
+          "cloud_node_4699",
+          "edge_node_2596"
         ]
       }
     },
@@ -154,23 +122,17 @@
         80
       ],
       "dataset": {
-        "size_mb": 20000,
+        "size_mb": 1500,
         "storage_nodes": [
-          "terminal_node_6870",
-          "cloud_node_2323",
-          "edge_node_6235",
-          "cloud_node_8772",
-          "terminal_node_1826",
-          "edge_node_6396"
+          "edge_node_6186",
+          "terminal_node_8397"
         ]
       },
       "model": {
         "size_mb": 35,
         "storage_nodes": [
-          "edge_node_3941",
-          "edge_node_4559",
-          "edge_node_2100",
-          "cloud_node_7544"
+          "cloud_node_6321",
+          "edge_node_7792"
         ]
       }
     },
@@ -184,21 +146,17 @@
         128
       ],
       "dataset": {
-        "size_mb": 30000,
+        "size_mb": 3500,
         "storage_nodes": [
-          "terminal_node_3926",
-          "edge_node_6235",
-          "edge_node_5537",
-          "edge_node_6520"
+          "cloud_node_4184",
+          "cloud_node_3425"
         ]
       },
       "model": {
         "size_mb": 550,
         "storage_nodes": [
-          "edge_node_6235",
-          "cloud_node_6999",
-          "edge_node_4763",
-          "edge_node_9892"
+          "cloud_node_3819",
+          "edge_node_6186"
         ]
       }
     }

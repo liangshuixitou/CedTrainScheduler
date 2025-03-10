@@ -1,5 +1,6 @@
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
+from cedtrainscheduler.scheduler.types.cluster import ClusterType
 from cedtrainscheduler.scheduler.types.task import TaskInst
 from cedtrainscheduler.scheduler.types.task import TaskInstStatus
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
@@ -18,12 +19,16 @@ from cedtrainscheduler.simulator.types import Metrics
 class Simulator:
     def __init__(self, config: SimulatorConfig):
         self.cluster_manager = ClusterManager(config.cluster_config_path)
-        self.file_system = FileSystem(config.fs_config_path)
-        self.scheduler: SchedulerBase = SchedulerFactory.create_scheduler(config.scheduler_name)
-        self.scheduler.load_config(config.task_config_path)
+        self.file_system = FileSystem(config.fs_config_path, self.cluster_manager)
         self.task_record = Record()
         self.event_loop_manager = EventLoopManager()
-        self.output_path = config.output_path
+        self.scheduler: SchedulerBase = SchedulerFactory.create_scheduler(
+            config.scheduler_name,
+            config.task_config_path,
+            self.cluster_manager,
+            self.task_record,
+            self.file_system,
+        )
         self.current_time = 0
 
     def handle_task_submit(self, event: EventTaskSubmit):
@@ -46,12 +51,15 @@ class Simulator:
         if self.task_record.check_task_inst_ready(task):
             for inst_id in range(task.task_meta.task_inst_num):
                 # 添加所有节点的数据到达事件
+                task_data_info = self.file_system.get_task_data_info(task.task_meta.task_name)
                 self.event_loop_manager.add_event(
                     EventDataArrival(
                         self.current_time
-                        + self.file_system.get_data_arival_time(
-                            task,
-                            self.cluster_manager.gpu_node_map[task.schedule_infos[inst_id].gpu_id].node_id,
+                        + self.file_system.get_data_arrival_time(
+                            task_data_info,
+                            self.cluster_manager.node_cluster_map[
+                                self.cluster_manager.gpu_node_map[task.schedule_infos[inst_id].gpu_id].node_id
+                            ].cluster_id,
                             self.cluster_manager,
                             self.scheduler.scheduler_name,
                         ),
@@ -92,10 +100,6 @@ class Simulator:
             # 初始调度
             task, is_finished = self.scheduler.schedule(
                 self.current_time,
-                self.cluster_manager.clusters.copy(),
-                self.cluster_manager.gpu_task_queue.copy(),
-                self.file_system.task_data_info.copy(),
-                self.task_record.task_record.copy(),
             )
             if task:
                 self.event_loop_manager.add_event(EventTaskSubmit(self.current_time, task))
@@ -116,17 +120,12 @@ class Simulator:
                 # 在每次事件处理后立即尝试调度
                 task, is_finished = self.scheduler.schedule(
                     self.current_time,
-                    self.cluster_manager.clusters.copy(),
-                    self.cluster_manager.gpu_task_queue.copy(),
-                    self.file_system.task_data_info.copy(),
-                    self.task_record.task_record.copy(),
                 )
                 if task:
                     self.event_loop_manager.add_event(EventTaskSubmit(self.current_time, task))
 
             # 结束条件：没有事件且调度器返回已完成状态
             if not self.event_loop_manager.has_events() and is_finished:
-                self.task_record.save_task_result(self.output_path)
                 metrics = self.count_metrics(self.task_record.task_record)
                 return metrics
 
@@ -148,6 +147,22 @@ class Simulator:
             avg_execution_time += task.task_end_time - task.task_start_time
         avg_execution_time /= len(task_record)
 
+        # 统计任务被调度至云、边、端的任务数量
+        cloud_count = 0
+        edge_count = 0
+        terminal_count = 0
+        for task in task_record.values():
+            inst_id = list(task.schedule_infos.keys())[0]
+            gpu_id = task.schedule_infos[inst_id].gpu_id
+            node = self.cluster_manager.gpu_node_map[gpu_id]
+            cluster_type = self.cluster_manager.node_cluster_map[node.node_id].cluster_type
+            if cluster_type == ClusterType.CLOUD:
+                cloud_count += 1
+            elif cluster_type == ClusterType.EDGE:
+                edge_count += 1
+            else:
+                terminal_count += 1
+
         metrics: Metrics = Metrics(
             scheduler_name=self.scheduler.scheduler_name,
             task_count=len(task_record),
@@ -155,5 +170,8 @@ class Simulator:
             avg_queue_time=avg_queue_time,
             avg_running_time=avg_running_time,
             avg_execution_time=avg_execution_time,
+            cloud_count=cloud_count,
+            edge_count=edge_count,
+            terminal_count=terminal_count,
         )
         return metrics

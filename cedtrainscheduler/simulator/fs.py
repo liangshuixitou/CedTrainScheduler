@@ -32,9 +32,10 @@ class TaskDataInfo:
 class FileSystem:
     """文件系统模拟器"""
 
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: str, cluster_manager: ClusterManager):
         self.task_data_info: dict[str, TaskDataInfo] = {}  # 任务名称 -> 任务信息
         self.init_task_data(config_path)
+        self.avg_data_arrival_time = self.get_avg_data_arrival_time(cluster_manager)
 
     def init_task_data(self, config_path: str) -> None:
         """从配置文件加载训练任务信息"""
@@ -86,13 +87,25 @@ class FileSystem:
 
     def get_all_models(self) -> list[str]:
         """获取所有模型名称列表"""
-        return list(self.tasks.keys())
+        return list(self.task_data_info.keys())
 
-    def get_data_arival_time(
-        self, task: TaskWrapRuntimeInfo, target_node_id: str, cluster_manager: ClusterManager, scheduler_name: str
+    def get_avg_data_arrival_time(self, cluster_manager: ClusterManager) -> float:
+        """获取所有模型数据集到达时间"""
+        data_arrival_time_list = []
+
+        for task_name in self.get_all_models():
+            task_data_info = self.get_task_data_info(task_name)
+            for cluster_id in cluster_manager.clusters.keys():
+                data_arrival_time_list.append(
+                    self.get_data_arrival_time(task_data_info, cluster_id, cluster_manager, "")
+                )
+
+        return sum(data_arrival_time_list) / len(data_arrival_time_list)
+
+    def get_data_arrival_time(
+        self, task_data_info: TaskDataInfo, target_cluster_id: str, cluster_manager: ClusterManager, scheduler_name: str
     ) -> float:
         # 获取模型和数据集的存储节点
-        task_data_info = self.get_task_data_info(task.task_meta.task_name)
         model_nodes = task_data_info.model.storage_nodes
         model_size = task_data_info.model.size_mb
         dataset_nodes = task_data_info.dataset.storage_nodes
@@ -104,13 +117,13 @@ class FileSystem:
 
         # 遍历模型存储节点，寻找带宽最大的节点
         for node_id in model_nodes:
-            bandwidth = cluster_manager.get_bandwidth(node_id, target_node_id)
+            bandwidth = cluster_manager.get_bandwidth(node_id, target_cluster_id)
             if bandwidth > max_model_bandwidth:
                 max_model_bandwidth = bandwidth
 
         # 遍历数据集存储节点，寻找带宽最大的节点
         for node_id in dataset_nodes:
-            bandwidth = cluster_manager.get_bandwidth(node_id, target_node_id)
+            bandwidth = cluster_manager.get_bandwidth(node_id, target_cluster_id)
             if bandwidth > max_dataset_bandwidth:
                 max_dataset_bandwidth = bandwidth
 

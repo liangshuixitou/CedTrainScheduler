@@ -1,7 +1,8 @@
 from queue import Queue
 
 from cedtrainscheduler.scheduler.types.cluster import GPUType
-from cedtrainscheduler.scheduler.types.task import TaskInst, TaskWrapRuntimeInfo
+from cedtrainscheduler.scheduler.types.task import TaskInst
+from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
 
 
 class GPUExecutor:

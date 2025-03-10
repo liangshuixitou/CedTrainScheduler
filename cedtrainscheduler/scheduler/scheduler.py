@@ -1,17 +1,35 @@
 import pandas as pd
 
-from cedtrainscheduler.scheduler.types.cluster import Cluster
+from cedtrainscheduler.scheduler.types.cluster import GPUType
 from cedtrainscheduler.scheduler.types.task import TaskMeta
 from cedtrainscheduler.scheduler.types.task import TaskStatus
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
-from cedtrainscheduler.simulator.executor import GPUExecutor
-from cedtrainscheduler.simulator.fs import TaskDataInfo
+from cedtrainscheduler.simulator.fs import FileSystem
+from cedtrainscheduler.simulator.manager import ClusterManager
+from cedtrainscheduler.simulator.record import Record
 
 
 class SchedulerBase:
-    def __init__(self, scheduler_name: str):
+    def __init__(
+        self,
+        scheduler_name: str,
+        config_path: str,
+        cluster_manager: ClusterManager,
+        task_record: Record,
+        file_system: FileSystem,
+    ):
         self.scheduler_name = scheduler_name
         self.task_queue: list[TaskMeta] = []
+        self.cluster_manager = cluster_manager
+        self.task_record = task_record
+        self.file_system = file_system
+
+        self.load_config(config_path)
+
+        self.task_record = self.task_record.task_record
+        self.task_data_info = self.file_system.task_data_info
+        self.gpu_task_queue = self.cluster_manager.gpu_task_queue
+        self.clusters = self.cluster_manager.clusters
 
     def load_config(self, config_path: str):
         df = pd.read_csv(config_path)
@@ -26,9 +44,9 @@ class SchedulerBase:
                 task_status=TaskStatus.Pending,
                 # 创建运行时间字典
                 task_runtime={
-                    "T4": float(row["runtime_T4"]),
-                    "P100": float(row["runtime_P100"]),
-                    "V100": float(row["runtime_V100"]),
+                    GPUType.T4: float(row["runtime_T4"]),
+                    GPUType.P100: float(row["runtime_P100"]),
+                    GPUType.V100: float(row["runtime_V100"]),
                 },
             )
             self.task_queue.append(task_meta)
@@ -36,14 +54,9 @@ class SchedulerBase:
         self.sort_task_queue()
 
     def sort_task_queue(self):
-        self.task_queue.sort(key=lambda x: x.task_id)
+        import random
 
-    def schedule(
-        self,
-        current_time: float,
-        clusters: dict[str, Cluster],
-        gpu_task_queue: dict[str, GPUExecutor],
-        task_data_info: dict[str, TaskDataInfo],
-        task_record: dict[str, TaskWrapRuntimeInfo],
-    ) -> tuple[TaskWrapRuntimeInfo, bool]:
+        random.shuffle(self.task_queue)
+
+    def schedule(self, current_time: float) -> tuple[TaskWrapRuntimeInfo, bool]:
         pass

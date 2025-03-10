@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from cedtrainscheduler.scheduler.types.cluster import GPUType
-
 
 class TaskStatus(str, Enum):
     Pending = "pending"
@@ -41,7 +39,7 @@ class TaskMeta:
     task_plan_mem: float
     task_plan_gpu: int
     task_status: TaskStatus
-    task_runtime: dict[GPUType, float]
+    task_runtime: dict[str, float]
 
 
 @dataclass
