@@ -3,6 +3,7 @@ from enum import Enum
 
 
 class TaskStatus(str, Enum):
+    Submitted = "submitted"
     Pending = "pending"
     Ready = "ready"
     Running = "running"
@@ -39,6 +40,7 @@ class TaskMeta:
     task_plan_mem: float
     task_plan_gpu: int
     task_status: TaskStatus
+    task_start_time: float
     task_runtime: dict[str, float]
 
 

@@ -19,13 +19,12 @@ class SchedulerFactory:
     @staticmethod
     def create_scheduler(
         scheduler_name: str,
-        config_path: str,
         cluster_manager: ClusterManager,
         task_record: Record,
         file_system: FileSystem,
     ) -> SchedulerBase:
         # 延迟导入以避免循环依赖
-        from cedtrainscheduler.scheduler.ced_scheduler import CEDScheduler
+        from cedtrainscheduler.scheduler.ced_scheduler import CedScheduler
         from cedtrainscheduler.scheduler.fcfs_data_scheduler import FCFSDataScheduler
         from cedtrainscheduler.scheduler.fcfs_scheduler import FCFSScheduler
         from cedtrainscheduler.scheduler.sjf_data_scheduler import SJFDataScheduler
@@ -36,7 +35,7 @@ class SchedulerFactory:
             "k8s": FCFSScheduler,
             "sjf-data": SJFDataScheduler,
             "sjf": SJFScheduler,
-            "ced": CEDScheduler,
+            "ced": CedScheduler,
         }
 
         if scheduler_name.lower() not in scheduler_map:
@@ -44,4 +43,4 @@ class SchedulerFactory:
             print(scheduler_name)
             raise ValueError(f"Unknown scheduler type: {scheduler_name}")
 
-        return scheduler_map[scheduler_name.lower()](config_path, cluster_manager, task_record, file_system)
+        return scheduler_map[scheduler_name.lower()](cluster_manager, task_record, file_system)

@@ -1,13 +1,19 @@
+import pandas as pd
+
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
 from cedtrainscheduler.scheduler.types.cluster import ClusterType
+from cedtrainscheduler.scheduler.types.cluster import GPUType
 from cedtrainscheduler.scheduler.types.task import TaskInst
 from cedtrainscheduler.scheduler.types.task import TaskInstStatus
+from cedtrainscheduler.scheduler.types.task import TaskMeta
+from cedtrainscheduler.scheduler.types.task import TaskStatus
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.simulator.config import SimulatorConfig
 from cedtrainscheduler.simulator.event import EventDataArrival
 from cedtrainscheduler.simulator.event import EventLoopManager
 from cedtrainscheduler.simulator.event import EventTaskFinish
+from cedtrainscheduler.simulator.event import EventTaskParse
 from cedtrainscheduler.simulator.event import EventTaskSubmit
 from cedtrainscheduler.simulator.event import EventType
 from cedtrainscheduler.simulator.fs import FileSystem
@@ -24,12 +30,41 @@ class Simulator:
         self.event_loop_manager = EventLoopManager()
         self.scheduler: SchedulerBase = SchedulerFactory.create_scheduler(
             config.scheduler_name,
-            config.task_config_path,
             self.cluster_manager,
             self.task_record,
             self.file_system,
         )
         self.current_time = 0
+        self.load_task_config(config.task_config_path)
+
+    def load_task_config(self, task_config_path: str):
+        df = pd.read_csv(task_config_path)
+        task_list = []
+        for _, row in df.iterrows():
+            task_meta = TaskMeta(
+                task_id=row["job_name"],
+                task_name=row["task_name"],
+                task_inst_num=int(row["inst_num"]),
+                task_plan_cpu=float(row["plan_cpu"]),
+                task_plan_mem=float(row["plan_mem"]),
+                task_plan_gpu=float(row["plan_gpu"]) / 100,
+                # task_start_time=float(row["start_time"]),
+                task_start_time=float(0),
+                task_status=TaskStatus.Submitted,
+                # 创建运行时间字典
+                task_runtime={
+                    GPUType.T4: float(row["runtime_T4"]),
+                    GPUType.P100: float(row["runtime_P100"]),
+                    GPUType.V100: float(row["runtime_V100"]),
+                },
+            )
+            task_list.append(task_meta)
+
+        for task in task_list:
+            self.event_loop_manager.add_event(EventTaskParse(task.task_start_time, task))
+
+    def handle_task_parse(self, event: EventTaskParse):
+        self.scheduler.submit_task(event.task)
 
     def handle_task_submit(self, event: EventTaskSubmit):
         self.task_record.log_task_submit(event.task, self.current_time)
@@ -97,20 +132,19 @@ class Simulator:
 
     def simulation(self) -> Metrics:
         while True:
-            # 初始调度
-            task, is_finished = self.scheduler.schedule(
-                self.current_time,
-            )
-            if task:
-                self.event_loop_manager.add_event(EventTaskSubmit(self.current_time, task))
-
             # 事件处理循环
+            is_finished = True
             while self.event_loop_manager.has_events():
                 event = self.event_loop_manager.get_next_event()
                 self.current_time = event.time
                 if event is None:
                     break
-                if event.event_type == EventType.TaskSubmit:
+                if event.event_type == EventType.TaskParse:
+                    self.handle_task_parse(event)
+                    # 如果还有事件，则不进行调度
+                    if self.event_loop_manager.has_events() and not self.scheduler.is_queue_full():
+                        continue
+                elif event.event_type == EventType.TaskSubmit:
                     self.handle_task_submit(event)
                 elif event.event_type == EventType.DataArrival:
                     self.handle_data_inst_arival(event)
@@ -130,7 +164,9 @@ class Simulator:
                 return metrics
 
     def count_metrics(self, task_record: dict[str, TaskWrapRuntimeInfo]) -> Metrics:
-        total_runtime = self.current_time
+        start_time = min(task.task_start_time for task in task_record.values())
+        end_time = max(task.task_end_time for task in task_record.values())
+        total_runtime = end_time - start_time
 
         avg_queue_time = 0
         for task in task_record.values():

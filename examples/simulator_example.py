@@ -12,7 +12,7 @@ def run_simulation(scheduler_name, fs_config_path):
         cluster_config_path=os.path.join(base_dir, "cedtrainscheduler/cases/cluster/cluster_config.json"),
         fs_config_path=os.path.join(base_dir, "cedtrainscheduler/cases/cluster/" + fs_config_path),
         scheduler_name=scheduler_name,
-        task_config_path=os.path.join(base_dir, "cedtrainscheduler/cases/task/case_500_tasks.csv"),
+        task_config_path=os.path.join(base_dir, "cedtrainscheduler/cases/task/case_1000_tasks.csv"),
         output_path=os.path.join(base_dir, "examples/outputs"),
     )
 

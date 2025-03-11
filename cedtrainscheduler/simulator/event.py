@@ -1,9 +1,11 @@
 import heapq
 
+from cedtrainscheduler.scheduler.types.task import TaskMeta
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
 
 
 class EventType:
+    TaskParse = "TaskParse"
     TaskSubmit = "TaskSubmit"
     DataArrival = "DataArrival"
     TaskFinish = "TaskFinish"
@@ -18,6 +20,13 @@ class EventBase:
 
     def __lt__(self, other):
         return self.time < other.time
+
+
+class EventTaskParse(EventBase):
+    def __init__(self, time: float, task: TaskMeta):
+        super().__init__(time)
+        self.task = task
+        self.event_type = EventType.TaskParse
 
 
 class EventTaskSubmit(EventBase):

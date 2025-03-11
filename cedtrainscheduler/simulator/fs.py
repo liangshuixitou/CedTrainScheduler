@@ -2,7 +2,6 @@ import json
 from dataclasses import dataclass
 from typing import Optional
 
-from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.simulator.manager import ClusterManager
 
 
