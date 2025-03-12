@@ -36,6 +36,7 @@ class SchedulerFactory:
             "sjf-data": SJFDataScheduler,
             "sjf": SJFScheduler,
             "ced": CedScheduler,
+            "greedy": SJFScheduler,
         }
 
         if scheduler_name.lower() not in scheduler_map:

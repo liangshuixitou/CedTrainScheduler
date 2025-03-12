@@ -13,7 +13,7 @@ class SchedulerBase:
         task_record: Record,
         file_system: FileSystem,
     ):
-        self.max_task_num = 100
+        self.max_task_num = 50
         self.scheduler_name = scheduler_name
         self.task_queue: list[TaskMeta] = []  # submitted task
         self.cluster_manager = cluster_manager
