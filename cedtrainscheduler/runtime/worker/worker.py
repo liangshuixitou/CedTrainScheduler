@@ -90,7 +90,9 @@ class Worker:
     async def handle_task_inst_start(
         self, task_inst: TaskInst, gpu_id: str, task_record: dict[str, TaskWrapRuntimeInfo]
     ):
-        pass
+        task = task_record[task_inst.task_id] 
+        executor = self.executors[gpu_id]
+        await executor.start_task(task)
 
 
 async def main():
