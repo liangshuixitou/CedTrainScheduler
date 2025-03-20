@@ -25,8 +25,10 @@ class GPU:
 @dataclass
 class Node:
     node_id: str
+    ip: str
+    port: int
     cluster_id: str
-    gpus: list[GPU]
+    gpus: dict[str, GPU]
 
 
 @dataclass
@@ -34,4 +36,4 @@ class Cluster:
     cluster_id: str
     cluster_name: str
     cluster_type: ClusterType
-    nodes: list[Node]
+    nodes: dict[str, Node]

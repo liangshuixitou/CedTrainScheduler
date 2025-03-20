@@ -2,7 +2,22 @@ import asyncio
 import logging
 from abc import ABC
 from abc import abstractmethod
-from typing import Any
+from dataclasses import dataclass
+from enum import Enum
+
+
+class ComponentType(str, Enum):
+    MASTER = "master"
+    SCHEDULER = "scheduler"
+    WORKER = "worker"
+
+
+@dataclass
+class ComponentInfo:
+    component_type: ComponentType
+    component_id: str
+    component_ip: str
+    component_port: int
 
 
 class BaseComponent(ABC):
@@ -27,9 +42,4 @@ class BaseComponent(ABC):
     @abstractmethod
     async def _run(self):
         """Main loop implementation"""
-        pass
-
-    @abstractmethod
-    async def handle_message(self, message: dict[str, Any]):
-        """Handle incoming messages"""
         pass

@@ -53,9 +53,9 @@ class CedQueuePolicy(QueuePolicy):
             comprehensive_affinity.pop(max_cluster_id)
             second_max_affinity = max(comprehensive_affinity.values())
 
-            # task_priority_dict[task.task_id] = (1 / task.task_runtime[GPUType.T4]) * (
-            #     self.weight_max_affinity * max_affinity + (1 - self.weight_max_affinity) * second_max_affinity
-            # )
+            task_priority_dict[task.task_id] = (1 / task.task_runtime[GPUType.T4]) * (
+                self.weight_max_affinity * max_affinity + (1 - self.weight_max_affinity) * second_max_affinity
+            )
             task_priority_dict[task.task_id] = 1 / task.task_runtime[GPUType.T4]
 
         max_task_id = max(task_priority_dict, key=task_priority_dict.get)
@@ -210,12 +210,8 @@ class CedClusterPolicy(ClusterPolicy):
             node_counts[node_id] += 1
         load_balance = max(node_counts.values()) / len(group)  # 越低越好
 
-        # 数据亲和性（假设有数据位置元数据）
-        data_locality = 0
-        data_factor = 1 - data_locality / len(group)  # 越高得分越好
-
         # 综合评分（权重可调）
-        return exec_time * 0.7 + load_balance * 0.2 + data_factor * 0.1
+        return exec_time * 0.7 + load_balance * 0.2
 
     def schedule(self, current_time: float, task: TaskMeta, cluster_id: str) -> ScheduleInfo:
         is_large_task = self._is_large_task(task)
