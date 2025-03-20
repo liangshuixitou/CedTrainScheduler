@@ -47,21 +47,17 @@ class WorkerAPIServer:
             }
             return await self.worker.handle_task_inst_start(task_inst, gpu_id, task_record)
 
-    def start(self, host="0.0.0.0", port=5001):
+    async def start(self, host="0.0.0.0", port=5001):
         """启动API服务器"""
         config = Config(app=self.app, host=host, port=port, log_level="info")
         self.server = uvicorn.Server(config)
 
-        # 使用新线程运行服务器的事件循环
-        import threading
+        import asyncio
 
-        self.thread = threading.Thread(target=self.server.run)
-        self.thread.daemon = True
-        self.thread.start()
-
+        self.server_task = asyncio.create_task(self.server.serve())
         self.logger.info(f"Master API server started on {host}:{port}")
 
-    def stop(self):
+    async def stop(self):
         """停止API服务器"""
         if self.server:
             self.server.should_exit = True

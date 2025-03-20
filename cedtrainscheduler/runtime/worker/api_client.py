@@ -45,7 +45,7 @@ class BaseClient:
 class MasterWorkerClient(BaseClient):
     """Worker客户端，用于任务提交"""
 
-    def submit_task(self, task_inst: TaskInst, gpu_id: str) -> Optional[dict]:
+    async def submit_task(self, task_inst: TaskInst, gpu_id: str) -> Optional[dict]:
         """
         向Worker提交任务
 
@@ -60,7 +60,7 @@ class MasterWorkerClient(BaseClient):
         data = {"task_inst": task_inst.__dict__, "gpu_id": gpu_id}
         return self._make_request("/api/task/inst/submit", data)
 
-    def start_task_inst(
+    async def start_task_inst(
         self, task_inst: TaskInst, gpu_id: str, task_record: dict[str, TaskWrapRuntimeInfo]
     ) -> Optional[dict]:
         """

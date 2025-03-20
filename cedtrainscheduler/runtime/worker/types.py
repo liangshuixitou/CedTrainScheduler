@@ -1,14 +1,12 @@
 from pydantic import BaseModel
 
-from cedtrainscheduler.runtime.types.task import (
-    ScheduleInfo,
-    TaskInst,
-    TaskInstDataStatus,
-    TaskInstStatus,
-    TaskMeta,
-    TaskWrapRuntimeInfo,
-)
+from cedtrainscheduler.runtime.types.task import ScheduleInfo
+from cedtrainscheduler.runtime.types.task import TaskInst
+from cedtrainscheduler.runtime.types.task import TaskInstDataStatus
+from cedtrainscheduler.runtime.types.task import TaskInstStatus
+from cedtrainscheduler.runtime.types.task import TaskMeta
 from cedtrainscheduler.runtime.types.task import TaskStatus
+from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 
 
 # TaskInst 相关模型

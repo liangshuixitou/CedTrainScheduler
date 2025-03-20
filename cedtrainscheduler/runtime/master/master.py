@@ -119,7 +119,7 @@ class Master(BaseComponent):
                         is_task_ready = False
                         break
                 if is_task_ready:
-                    self.start_task(task)
+                    asyncio.create_task(self.start_task(task))
 
             return {"status": "success", "message": "Worker registered"}
 
