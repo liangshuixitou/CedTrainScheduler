@@ -122,4 +122,9 @@ class TaskInstSubmitModel(BaseModel):
 class TaskInstStartModel(BaseModel):
     task_inst: TaskInstModel
     gpu_id: str
-    task_record: dict[str, TaskWrapRuntimeInfoModel]
+    task_name: str
+    world_size: int
+    inst_rank: int
+    master_addr: str
+    master_port: str
+

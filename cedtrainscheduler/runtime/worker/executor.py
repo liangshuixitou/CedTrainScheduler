@@ -1,11 +1,9 @@
 import asyncio
 import logging
-import os
-from typing import Optional
 
 from cedtrainscheduler.runtime.types.cluster import GPU
 from cedtrainscheduler.runtime.types.task import TaskInst
-from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
+from cedtrainscheduler.runtime.workload.script import ScriptGenerator
 
 
 class Executor:
@@ -14,12 +12,8 @@ class Executor:
         self.task_queue: list[TaskInst] = []
         self.task_queue_lock = asyncio.Lock()
 
-        self.current_task: Optional[TaskWrapRuntimeInfo] = None
-        self.current_process: Optional[asyncio.subprocess.Process] = None
-
         self.logger = logging.getLogger(__name__)
-        self._process_task = None
-        self._monitor_task = None
+
 
     async def append_task(self, task: TaskInst):
         async with self.task_queue_lock:
@@ -29,5 +23,20 @@ class Executor:
         async with self.task_queue_lock:
             return self.task_queue
 
-    async def start_task(self, task_name: str, task_inst: TaskInst):
-        pass
+    async def start_task(
+        self,
+        task_name: str,
+        task_inst: TaskInst,
+        world_size: int,
+        inst_rank: int,
+        master_addr: str,
+        master_port: str,
+    ):
+        script = ScriptGenerator.generate_script(
+            gpu_rank=self.gpu.gpu_rank,
+            task_name=task_name,
+            world_size=world_size,
+            inst_rank=inst_rank,
+            master_addr=master_addr,
+            master_port=master_port,
+        )

@@ -4,7 +4,6 @@ from typing import Optional
 import requests
 
 from cedtrainscheduler.runtime.types.task import TaskInst
-from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 
 
 class BaseClient:
@@ -61,7 +60,14 @@ class MasterWorkerClient(BaseClient):
         return self._make_request("/api/task/inst/submit", data)
 
     async def start_task_inst(
-        self, task_inst: TaskInst, gpu_id: str, task_record: dict[str, TaskWrapRuntimeInfo]
+        self,
+        task_inst: TaskInst,
+        gpu_id: str,
+        task_name: str,
+        world_size: int,
+        inst_rank: int,
+        master_addr: str,
+        master_port: str,
     ) -> Optional[dict]:
         """
         启动任务实例
@@ -69,10 +75,20 @@ class MasterWorkerClient(BaseClient):
         Args:
             task_inst: 任务实例
             gpu_id: GPU ID
-            task_record: 任务记录
+            task_name: 任务名称
+            world_size: 世界大小
+            inst_rank: 任务实例排名
 
         Returns:
             Optional[dict]: 任务启动结果，失败时返回None
         """
-        data = {"task_inst": task_inst.__dict__, "gpu_id": gpu_id, "task_record": task_record.__dict__}
+        data = {
+            "task_inst": task_inst.__dict__,
+            "gpu_id": gpu_id,
+            "task_name": task_name,
+            "world_size": world_size,
+            "inst_rank": inst_rank,
+            "master_addr": master_addr,
+            "master_port": master_port,
+        }
         return self._make_request("/api/task/inst/start", data)

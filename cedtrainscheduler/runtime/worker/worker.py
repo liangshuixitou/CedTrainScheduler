@@ -8,7 +8,6 @@ from cedtrainscheduler.runtime.types.args import WorkerArgs
 from cedtrainscheduler.runtime.types.cluster import GPU
 from cedtrainscheduler.runtime.types.cluster import Node
 from cedtrainscheduler.runtime.types.task import TaskInst
-from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.runtime.utils.gpu_util import GPUUtil
 from cedtrainscheduler.runtime.worker.api_server import WorkerAPIServer
 from cedtrainscheduler.runtime.worker.executor import Executor
@@ -88,11 +87,10 @@ class Worker:
         await executor.append_task(task_inst)
 
     async def handle_task_inst_start(
-        self, task_inst: TaskInst, gpu_id: str, task_record: dict[str, TaskWrapRuntimeInfo]
+        self, task_inst: TaskInst, gpu_id: str, task_name: str, world_size: int, inst_rank: int
     ):
-        task = task_record[task_inst.task_id] 
         executor = self.executors[gpu_id]
-        await executor.start_task(task)
+        await executor.start_task(task_name=task_name, task_inst=task_inst, world_size=world_size, inst_rank=inst_rank)
 
 
 async def main():

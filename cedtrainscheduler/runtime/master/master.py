@@ -148,7 +148,15 @@ class Master(BaseComponent):
                 inst_status=TaskInstStatus.Pending,
             )
 
-            await worker_client.start_task_inst(inst_data, gpu_id, self.task_record)
+            await worker_client.start_task_inst(
+                task_inst=inst_data,
+                gpu_id=gpu_id,
+                task_name=task.task_meta.task_name,
+                world_size=len(schedule_infos),
+                inst_rank=inst_id,
+                master_addr=self.ip,  # TODO: 需要修改为master的地址
+                master_port=self.port,  # TODO: 需要修改为master的端口
+            )
             self.logger.info(f"Task {task.task_meta.task_id}, instance {inst_id} sent to worker {worker_ip}")
 
     def _find_worker_with_gpu(self, gpu_id: str) -> str:

@@ -41,11 +41,14 @@ class WorkerAPIServer:
             """处理来自Master的任务启动"""
             task_inst = request.task_inst.to_task_inst()
             gpu_id = request.gpu_id
-            task_record = {
-                task_wrap_runtime_info.task_id: task_wrap_runtime_info.to_task_wrap_runtime_info()
-                for task_wrap_runtime_info in request.task_record.values()
-            }
-            return await self.worker.handle_task_inst_start(task_inst, gpu_id, task_record)
+            task_name = request.task_name
+            world_size = request.world_size
+            inst_rank = request.inst_rank
+            master_addr = request.master_addr
+            master_port = request.master_port
+            return await self.worker.handle_task_inst_start(
+                task_inst, gpu_id, task_name, world_size, inst_rank, master_addr, master_port
+            )
 
     async def start(self, host="0.0.0.0", port=5001):
         """启动API服务器"""
