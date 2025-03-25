@@ -3,6 +3,7 @@ import logging
 
 from cedtrainscheduler.runtime.types.cluster import GPU
 from cedtrainscheduler.runtime.types.task import TaskInst
+from cedtrainscheduler.runtime.utils.python_util import get_python_executable_path
 from cedtrainscheduler.runtime.workload.script import ScriptGenerator
 
 
@@ -13,7 +14,6 @@ class Executor:
         self.task_queue_lock = asyncio.Lock()
 
         self.logger = logging.getLogger(__name__)
-
 
     async def append_task(self, task: TaskInst):
         async with self.task_queue_lock:
@@ -39,4 +39,8 @@ class Executor:
             inst_rank=inst_rank,
             master_addr=master_addr,
             master_port=master_port,
+            python_path=get_python_executable_path(),
         )
+
+        self.logger.info(f"Start task {task_name} with script: {script}")
+
