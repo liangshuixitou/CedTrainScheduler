@@ -8,6 +8,7 @@ from cedtrainscheduler.runtime.types.cluster import GPUType
 @dataclass
 class MasterArgs:
     master_info: ComponentInfo
+    manager_info: ComponentInfo
     cluster_name: str
     cluster_type: ClusterType
 
@@ -17,3 +18,9 @@ class WorkerArgs:
     worker_info: ComponentInfo
     master_info: ComponentInfo
     gpu_type: GPUType
+
+
+@dataclass
+class ManagerArgs:
+    manager_info: ComponentInfo
+    scheduler_name: str

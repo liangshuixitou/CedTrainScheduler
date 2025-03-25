@@ -1,0 +1,66 @@
+import logging
+from typing import Optional
+
+import uvicorn
+from fastapi import FastAPI
+from uvicorn.config import Config
+
+from cedtrainscheduler.runtime.manager.manager import Manager
+from cedtrainscheduler.runtime.manager.types import MasterRegisterModel
+from cedtrainscheduler.runtime.master.types import TaskSubmitModel
+
+
+class ManagerAPIServer:
+    """FastAPI server for Manager component - 轻量化实现"""
+
+    def __init__(self, manager: Manager):
+        """
+        初始化Manager API服务器
+
+        Args:
+            manager: Manager实例，用于处理请求
+        """
+        self.manager = manager
+        self.app = FastAPI(title="Manager API", version="1.0.0")
+        self.logger = logging.getLogger(__name__)
+        self.server: Optional[uvicorn.Server] = None
+        self.setup_routes()
+
+    def setup_routes(self):
+        """配置API端点"""
+
+        @self.app.post("/api/task/submit")
+        async def handle_task_submit(request: TaskSubmitModel):
+            """处理来自Worker的任务提交"""
+            # 使用 Pydantic 模型的转换方法生成自定义类对象
+            task_info = request.task.to_task_wrap_runtime_info()
+            return await self.manager.handle_task_submit(task_info)
+
+        @self.app.post("/api/master/register")
+        async def handle_master_register(request: MasterRegisterModel):
+            """处理Master注册"""
+            # 使用 Pydantic 模型的转换方法生成自定义类对象
+            cluster = request.cluster.to_cluster()
+            task_infos = {task_id: task.to_task_wrap_runtime_info() for task_id, task in request.task_infos.items()}
+            master_info = request.master_info.to_component_info()
+            return await self.manager.handle_master_register(cluster, task_infos, master_info)
+
+    async def start(self, host="0.0.0.0", port=5000):
+        """启动API服务器"""
+        config = Config(app=self.app, host=host, port=port, log_level="info")
+        self.server = uvicorn.Server(config)
+
+        # 使用异步任务替代线程
+        import asyncio
+
+        self.server_task = asyncio.create_task(self.server.serve())
+
+        self.logger.info(f"Manager API server started on {host}:{port}")
+
+    async def stop(self):
+        """停止API服务器"""
+        if self.server:
+            self.server.should_exit = True
+            if hasattr(self, "server_task"):
+                await self.server_task
+            self.logger.info("Manager API server stopping")

@@ -2,9 +2,6 @@ from enum import auto
 from enum import Enum
 
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
-from cedtrainscheduler.simulator.fs import FileSystem
-from cedtrainscheduler.simulator.manager import ClusterManager
-from cedtrainscheduler.simulator.record import Record
 
 
 class SchedulerType(Enum):
@@ -19,9 +16,6 @@ class SchedulerFactory:
     @staticmethod
     def create_scheduler(
         scheduler_name: str,
-        cluster_manager: ClusterManager,
-        task_record: Record,
-        file_system: FileSystem,
     ) -> SchedulerBase:
         # 延迟导入以避免循环依赖
         from cedtrainscheduler.scheduler.ced_scheduler import CedScheduler
@@ -44,4 +38,4 @@ class SchedulerFactory:
             print(scheduler_name)
             raise ValueError(f"Unknown scheduler type: {scheduler_name}")
 
-        return scheduler_map[scheduler_name.lower()](cluster_manager, task_record, file_system)
+        return scheduler_map[scheduler_name.lower()]()

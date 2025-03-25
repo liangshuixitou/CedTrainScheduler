@@ -7,11 +7,9 @@ from cedtrainscheduler.scheduler.policy.queue_policy import QueuePolicy
 from cedtrainscheduler.scheduler.types.cluster import CLUSTER_TYPE_GPU_MAP
 from cedtrainscheduler.scheduler.types.cluster import GPU_PERFORMANCE_MAP
 from cedtrainscheduler.scheduler.types.cluster import GPUType
+from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 from cedtrainscheduler.scheduler.types.task import ScheduleInfo
 from cedtrainscheduler.scheduler.types.task import TaskMeta
-from cedtrainscheduler.simulator.fs import FileSystem
-from cedtrainscheduler.simulator.manager import ClusterManager
-from cedtrainscheduler.simulator.record import Record
 
 # global variable
 
@@ -21,15 +19,9 @@ cluster_data_arrival_time_dict: dict[str, dict[str, float]] = {}
 
 
 class CedQueuePolicy(QueuePolicy):
-    def __init__(
-        self, cluster_manager: ClusterManager, task_record: Record, file_system: FileSystem, task_queue: list[TaskMeta]
-    ):
-        super().__init__(cluster_manager, task_record, file_system, task_queue)
-        self.weight_resource = 0.90
-        self.weight_max_affinity = 0.10
+    def pop_one_task(self, scheduler_context: SchedulerContext) -> TaskMeta:
+        self.set_scheduler_context(scheduler_context)
 
-    def pop_one_task(self, current_time: float) -> TaskMeta:
-        self.current_time = current_time
         comprehensive_affinity_dict.clear()
         task_priority_dict: dict[str, float] = {}
         cluster_queue_time_dict = self.get_all_queue_time()
@@ -174,10 +166,9 @@ class CedQueuePolicy(QueuePolicy):
 
 
 class CedCentralPolicy(CentralPolicy):
-    def __init__(self, cluster_manager: ClusterManager, task_record: Record, file_system: FileSystem):
-        super().__init__(cluster_manager, task_record, file_system)
+    def schedule(self, scheduler_context: SchedulerContext, task: TaskMeta) -> str:
+        self.set_scheduler_context(scheduler_context)
 
-    def schedule(self, current_time: float, task: TaskMeta) -> str:
         # 获取任务对各集群的亲和度
         affinities = comprehensive_affinity_dict[task.task_id]
 
@@ -191,9 +182,6 @@ class CedCentralPolicy(CentralPolicy):
 
 
 class CedClusterPolicy(ClusterPolicy):
-    def __init__(self, cluster_manager: ClusterManager, task_record: Record, file_system: FileSystem):
-        super().__init__(cluster_manager, task_record, file_system)
-
     def _is_large_task(self, task: TaskMeta) -> bool:
         return task.task_inst_num >= 4
 
@@ -213,7 +201,11 @@ class CedClusterPolicy(ClusterPolicy):
         # 综合评分（权重可调）
         return exec_time * 0.7 + load_balance * 0.2
 
-    def schedule(self, current_time: float, task: TaskMeta, cluster_id: str) -> ScheduleInfo:
+    def schedule(self, scheduler_context: SchedulerContext, task: TaskMeta, cluster_id: str) -> ScheduleInfo:
+        self.set_scheduler_context(scheduler_context)
+
+        current_time = scheduler_context.current_time
+
         is_large_task = self._is_large_task(task)
         best_group = None
         min_score = float("inf")

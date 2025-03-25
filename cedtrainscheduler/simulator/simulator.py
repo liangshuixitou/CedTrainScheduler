@@ -4,6 +4,7 @@ from cedtrainscheduler.scheduler.factory import SchedulerFactory
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
 from cedtrainscheduler.scheduler.types.cluster import ClusterType
 from cedtrainscheduler.scheduler.types.cluster import GPUType
+from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 from cedtrainscheduler.scheduler.types.task import TaskInst
 from cedtrainscheduler.scheduler.types.task import TaskInstStatus
 from cedtrainscheduler.scheduler.types.task import TaskMeta
@@ -28,11 +29,9 @@ class Simulator:
         self.file_system = FileSystem(config.fs_config_path, self.cluster_manager)
         self.task_record = Record()
         self.event_loop_manager = EventLoopManager()
+
         self.scheduler: SchedulerBase = SchedulerFactory.create_scheduler(
             config.scheduler_name,
-            self.cluster_manager,
-            self.task_record,
-            self.file_system,
         )
         self.current_time = 0
         self.load_task_config(config.task_config_path)
@@ -153,7 +152,12 @@ class Simulator:
 
                 # 在每次事件处理后立即尝试调度
                 task, is_finished = self.scheduler.schedule(
-                    self.current_time,
+                    SchedulerContext(
+                        current_time=self.current_time,
+                        cluster_manager=self.cluster_manager,
+                        task_record=self.task_record,
+                        file_system=self.file_system,
+                    ),
                 )
                 if task:
                     self.event_loop_manager.add_event(EventTaskSubmit(self.current_time, task))

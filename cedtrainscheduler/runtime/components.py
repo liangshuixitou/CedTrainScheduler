@@ -7,8 +7,8 @@ from enum import Enum
 
 
 class ComponentType(str, Enum):
+    MANAGER = "manager"
     MASTER = "master"
-    SCHEDULER = "scheduler"
     WORKER = "worker"
 
 

@@ -54,7 +54,7 @@ class Worker:
 
     async def start(self):
         """启动Master服务"""
-        await self.api_server.start(host=self.worker_info.component_ip, port=self.worker_info.component_port)
+        await self.api_server.start(port=self.worker_info.component_port)
         await self._start_heartbeat_daemon()
 
     async def stop(self):
@@ -94,11 +94,38 @@ class Worker:
 
 
 async def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Start the Worker service')
+    parser.add_argument('--worker-id', default="worker", help='Worker component ID')
+    parser.add_argument('--worker-ip', default="127.0.0.1", help='Worker IP address')
+    parser.add_argument('--worker-port', type=int, default=5001, help='Worker port')
+    parser.add_argument('--master-id', default="master", help='Master component ID')
+    parser.add_argument('--master-ip', default="127.0.0.1", help='Master IP address')
+    parser.add_argument('--master-port', type=int, default=5000, help='Master port')
+    parser.add_argument('--cluster-id', default="cluster", help='Cluster ID')
+    parser.add_argument('--gpu-type', default="NVIDIA", help='GPU type')
+
+    args = parser.parse_args()
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    )
+
     worker = Worker(
         WorkerArgs(
-            worker_info=ComponentInfo(component_id="worker1", component_ip="127.0.0.1", component_port=5001),
-            master_info=ComponentInfo(component_id="master1", component_ip="127.0.0.1", component_port=5000),
-            cluster_id="cluster1",
+            worker_info=ComponentInfo(
+                component_id=args.worker_id,
+                component_ip=args.worker_ip,
+                component_port=args.worker_port
+            ),
+            master_info=ComponentInfo(
+                component_id=args.master_id,
+                component_ip=args.master_ip,
+                component_port=args.master_port
+            ),
+            gpu_type=args.gpu_type,
         )
     )
     await worker.start()
