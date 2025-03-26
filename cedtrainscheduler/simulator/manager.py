@@ -7,37 +7,43 @@ from cedtrainscheduler.simulator.executor import GPUExecutor
 
 
 class ClusterManager:
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: str = None):
         self.clusters: dict[str, Cluster] = {}
-        self.init_cluster(config_path)
+        self.node_cluster_map: dict[str, Cluster] = {}
+        self.gpu_node_map: dict[str, Node] = {}
+        self.gpu_task_queue: dict[str, GPUExecutor] = {}
 
-        self.node_cluster_map: dict[str, Cluster] = self.init_node_cluster_map()
-        self.gpu_node_map: dict[str, Node] = self.init_gpu_node_map()
+        if config_path:
+            self.init_cluster(config_path)
+            self.init_node_cluster_map()
+            self.init_gpu_node_map()
+            self.init_gpu_task_queues()
 
-        self.gpu_task_queue: dict[str, GPUExecutor] = self.init_gpu_task_queues()
+    @classmethod
+    def from_clusters(cls, clusters: dict[str, Cluster]) -> "ClusterManager":
+        cluster_manager = cls()
+        cluster_manager.clusters = clusters
+        cluster_manager.init_node_cluster_map()
+        cluster_manager.init_gpu_node_map()
+        cluster_manager.init_gpu_task_queues()
+        return cluster_manager
 
     def init_gpu_task_queues(self):
-        gpu_queues = {}
         for cluster in self.clusters.values():
             for node in cluster.nodes:
                 for gpu in node.gpus:
-                    gpu_queues[gpu.gpu_id] = GPUExecutor(gpu.gpu_id, gpu.gpu_type)
-        return gpu_queues
+                    self.gpu_task_queue[gpu.gpu_id] = GPUExecutor(gpu.gpu_id, gpu.gpu_type)
 
     def init_node_cluster_map(self):
-        node_cluster_map = {}
         for cluster in self.clusters.values():
             for node in cluster.nodes:
-                node_cluster_map[node.node_id] = cluster
-        return node_cluster_map
+                self.node_cluster_map[node.node_id] = cluster
 
     def init_gpu_node_map(self):
-        gpu_node_map = {}
         for cluster in self.clusters.values():
             for node in cluster.nodes:
                 for gpu in node.gpus:
-                    gpu_node_map[gpu.gpu_id] = node
-        return gpu_node_map
+                    self.gpu_node_map[gpu.gpu_id] = node
 
     def init_cluster(self, config_path: str):
         # 读取 JSON 配置文件

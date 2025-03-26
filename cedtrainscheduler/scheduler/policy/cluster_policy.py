@@ -2,17 +2,17 @@ from cedtrainscheduler.scheduler.types.cluster import Cluster
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 from cedtrainscheduler.scheduler.types.task import ScheduleInfo
 from cedtrainscheduler.scheduler.types.task import TaskMeta
+from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.simulator.executor import GPUExecutor
 from cedtrainscheduler.simulator.fs import FileSystem
 from cedtrainscheduler.simulator.fs import TaskDataInfo
 from cedtrainscheduler.simulator.manager import ClusterManager
-from cedtrainscheduler.simulator.record import Record
 
 
 class ClusterPolicy:
     def __init__(self):
         self.cluster_manager: ClusterManager = None
-        self.task_record: Record = None
+        self.task_record: dict[str, TaskWrapRuntimeInfo] = {}
         self.file_system: FileSystem = None
         self.task_queue: list[TaskMeta] = []
 

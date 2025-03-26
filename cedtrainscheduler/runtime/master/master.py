@@ -1,12 +1,14 @@
 import asyncio
 import logging
+import time
 from asyncio import Lock
 
-from cedtrainscheduler.runtime.components import BaseComponent
+from cedtrainscheduler.runtime.components import BaseServer
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.components import ComponentType
 from cedtrainscheduler.runtime.manager.api_client import MasterManagerClient
 from cedtrainscheduler.runtime.master.api_server import MasterAPIServer
+from cedtrainscheduler.runtime.master.service import MasterService
 from cedtrainscheduler.runtime.types.args import MasterArgs
 from cedtrainscheduler.runtime.types.cluster import Cluster
 from cedtrainscheduler.runtime.types.cluster import Node
@@ -19,21 +21,19 @@ from cedtrainscheduler.runtime.worker.api_client import MasterWorkerClient
 MASTER_HEARTBEAT_INTERVAL = 5
 
 
-class Master(BaseComponent):
+class Master(BaseServer, MasterService):
     """
     Master组件，负责调度和管理任务
     """
 
     def __init__(self, master_args: MasterArgs):
-        super().__init__(master_args.master_info.component_id)
+        super().__init__(master_args.master_info)
         self.master_args = master_args
         self.master_info = self.master_args.master_info
         self.ip = self.master_info.component_ip
         self.port = self.master_info.component_port
 
-        self.manager_client = MasterManagerClient(
-            self.master_info.component_ip, self.master_info.component_port
-        )
+        self.manager_client = MasterManagerClient(self.master_info.component_ip, self.master_info.component_port)
 
         self.cluster = Cluster(
             cluster_id=self.master_info.component_id,
@@ -49,13 +49,14 @@ class Master(BaseComponent):
 
         self.logger = logging.getLogger(__name__)
 
-    async def start(self):
-        """启动Master服务"""
-        await self.api_server.start(port=self.port)
+    async def _serve(self):
+        await self.api_server.start(host=self.master_info.component_ip, port=self.master_info.component_port)
+        await self._start_heartbeat_daemon()
 
     async def stop(self):
         """停止Master服务"""
         await self.api_server.stop()
+        await super().stop()
 
     async def _start_heartbeat_daemon(self):
         async def heartbeat_loop():
@@ -77,7 +78,7 @@ class Master(BaseComponent):
             return {"status": "error", "message": "Missing task_id"}
 
         await self.task_manager.add_task(task_info)
-
+        await self.task_manager.update_task_time(task_id, time.time())
         schedule_infos = task_info.schedule_infos
         for inst_id, schedule_info in schedule_infos.items():
             gpu_id = schedule_info.gpu_id
@@ -139,12 +140,12 @@ class Master(BaseComponent):
                     is_task_running = await self.task_manager.check_task_running(task_inst.task_id)
                     if is_task_running:
                         await self.task_manager.update_task_status(task_inst.task_id, TaskStatus.Running)
-
+                        await self.task_manager.update_task_time(task_inst.task_id, time.time())
                 elif task_inst.inst_status == TaskInstStatus.Finished:
                     is_task_finished = await self.task_manager.check_task_finished(task_inst.task_id)
                     if is_task_finished:
                         await self.task_manager.update_task_status(task_inst.task_id, TaskStatus.Finished)
-
+                        await self.task_manager.update_task_time(task_inst.task_id, time.time())
             return {"status": "success", "message": "Worker registered"}
 
     async def _start_task(self, task: TaskWrapRuntimeInfo):
@@ -248,6 +249,16 @@ class TaskManager:
     async def update_task_status(self, task_id: str, task_status: TaskStatus):
         with self.task_lock:
             self.task_record[task_id].task_meta.task_status = task_status
+
+    async def update_task_time(self, task_id: str, task_time: float):
+        with self.task_lock:
+            task = self.task_record[task_id]
+            if task.task_meta.task_status == TaskStatus.Finished:
+                task.task_meta.task_end_time = task_time
+            elif task.task_meta.task_status == TaskStatus.Running:
+                task.task_meta.task_start_time = task_time
+            elif task.task_meta.task_status == TaskStatus.Pending:
+                task.task_meta.task_submit_time = task_time
 
     async def update_task_inst(self, task_inst: TaskInst):
         with self.task_lock:

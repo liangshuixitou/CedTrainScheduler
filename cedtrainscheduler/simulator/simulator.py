@@ -104,7 +104,6 @@ class Simulator:
                                 self.cluster_manager.gpu_node_map[task.schedule_infos[inst_id].gpu_id].node_id
                             ].cluster_id,
                             self.cluster_manager,
-                            self.scheduler.scheduler_name,
                         ),
                         task,
                         inst_id,

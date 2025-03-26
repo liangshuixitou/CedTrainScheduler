@@ -5,6 +5,7 @@ import requests
 
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.types.cluster import Cluster
+from cedtrainscheduler.runtime.types.task import TaskMeta
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 
 
@@ -72,7 +73,7 @@ class MasterManagerClient(BaseClient):
 class TaskManagerClient(BaseClient):
     """Task客户端，用于提交任务"""
 
-    async def submit_task(self, task: TaskWrapRuntimeInfo) -> Optional[dict]:
+    async def submit_task(self, task_meta: TaskMeta) -> Optional[dict]:
         """
         向Manager提交任务
 
@@ -82,7 +83,7 @@ class TaskManagerClient(BaseClient):
         Returns:
             Optional[dict]: 任务提交结果，失败时返回None
         """
-        data = {"task": task.__dict__}
+        data = {"task_meta": task_meta.__dict__}
 
-        self.logger.info(f"提交任务 {task.task.task_id} 到Master")
+        self.logger.info(f"提交任务 {task_meta.task_id} 到Master")
         return self._make_request("/api/task/submit", data)

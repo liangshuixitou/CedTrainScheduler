@@ -1,0 +1,25 @@
+{
+  "tasks": [
+    {
+      "model_name": "ResNet50",
+      "task_type": "Image Classification",
+      "batch_sizes": [
+        16,
+        32,
+        64
+      ],
+      "dataset": {
+        "size_mb": 5000,
+        "storage_nodes": [
+          "worker1"
+        ]
+      },
+      "model": {
+        "size_mb": 98,
+        "storage_nodes": [
+          "worker1"
+        ]
+      }
+    }
+  ]
+}

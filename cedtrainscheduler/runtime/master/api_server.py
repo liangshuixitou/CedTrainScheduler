@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 from uvicorn.config import Config
 
-from cedtrainscheduler.runtime.master.master import Master
+from cedtrainscheduler.runtime.master.service import MasterService
 from cedtrainscheduler.runtime.master.types import TaskSubmitModel
 from cedtrainscheduler.runtime.master.types import WorkerRegisterModel
 
@@ -13,14 +13,14 @@ from cedtrainscheduler.runtime.master.types import WorkerRegisterModel
 class MasterAPIServer:
     """FastAPI server for Master component - 轻量化实现"""
 
-    def __init__(self, master: Master):
+    def __init__(self, master_service: MasterService):
         """
         初始化Master API服务器
 
         Args:
-            master: Master实例，用于处理请求
+            master_service: MasterService实例，用于处理请求
         """
-        self.master = master
+        self.master_service = master_service
         self.app = FastAPI(title="Master API", version="1.0.0")
         self.logger = logging.getLogger(__name__)
         self.server: Optional[uvicorn.Server] = None
@@ -34,7 +34,7 @@ class MasterAPIServer:
             """处理来自Worker的任务提交"""
             # 使用 Pydantic 模型的转换方法生成自定义类对象
             task_info = request.task.to_task_wrap_runtime_info()
-            return await self.master.handle_task_submit(task_info)
+            return await self.master_service.handle_task_submit(task_info)
 
         @self.app.post("/api/worker/register")
         async def handle_worker_register(request: WorkerRegisterModel):
@@ -42,7 +42,7 @@ class MasterAPIServer:
             # 使用 Pydantic 模型的转换方法生成自定义类对象
             node = request.node.to_node()
             tasks = [task.to_task_inst() for task in request.tasks]
-            return await self.master.handle_worker_register(node, tasks)
+            return await self.master_service.handle_worker_register(node, tasks)
 
     async def start(self, host="0.0.0.0", port=5000):
         """启动API服务器"""

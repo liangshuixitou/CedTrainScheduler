@@ -95,14 +95,12 @@ class FileSystem:
         for task_name in self.get_all_models():
             task_data_info = self.get_task_data_info(task_name)
             for cluster_id in cluster_manager.clusters.keys():
-                data_arrival_time_list.append(
-                    self.get_data_arrival_time(task_data_info, cluster_id, cluster_manager, "")
-                )
+                data_arrival_time_list.append(self.get_data_arrival_time(task_data_info, cluster_id, cluster_manager))
 
         return sum(data_arrival_time_list) / len(data_arrival_time_list)
 
     def get_data_arrival_time(
-        self, task_data_info: TaskDataInfo, target_cluster_id: str, cluster_manager: ClusterManager, scheduler_name: str
+        self, task_data_info: TaskDataInfo, target_cluster_id: str, cluster_manager: ClusterManager
     ) -> float:
         # 获取模型和数据集的存储节点
         model_nodes = task_data_info.model.storage_nodes

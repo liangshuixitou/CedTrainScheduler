@@ -2,6 +2,7 @@ import asyncio
 import logging
 from asyncio import Lock
 
+from cedtrainscheduler.runtime.components import BaseServer
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.components import ComponentType
 from cedtrainscheduler.runtime.master.api_client import WorkerMasterClient
@@ -12,12 +13,14 @@ from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.utils.gpu_util import GPUUtil
 from cedtrainscheduler.runtime.worker.api_server import WorkerAPIServer
 from cedtrainscheduler.runtime.worker.executor import Executor
+from cedtrainscheduler.runtime.worker.service import WorkerService
 
 WORKER_HEARTBEAT_INTERVAL = 5
 
 
-class Worker:
+class Worker(BaseServer, WorkerService):
     def __init__(self, worker_args: WorkerArgs):
+        super().__init__(worker_args.worker_info)
         self.worker_info = worker_args.worker_info
         self.master_info = worker_args.master_info
 
@@ -53,14 +56,14 @@ class Worker:
         for gpu_id, gpu in self.node.gpus.items():
             self.executors[gpu_id] = Executor(gpu)
 
-    async def start(self):
-        """启动Master服务"""
+    async def _serve(self):
         await self.api_server.start(port=self.worker_info.component_port)
         await self._start_heartbeat_daemon()
 
     async def stop(self):
-        """停止Master服务"""
+        """停止Worker服务"""
         await self.api_server.stop()
+        await super().stop()
 
     async def _start_heartbeat_daemon(self):
         async def heartbeat_loop():

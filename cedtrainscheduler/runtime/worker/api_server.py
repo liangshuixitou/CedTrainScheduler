@@ -5,22 +5,22 @@ import uvicorn
 from fastapi import FastAPI
 from uvicorn.config import Config
 
+from cedtrainscheduler.runtime.worker.service import WorkerService
 from cedtrainscheduler.runtime.worker.types import TaskInstStartModel
 from cedtrainscheduler.runtime.worker.types import TaskInstSubmitModel
-from cedtrainscheduler.runtime.worker.worker import Worker
 
 
 class WorkerAPIServer:
     """FastAPI server for Worker component - 轻量化实现"""
 
-    def __init__(self, worker: Worker):
+    def __init__(self, worker_service: WorkerService):
         """
         初始化Worker API服务器
 
         Args:
             worker: Worker实例，用于处理请求
         """
-        self.worker = worker
+        self.worker_service = worker_service
         self.app = FastAPI(title="Worker API", version="1.0.0")
         self.logger = logging.getLogger(__name__)
         self.server: Optional[uvicorn.Server] = None
@@ -34,7 +34,7 @@ class WorkerAPIServer:
             """处理来自Master的任务提交"""
             task_inst = request.task_inst.to_task_inst()
             gpu_id = request.gpu_id
-            return await self.worker.handle_task_inst_submit(task_inst, gpu_id)
+            return await self.worker_service.handle_task_inst_submit(task_inst, gpu_id)
 
         @self.app.post("/api/task/inst/start")
         async def handle_task_inst_start(request: TaskInstStartModel):
@@ -46,7 +46,7 @@ class WorkerAPIServer:
             inst_rank = request.inst_rank
             master_addr = request.master_addr
             master_port = request.master_port
-            return await self.worker.handle_task_inst_start(
+            return await self.worker_service.handle_task_inst_start(
                 task_inst, gpu_id, task_name, world_size, inst_rank, master_addr, master_port
             )
 
