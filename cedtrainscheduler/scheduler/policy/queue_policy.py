@@ -11,6 +11,8 @@ from cedtrainscheduler.simulator.record import Record
 
 class QueuePolicy:
     def __init__(self):
+        self.current_time: int = 0
+
         self.cluster_manager: ClusterManager = None
         self.task_record: Record = None
         self.file_system: FileSystem = None
@@ -21,16 +23,18 @@ class QueuePolicy:
         self.clusters: dict[str, Cluster] = {}
 
     def set_scheduler_context(self, scheduler_context: SchedulerContext):
+        self.current_time = scheduler_context.current_time
         self.cluster_manager = scheduler_context.cluster_manager
         self.file_system = scheduler_context.file_system
-        self.task_record = scheduler_context.task_record.task_record
+        self.task_record = scheduler_context.task_record
         self.task_queue = scheduler_context.task_queue
 
         self.task_data_info = self.file_system.task_data_info
         self.gpu_task_queue = self.cluster_manager.gpu_task_queue
         self.clusters = self.cluster_manager.clusters
 
-    def add_task(self, task_list: list[TaskMeta]):
+    def add_task(self, scheduler_context: SchedulerContext, task_list: list[TaskMeta]):
+        self.set_scheduler_context(scheduler_context)
         self.task_queue.extend(task_list)
 
     def _sort_task_queue(self):
@@ -45,8 +49,8 @@ class FCFSQueuePolicy(QueuePolicy):
         super().__init__()
         self.is_sorted = False
 
-    def add_task(self, task_list: list[TaskMeta]):
-        super().add_task(task_list)
+    def add_task(self, scheduler_context: SchedulerContext, task_list: list[TaskMeta]):
+        super().add_task(scheduler_context, task_list)
         self.is_sorted = False
 
     def _sort_task_queue(self):
@@ -65,8 +69,8 @@ class SFJQueuePolicy(QueuePolicy):
         super().__init__()
         self.is_sorted = False
 
-    def add_task(self, task_list: list[TaskMeta]):
-        super().add_task(task_list)
+    def add_task(self, scheduler_context: SchedulerContext, task_list: list[TaskMeta]):
+        super().add_task(scheduler_context, task_list)
         self.is_sorted = False
 
     def _sort_task_queue(self):

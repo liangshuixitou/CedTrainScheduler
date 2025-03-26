@@ -23,7 +23,7 @@ class ClusterPolicy:
     def set_scheduler_context(self, scheduler_context: SchedulerContext):
         self.cluster_manager = scheduler_context.cluster_manager
         self.file_system = scheduler_context.file_system
-        self.task_record = scheduler_context.task_record.task_record
+        self.task_record = scheduler_context.task_record
         self.task_queue = scheduler_context.task_queue
 
         self.task_data_info = self.file_system.task_data_info

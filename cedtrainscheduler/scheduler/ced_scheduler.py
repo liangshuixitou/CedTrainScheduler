@@ -18,8 +18,8 @@ class CedScheduler(SchedulerBase):
         self.central_policy = CedCentralPolicy()
         self.cluster_policy = CedClusterPolicy()
 
-    def submit_task(self, task: TaskMeta):
-        self.queue_policy.add_task([task])
+    def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):
+        self.queue_policy.add_task(scheduler_context, [task])
 
     def schedule(
         self,
@@ -27,7 +27,6 @@ class CedScheduler(SchedulerBase):
     ) -> tuple[TaskWrapRuntimeInfo, bool]:
         if len(self.task_queue) == 0:
             return None, True
-        scheduler_context.task_queue = self.task_queue
 
         task = self.queue_policy.pop_one_task(scheduler_context)
         cluster_id = self.central_policy.schedule(scheduler_context, task)

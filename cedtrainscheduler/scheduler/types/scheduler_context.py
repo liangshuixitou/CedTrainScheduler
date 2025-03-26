@@ -1,7 +1,7 @@
 from cedtrainscheduler.scheduler.types.task import TaskMeta
+from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.simulator.fs import FileSystem
 from cedtrainscheduler.simulator.manager import ClusterManager
-from cedtrainscheduler.simulator.record import Record
 
 
 class SchedulerContext:
@@ -9,7 +9,7 @@ class SchedulerContext:
         self,
         current_time: float,
         cluster_manager: ClusterManager,
-        task_record: Record,
+        task_record: dict[str, TaskWrapRuntimeInfo],
         file_system: FileSystem,
         task_queue: list[TaskMeta],
     ):

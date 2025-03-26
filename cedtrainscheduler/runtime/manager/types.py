@@ -214,7 +214,7 @@ class ComponentInfoModel(BaseModel):
 
 # API 请求模型
 class TaskSubmitModel(BaseModel):
-    task: TaskWrapRuntimeInfoModel
+    task: TaskMetaModel
 
 
 class MasterRegisterModel(BaseModel):

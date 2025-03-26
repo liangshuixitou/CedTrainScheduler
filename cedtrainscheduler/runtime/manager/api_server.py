@@ -7,7 +7,7 @@ from uvicorn.config import Config
 
 from cedtrainscheduler.runtime.manager.manager import Manager
 from cedtrainscheduler.runtime.manager.types import MasterRegisterModel
-from cedtrainscheduler.runtime.master.types import TaskSubmitModel
+from cedtrainscheduler.runtime.manager.types import TaskSubmitModel
 
 
 class ManagerAPIServer:
@@ -33,8 +33,8 @@ class ManagerAPIServer:
         async def handle_task_submit(request: TaskSubmitModel):
             """处理来自Worker的任务提交"""
             # 使用 Pydantic 模型的转换方法生成自定义类对象
-            task_info = request.task.to_task_wrap_runtime_info()
-            return await self.manager.handle_task_submit(task_info)
+            task_meta = request.task.to_task_meta()
+            return await self.manager.handle_task_submit(task_meta)
 
         @self.app.post("/api/master/register")
         async def handle_master_register(request: MasterRegisterModel):

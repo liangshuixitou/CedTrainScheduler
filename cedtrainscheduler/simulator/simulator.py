@@ -63,7 +63,16 @@ class Simulator:
             self.event_loop_manager.add_event(EventTaskParse(task.task_start_time, task))
 
     def handle_task_parse(self, event: EventTaskParse):
-        self.scheduler.submit_task(event.task)
+        self.scheduler.submit_task(
+            SchedulerContext(
+                current_time=self.current_time,
+                cluster_manager=self.cluster_manager,
+                task_record=self.task_record.task_record,
+                file_system=self.file_system,
+                task_queue=self.scheduler.task_queue,
+            ),
+            event.task,
+        )
 
     def handle_task_submit(self, event: EventTaskSubmit):
         self.task_record.log_task_submit(event.task, self.current_time)
@@ -155,8 +164,9 @@ class Simulator:
                     SchedulerContext(
                         current_time=self.current_time,
                         cluster_manager=self.cluster_manager,
-                        task_record=self.task_record,
+                        task_record=self.task_record.task_record,
                         file_system=self.file_system,
+                        task_queue=self.scheduler.task_queue,
                     ),
                 )
                 if task:

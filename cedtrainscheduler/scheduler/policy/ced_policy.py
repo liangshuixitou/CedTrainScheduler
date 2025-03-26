@@ -19,6 +19,11 @@ cluster_data_arrival_time_dict: dict[str, dict[str, float]] = {}
 
 
 class CedQueuePolicy(QueuePolicy):
+    def __init__(self):
+        super().__init__()
+        self.weight_resource = 0.9
+        self.weight_max_affinity = 0.1
+
     def pop_one_task(self, scheduler_context: SchedulerContext) -> TaskMeta:
         self.set_scheduler_context(scheduler_context)
 
@@ -48,7 +53,6 @@ class CedQueuePolicy(QueuePolicy):
             task_priority_dict[task.task_id] = (1 / task.task_runtime[GPUType.T4]) * (
                 self.weight_max_affinity * max_affinity + (1 - self.weight_max_affinity) * second_max_affinity
             )
-            task_priority_dict[task.task_id] = 1 / task.task_runtime[GPUType.T4]
 
         max_task_id = max(task_priority_dict, key=task_priority_dict.get)
         for task in self.task_queue:

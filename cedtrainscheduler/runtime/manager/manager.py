@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import time
 from asyncio import Lock
 
 from cedtrainscheduler.runtime.components import BaseComponent
@@ -8,8 +9,12 @@ from cedtrainscheduler.runtime.manager.api_server import ManagerAPIServer
 from cedtrainscheduler.runtime.master.api_client import ManagerMasterClient
 from cedtrainscheduler.runtime.types.args import ManagerArgs
 from cedtrainscheduler.runtime.types.cluster import Cluster
+from cedtrainscheduler.runtime.types.task import TaskMeta
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
+from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
+
+MANAGER_SCHEDULER_INTERVAL = 1
 
 
 class Manager(BaseComponent):
@@ -25,10 +30,7 @@ class Manager(BaseComponent):
         self.cluster_manager = ClusterManager()
         self.task_manager = TaskManager()
 
-        self.scheduler = SchedulerFactory.create_scheduler(
-            manager_args.scheduler_name,
-            ...,  # TODO: 需要修改为cluster_manager和task_manager
-        )
+        self.scheduler = SchedulerFactory.create_scheduler(manager_args.scheduler_name)
         self.api_server = ManagerAPIServer(self)
 
         self.logger = logging.getLogger(__name__)
@@ -45,19 +47,37 @@ class Manager(BaseComponent):
 
     async def _start_scheduler_daemon(self):
         async def scheduler_loop():
-            pass
+            while True:
+                if self.scheduler.is_ready():
+                    task_wrap_runtime_info, _ = self.scheduler.schedule(
+                        SchedulerContext(
+                            # TODO: 需要补充
+                            current_time=time.time(),
+                        )
+                    )
+                    self.task_manager.add_task_info(task_wrap_runtime_info)
+                    # gpu_id -> cluster_id
+                    cluster_id = self.cluster_manager.get_cluster_by_gpu_id(
+                        task_wrap_runtime_info.schedule_infos[0].gpu_id
+                    )
+                    master_client = self.cluster_manager.get_master_client_by_cluster_id(cluster_id)
+                    await master_client.submit_task(task_wrap_runtime_info)
+                    self.logger.info(
+                        f"Scheduler scheduled task {task_wrap_runtime_info.task_meta.task_id} to cluster {cluster_id}"
+                    )
+                await asyncio.sleep(MANAGER_SCHEDULER_INTERVAL)
 
         self.scheduler_thread = asyncio.create_task(scheduler_loop())
 
-    async def handle_task_submit(self, task_info: TaskWrapRuntimeInfo):
-        self.task_manager.add_task_info(task_info)
+    async def handle_task_submit(self, task_meta: TaskMeta):
+        self.scheduler.submit_task(task_meta)
 
     async def handle_master_register(
         self, cluster: Cluster, task_infos: dict[str, TaskWrapRuntimeInfo], master_info: ComponentInfo
     ):
         self.cluster_manager.register_master(master_info, cluster)
-        for task_id, task_info in task_infos.items():
-            self.cluster_manager.add_task_info(task_id, task_info)
+        for task_info in task_infos.values():
+            self.task_manager.add_task_info(task_info)
 
 
 class ClusterManager:

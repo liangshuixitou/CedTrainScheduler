@@ -26,17 +26,19 @@ class Master(BaseComponent):
 
     def __init__(self, master_args: MasterArgs):
         super().__init__(master_args.master_info.component_id)
-        self.ip = master_args.master_info.component_ip
-        self.port = master_args.master_info.component_port
+        self.master_args = master_args
+        self.master_info = self.master_args.master_info
+        self.ip = self.master_info.component_ip
+        self.port = self.master_info.component_port
 
         self.manager_client = MasterManagerClient(
-            master_args.manager_info.component_ip, master_args.manager_info.component_port
+            self.master_info.component_ip, self.master_info.component_port
         )
 
         self.cluster = Cluster(
-            cluster_id=master_args.master_info.component_id,
-            cluster_name=master_args.cluster_name,
-            cluster_type=master_args.cluster_type,
+            cluster_id=self.master_info.component_id,
+            cluster_name=self.master_args.cluster_name,
+            cluster_type=self.master_args.cluster_type,
             nodes=[],
         )
         self.cluster_lock = Lock()
@@ -65,7 +67,8 @@ class Master(BaseComponent):
         self.heartbeat_thread = asyncio.create_task(heartbeat_loop())
 
     async def _heartbeat(self):
-        self.manager_client.register_master(self.cluster, self.task_manager.get_task_record(), self.master_info)
+        task_record = await self.task_manager.get_task_record()
+        self.manager_client.register_master(self.cluster, task_record, self.master_info)
 
     async def handle_task_submit(self, task_info: TaskWrapRuntimeInfo):
         task_id = task_info.task_meta.task_id
@@ -274,6 +277,9 @@ async def main():
     parser.add_argument("--id", default="master", help="Master component ID")
     parser.add_argument("--ip", default="127.0.0.1", help="Master IP address")
     parser.add_argument("--port", type=int, default=5000, help="Master port")
+    parser.add_argument("--manager-id", default="manager", help="Manager component ID")
+    parser.add_argument("--manager-ip", default="127.0.0.1", help="Manager IP address")
+    parser.add_argument("--manager-port", type=int, default=5001, help="Manager port")
     parser.add_argument("--cluster-name", default="cluster", help="Cluster name")
     parser.add_argument(
         "--cluster-type", default="CLOUD", choices=["CLOUD", "LOCAL"], help="Cluster type (CLOUD or LOCAL)"
@@ -288,6 +294,12 @@ async def main():
                 component_ip=args.ip,
                 component_port=args.port,
                 component_type=ComponentType.MASTER,
+            ),
+            manager_info=ComponentInfo(
+                component_id=args.manager_id,
+                component_ip=args.manager_ip,
+                component_port=args.manager_port,
+                component_type=ComponentType.MANAGER,
             ),
             cluster_name=args.cluster_name,
             cluster_type=args.cluster_type,
