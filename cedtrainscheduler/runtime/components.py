@@ -26,7 +26,8 @@ class BaseServer(ABC):
         self.component_info = component_info
         self._running = False
         self._stop_event = asyncio.Event()
-        self._server = None
+        self._tasks: list[asyncio.Task] = []
+        self._logger = logging.getLogger(__name__)
         self._setup_signal_handlers()
 
     def _setup_signal_handlers(self):
@@ -36,7 +37,7 @@ class BaseServer(ABC):
 
     def _signal_handler(self, signum, frame):
         """处理系统信号"""
-        logging.info(f"收到信号 {signum}，准备停止服务...")
+        self._logger.info(f"Received signal {signum}, preparing to stop...")
         asyncio.create_task(self.stop())
 
     async def start(self):
@@ -47,9 +48,14 @@ class BaseServer(ABC):
         self._running = True
         self._stop_event.clear()
 
-        # 启动必要的后台任务
-        self._server = asyncio.create_task(self._serve())
-        logging.info(f"服务器 {self.component_info.component_id} 已启动")
+        # 启动所有服务
+        await self._start()
+        self._logger.info(f"Server {self.component_info.component_id} started")
+
+    @abstractmethod
+    async def _start(self):
+        """启动所有需要的服务，由子类实现"""
+        pass
 
     async def run(self):
         """运行服务器（阻塞）"""
@@ -67,9 +73,21 @@ class BaseServer(ABC):
         self._running = False
         self._stop_event.set()
 
-        logging.info(f"服务器 {self.component_info.component_id} 已停止")
+        # 取消所有运行中的任务
+        for task in self._tasks:
+            if not task.done():
+                task.cancel()
+                try:
+                    await task
+                except asyncio.CancelledError:
+                    pass
+
+        self._tasks.clear()
+        await self._stop()
+
+        self._logger.info(f"Server {self.component_info.component_id} stopped")
 
     @abstractmethod
-    async def _serve(self):
-        """运行后台任务的具体实现"""
+    async def _stop(self):
+        """停止所有服务，由子类实现"""
         pass

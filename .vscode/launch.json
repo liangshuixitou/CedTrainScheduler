@@ -15,7 +15,7 @@
       "name": "Manager",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/cedtrainscheduler/runtime/manager/manager.py",
+      "program": "${workspaceFolder}/cedtrainscheduler/runtime/manager/app.py",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
@@ -29,7 +29,7 @@
       "name": "Master",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/cedtrainscheduler/runtime/master/master.py",
+      "program": "${workspaceFolder}/cedtrainscheduler/runtime/master/app.py",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
@@ -47,7 +47,7 @@
       "name": "Worker",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/cedtrainscheduler/runtime/worker/worker.py",
+      "program": "${workspaceFolder}/cedtrainscheduler/runtime/worker/app.py",
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [

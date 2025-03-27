@@ -1,5 +1,4 @@
 import asyncio
-import logging
 import time
 from asyncio import Lock
 
@@ -16,6 +15,7 @@ from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.types.task import TaskInstStatus
 from cedtrainscheduler.runtime.types.task import TaskStatus
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
+from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.runtime.worker.api_client import MasterWorkerClient
 
 MASTER_HEARTBEAT_INTERVAL = 5
@@ -47,25 +47,32 @@ class Master(BaseServer, MasterService):
         self.task_manager = TaskManager()
         self.api_server = MasterAPIServer(self)
 
-        self.logger = logging.getLogger(__name__)
+        self._logger = setup_logger(__name__)
 
-    async def _serve(self):
-        await self.api_server.start(host=self.master_info.component_ip, port=self.master_info.component_port)
-        await self._start_heartbeat_daemon()
+    async def _start(self):
+        api_server_task = await self.api_server.start(
+            host=self.master_info.component_ip, port=self.master_info.component_port
+        )
+        self._tasks.append(api_server_task)
 
-    async def stop(self):
+        heartbeat_task = asyncio.create_task(self._start_heartbeat_daemon())
+        self._tasks.append(heartbeat_task)
+
+    async def _stop(self):
         """停止Master服务"""
         await self.api_server.stop()
-        await super().stop()
 
-    async def _start_heartbeat_daemon(self):
-        async def heartbeat_loop():
-            while True:
+    async def _heartbeat_daemon(self):
+        try:
+            while self._running:
                 self._heartbeat()
-                self.logger.info(f"Master heartbeat: {self.cluster}")
+                self._logger.info(f"Master heartbeat: {self.cluster}")
                 await asyncio.sleep(MASTER_HEARTBEAT_INTERVAL)
-
-        self.heartbeat_thread = asyncio.create_task(heartbeat_loop())
+        except asyncio.CancelledError:
+            self._logger.info("Heartbeat daemon cancelled")
+        except Exception as e:
+            self._logger.error(f"Heartbeat daemon error: {e}")
+            raise
 
     async def _heartbeat(self):
         task_record = await self.task_manager.get_task_record()
@@ -73,7 +80,7 @@ class Master(BaseServer, MasterService):
 
     async def handle_task_submit(self, task_info: TaskWrapRuntimeInfo):
         task_id = task_info.task_meta.task_id
-        self.logger.info(f"handle_task_submit: {task_id}")
+        self._logger.info(f"handle_task_submit: {task_id}")
         if not task_id:
             return {"status": "error", "message": "Missing task_id"}
 
@@ -85,13 +92,13 @@ class Master(BaseServer, MasterService):
             # Find the worker that has the specified GPU
             worker_ip = self._find_worker_with_gpu(gpu_id)
             if not worker_ip:
-                self.logger.error(f"No worker found with GPU {gpu_id} for task {task_id}, inst {inst_id}")
+                self._logger.error(f"No worker found with GPU {gpu_id} for task {task_id}, inst {inst_id}")
                 continue
 
             # Send the task instance to the worker
             worker_client = self.worker_manager.get_worker_client_by_ip(worker_ip)
             if not worker_client:
-                self.logger.error(f"Worker client not found for worker {worker_ip}")
+                self._logger.error(f"Worker client not found for worker {worker_ip}")
                 continue
 
             # Prepare instance info for the worker
@@ -102,14 +109,14 @@ class Master(BaseServer, MasterService):
             )
 
             await worker_client.submit_task(inst_data, gpu_id)
-            self.logger.info(f"Task {task_id}, instance {inst_id} sent to worker {worker_ip}")
+            self._logger.info(f"Task {task_id}, instance {inst_id} sent to worker {worker_ip}")
 
         return {"status": "success", "task_id": task_id}
 
     async def handle_worker_register(self, node: Node, task_insts: list[TaskInst]):
         async with self.cluster_lock:
             node_id = node.node_id
-            self.logger.info(f"handle_worker_register: {node_id}")
+            self._logger.info(f"handle_worker_register: {node_id}")
             if not node_id:
                 return {"status": "error", "message": "Missing node_id"}
 
@@ -155,7 +162,7 @@ class Master(BaseServer, MasterService):
             # Find the worker that has the specified GPU
             worker_ip = self._find_worker_with_gpu(gpu_id)
             if not worker_ip:
-                self.logger.error(
+                self._logger.error(
                     f"No worker found with GPU {gpu_id} for task {task.task_meta.task_id}, inst {inst_id}"
                 )
                 continue
@@ -163,7 +170,7 @@ class Master(BaseServer, MasterService):
             # Send the task instance to the worker
             worker_client = self.worker_manager.get_worker_client_by_ip(worker_ip)
             if not worker_client:
-                self.logger.error(f"Worker client not found for worker {worker_ip}")
+                self._logger.error(f"Worker client not found for worker {worker_ip}")
                 continue
 
             # Prepare instance info for the worker
@@ -182,7 +189,7 @@ class Master(BaseServer, MasterService):
                 master_addr=self.ip,  # TODO: 需要修改为master的地址
                 master_port=self.port,  # TODO: 需要修改为master的端口
             )
-            self.logger.info(f"Task {task.task_meta.task_id}, instance {inst_id} sent to worker {worker_ip}")
+            self._logger.info(f"Task {task.task_meta.task_id}, instance {inst_id} sent to worker {worker_ip}")
 
     def _find_worker_with_gpu(self, gpu_id: str) -> str:
         """Find a worker that has the specified GPU"""
@@ -279,51 +286,3 @@ class TaskManager:
                 if inst.inst_status != TaskInstStatus.Running:
                     return False
             return True
-
-
-async def main():
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Start the Master service")
-    parser.add_argument("--id", default="master", help="Master component ID")
-    parser.add_argument("--ip", default="127.0.0.1", help="Master IP address")
-    parser.add_argument("--port", type=int, default=5000, help="Master port")
-    parser.add_argument("--manager-id", default="manager", help="Manager component ID")
-    parser.add_argument("--manager-ip", default="127.0.0.1", help="Manager IP address")
-    parser.add_argument("--manager-port", type=int, default=5001, help="Manager port")
-    parser.add_argument("--cluster-name", default="cluster", help="Cluster name")
-    parser.add_argument(
-        "--cluster-type", default="CLOUD", choices=["CLOUD", "LOCAL"], help="Cluster type (CLOUD or LOCAL)"
-    )
-
-    args = parser.parse_args()
-
-    master = Master(
-        MasterArgs(
-            master_info=ComponentInfo(
-                component_id=args.id,
-                component_ip=args.ip,
-                component_port=args.port,
-                component_type=ComponentType.MASTER,
-            ),
-            manager_info=ComponentInfo(
-                component_id=args.manager_id,
-                component_ip=args.manager_ip,
-                component_port=args.manager_port,
-                component_type=ComponentType.MANAGER,
-            ),
-            cluster_name=args.cluster_name,
-            cluster_type=args.cluster_type,
-        )
-    )
-
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    )
-
-    await master.start()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())

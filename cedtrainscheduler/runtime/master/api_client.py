@@ -1,4 +1,3 @@
-import logging
 from typing import Optional
 
 import requests
@@ -6,6 +5,7 @@ import requests
 from cedtrainscheduler.runtime.types.cluster import Node
 from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
+from cedtrainscheduler.runtime.utils.logger import setup_logger
 
 
 class BaseClient:
@@ -20,7 +20,7 @@ class BaseClient:
             master_port: Master端口
         """
         self.base_url = f"http://{master_host}:{master_port}"
-        self.logger = logging.getLogger(__name__)
+        self.logger = setup_logger(__name__)
 
     async def _make_request(self, endpoint: str, data: dict) -> Optional[dict]:
         """
@@ -39,7 +39,7 @@ class BaseClient:
             response.raise_for_status()  # 如果HTTP请求返回了不成功的状态码，将抛出HTTPError异常
             return response.json()
         except requests.exceptions.RequestException as e:
-            self.logger.error(f"请求失败: {e}")
+            self.logger.error(f"Request to {url} failed: {e}")
             return None
 
 
@@ -59,7 +59,7 @@ class WorkerMasterClient(BaseClient):
         """
         data = {"node": node.__dict__, "tasks": [task.__dict__ for task in tasks]}
 
-        self.logger.info(f"注册工作节点 {node.node_id} 到Master")
+        self.logger.info(f"Register worker {node.node_id} to master")
         return self._make_request("/api/worker/register", data)
 
 
@@ -78,5 +78,5 @@ class ManagerMasterClient(BaseClient):
         """
         data = {"task": task.__dict__}
 
-        self.logger.info(f"提交任务 {task.task.task_id} 到Master")
+        self.logger.info(f"Submit task {task.task_meta.task_id} to master")
         return self._make_request("/api/task/submit", data)

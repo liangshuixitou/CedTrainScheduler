@@ -1,4 +1,4 @@
-import logging
+import asyncio
 from typing import Optional
 
 import uvicorn
@@ -8,6 +8,7 @@ from uvicorn.config import Config
 from cedtrainscheduler.runtime.master.service import MasterService
 from cedtrainscheduler.runtime.master.types import TaskSubmitModel
 from cedtrainscheduler.runtime.master.types import WorkerRegisterModel
+from cedtrainscheduler.runtime.utils.logger import setup_logger
 
 
 class MasterAPIServer:
@@ -22,8 +23,9 @@ class MasterAPIServer:
         """
         self.master_service = master_service
         self.app = FastAPI(title="Master API", version="1.0.0")
-        self.logger = logging.getLogger(__name__)
+        self.logger = setup_logger(__name__)
         self.server: Optional[uvicorn.Server] = None
+        self.server_task: Optional[asyncio.Task] = None
         self.setup_routes()
 
     def setup_routes(self):
@@ -44,22 +46,20 @@ class MasterAPIServer:
             tasks = [task.to_task_inst() for task in request.tasks]
             return await self.master_service.handle_worker_register(node, tasks)
 
-    async def start(self, host="0.0.0.0", port=5000):
+    async def start(self, host="0.0.0.0", port=5001) -> asyncio.Task:
         """启动API服务器"""
         config = Config(app=self.app, host=host, port=port, log_level="info")
         self.server = uvicorn.Server(config)
 
-        # 使用异步任务替代线程
-        import asyncio
-
         self.server_task = asyncio.create_task(self.server.serve())
 
         self.logger.info(f"Master API server started on {host}:{port}")
+        return self.server_task
 
     async def stop(self):
         """停止API服务器"""
         if self.server:
             self.server.should_exit = True
-            if hasattr(self, "server_task"):
+            if self.server_task:
                 await self.server_task
             self.logger.info("Master API server stopping")

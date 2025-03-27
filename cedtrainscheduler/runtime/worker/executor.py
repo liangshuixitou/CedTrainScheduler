@@ -1,9 +1,9 @@
 import asyncio
-import logging
 
 from cedtrainscheduler.runtime.types.cluster import GPU
 from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.types.task import TaskInstStatus
+from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.runtime.utils.python_util import get_python_executable_path
 from cedtrainscheduler.runtime.workload.script import ScriptGenerator
 
@@ -15,7 +15,7 @@ class Executor:
         self.task_queue: list[TaskInst] = []
         self.task_record_lock = asyncio.Lock()
 
-        self.logger = logging.getLogger(__name__)
+        self.logger = setup_logger(__name__)
 
     async def append_task(self, task: TaskInst):
         async with self.task_record_lock:
@@ -51,7 +51,6 @@ class Executor:
             python_path=get_python_executable_path(),
         )
 
-
         with self.task_record_lock:
             current_task_inst = self.task_queue[0]
 
@@ -64,9 +63,7 @@ class Executor:
         try:
             # Start the process asynchronously
             process = await asyncio.create_subprocess_shell(
-                script,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE
+                script, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
             )
 
             # Start a background task to monitor the process completion

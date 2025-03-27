@@ -1,5 +1,4 @@
 import asyncio
-import logging
 import time
 from asyncio import Lock
 
@@ -20,6 +19,7 @@ from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo as SchedulerTaskWrapRuntimeInfo
 from cedtrainscheduler.simulator.fs import FileSystem
 from cedtrainscheduler.simulator.manager import ClusterManager as SchedulerClusterManager
+from cedtrainscheduler.runtime.utils.logger import setup_logger
 
 MANAGER_SCHEDULER_INTERVAL = 1
 
@@ -39,23 +39,25 @@ class Manager(BaseServer, ManagerService):
 
         self.scheduler = SchedulerFactory.create_scheduler(manager_args.scheduler_name)
         self.api_server = ManagerAPIServer(self)
-        self.logger = logging.getLogger(__name__)
-        self._scheduler_task = None
+        self.logger = setup_logger(__name__)
 
-    async def _serve(self):
-        """实现Server基类的抽象方法，运行后台任务"""
-        try:
-            # 启动API服务器
-            await self.api_server.start(host=self.component_info.component_ip, port=self.component_info.component_port)
+    async def _start(self):
+        """实现启动所有服务"""
+        # 启动API服务器并追踪任务
+        api_server_task = await self.api_server.start(
+            host=self.component_info.component_ip, port=self.component_info.component_port
+        )
+        self._tasks.append(api_server_task)
 
-            # 启动调度器守护进程
-            self._scheduler_task = asyncio.create_task(self._scheduler_daemon())
-            await self._scheduler_task
-        except asyncio.CancelledError:
-            self.logger.info("调度器服务被取消")
-        except Exception as e:
-            self.logger.error(f"调度器服务出错: {e}")
-            raise
+        # 启动调度器守护进程并追踪任务
+        scheduler_task = asyncio.create_task(self._scheduler_daemon())
+        self._tasks.append(scheduler_task)
+
+    async def _stop(self):
+        """实现停止所有服务"""
+        # 停止API服务器
+        await self.api_server.stop()
+        # 基类的stop方法会处理所有task的取消和清理
 
     async def _scheduler_daemon(self):
         """调度器守护进程"""
@@ -64,9 +66,9 @@ class Manager(BaseServer, ManagerService):
                 await self._schedule()
                 await asyncio.sleep(MANAGER_SCHEDULER_INTERVAL)
         except asyncio.CancelledError:
-            self.logger.info("调度器循环被取消")
+            self.logger.info("Scheduler daemon cancelled")
         except Exception as e:
-            self.logger.error(f"调度器循环出错: {e}")
+            self.logger.error(f"Scheduler daemon error: {e}")
             raise
 
     async def _schedule(self):
@@ -92,22 +94,6 @@ class Manager(BaseServer, ManagerService):
             self.logger.info(
                 f"Scheduler scheduled task {task_wrap_runtime_info.task_meta.task_id} to cluster {cluster_id}"
             )
-
-    async def stop(self):
-        """重写Server基类的stop方法，添加Manager特定的清理逻辑"""
-        # 取消调度器任务
-        if self._scheduler_task and not self._scheduler_task.done():
-            self._scheduler_task.cancel()
-            try:
-                await self._scheduler_task
-            except asyncio.CancelledError:
-                pass
-
-        # 停止API服务器
-        await self.api_server.stop()
-
-        # 调用基类的stop方法
-        await super().stop()
 
     def _build_scheduler_cluster_manager(self) -> SchedulerClusterManager:
         return SchedulerClusterManager.from_clusters(
@@ -208,39 +194,3 @@ class FileSystemManager:
 
     def get_file_system(self) -> FileSystem:
         return self.file_system
-
-
-async def main():
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Start the Manager service")
-    parser.add_argument("--id", default="manager", help="Manager component ID")
-    parser.add_argument("--ip", default="127.0.0.1", help="Manager IP address")
-    parser.add_argument("--port", type=int, default=5001, help="Manager port")
-    parser.add_argument("--scheduler-name", default="scheduler", help="Scheduler name")
-    parser.add_argument("--cluster-name", default="cluster", help="Cluster name")
-
-    args = parser.parse_args()
-
-    manager = Manager(
-        ManagerArgs(
-            manager_info=ComponentInfo(
-                component_id=args.id,
-                component_ip=args.ip,
-                component_port=args.port,
-                component_type=ComponentType.MANAGER,
-            ),
-            scheduler_name=args.scheduler_name,
-        )
-    )
-
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    )
-
-    await manager.run()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())

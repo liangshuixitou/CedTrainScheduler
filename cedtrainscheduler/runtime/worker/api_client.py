@@ -1,9 +1,9 @@
-import logging
 from typing import Optional
 
 import requests
 
 from cedtrainscheduler.runtime.types.task import TaskInst
+from cedtrainscheduler.runtime.utils.logger import setup_logger
 
 
 class BaseClient:
@@ -18,7 +18,7 @@ class BaseClient:
             worker_port: Worker端口
         """
         self.base_url = f"http://{worker_host}:{worker_port}"
-        self.logger = logging.getLogger(__name__)
+        self.logger = setup_logger(__name__)
 
     def _make_request(self, endpoint: str, data: dict) -> Optional[dict]:
         """
@@ -37,7 +37,7 @@ class BaseClient:
             response.raise_for_status()  # 如果HTTP请求返回了不成功的状态码，将抛出HTTPError异常
             return response.json()
         except requests.exceptions.RequestException as e:
-            self.logger.error(f"请求失败: {e}")
+            self.logger.error(f"Request to {url} failed: {e}")
             return None
 
 
@@ -55,7 +55,7 @@ class MasterWorkerClient(BaseClient):
             Optional[dict]: 任务提交结果，失败时返回None
         """
 
-        self.logger.info(f"提交任务 {task_inst.task_id} 到Worker")
+        self.logger.info(f"Submit task {task_inst.task_id} to worker")
         data = {"task_inst": task_inst.__dict__, "gpu_id": gpu_id}
         return self._make_request("/api/task/inst/submit", data)
 
