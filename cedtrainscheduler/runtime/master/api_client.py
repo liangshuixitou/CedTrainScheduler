@@ -50,7 +50,9 @@ class BaseClient:
 class WorkerMasterClient(BaseClient):
     """Worker客户端，用于工作节点注册"""
 
-    async def register_worker(self, node: Node, tasks: list[TaskInst]) -> Optional[dict]:
+    async def register_worker(
+        self, node: Node, tasks: list[TaskInst], task_queue_map: dict[str, list[TaskInst]]
+    ) -> Optional[dict]:
         """
         注册工作节点到Master
 
@@ -62,7 +64,12 @@ class WorkerMasterClient(BaseClient):
             Optional[dict]: 注册结果，失败时返回None
         """
         data = MasterWorkerRegisterModel(
-            node=NodeModel.from_node(node), tasks=[TaskInstModel.from_task_inst(task) for task in tasks]
+            node=NodeModel.from_node(node),
+            tasks=[TaskInstModel.from_task_inst(task) for task in tasks],
+            task_queue_map={
+                gpu_id: [TaskInstModel.from_task_inst(task) for task in queue_tasks]
+                for gpu_id, queue_tasks in task_queue_map.items()
+            },
         ).model_dump()
 
         return await self._make_request("/api/worker/register", data)

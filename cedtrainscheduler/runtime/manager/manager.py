@@ -4,22 +4,21 @@ from asyncio import Lock
 
 from cedtrainscheduler.runtime.components import BaseServer
 from cedtrainscheduler.runtime.components import ComponentInfo
-from cedtrainscheduler.runtime.components import ComponentType
 from cedtrainscheduler.runtime.manager.api_server import ManagerAPIServer
 from cedtrainscheduler.runtime.manager.constant import FS_CONFIG_PATH
 from cedtrainscheduler.runtime.manager.service import ManagerService
-from cedtrainscheduler.runtime.manager.utils import TypeConverter
+from cedtrainscheduler.runtime.manager.utils import SchedulerUtils
 from cedtrainscheduler.runtime.master.api_client import ManagerMasterClient
 from cedtrainscheduler.runtime.types.args import ManagerArgs
 from cedtrainscheduler.runtime.types.cluster import Cluster
+from cedtrainscheduler.runtime.types.cluster import GPU
+from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.types.task import TaskMeta
-from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo as RuntimeTaskWrapRuntimeInfo
+from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
+from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
-from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo as SchedulerTaskWrapRuntimeInfo
 from cedtrainscheduler.simulator.fs import FileSystem
-from cedtrainscheduler.simulator.manager import ClusterManager as SchedulerClusterManager
-from cedtrainscheduler.runtime.utils.logger import setup_logger
 
 MANAGER_SCHEDULER_INTERVAL = 1
 
@@ -73,8 +72,10 @@ class Manager(BaseServer, ManagerService):
 
     async def _schedule(self):
         if self.scheduler.is_queue_full():
-            cluster_manager = await self._build_scheduler_cluster_manager()
-            task_record = await self._build_scheduler_task_record()
+            cluster_manager = await SchedulerUtils.build_scheduler_cluster_manager(
+                self.cluster_manager, self.task_manager
+            )
+            task_record = await SchedulerUtils.build_scheduler_task_record(self.task_manager)
             task_queue = self.scheduler.task_queue
             self.file_system_manager.set_file_system(FS_CONFIG_PATH, cluster_manager)
             task_wrap_runtime_info, _ = self.scheduler.schedule(
@@ -97,29 +98,11 @@ class Manager(BaseServer, ManagerService):
                 f"Scheduler scheduled task {task_wrap_runtime_info.task_meta.task_id} to cluster {cluster_id}"
             )
 
-    async def _build_scheduler_cluster_manager(self) -> SchedulerClusterManager:
-        scheduler_cluster_manager = SchedulerClusterManager.from_clusters(
-            TypeConverter.convert_runtime_cluster_to_scheduler_cluster(cluster)
-            for cluster in (await self.cluster_manager.snapshot()).values()
-        )
-
-        # TODO: build gpu_executor_map
-        return scheduler_cluster_manager
-
-    async def _build_scheduler_task_record(self) -> dict[str, SchedulerTaskWrapRuntimeInfo]:
-        task_record = {}
-        snapshot = await self.task_manager.snapshot()
-        for task_id, task_info in snapshot.items():
-            task_record[task_id] = (
-                TypeConverter.convert_runtime_task_wrap_runtime_info_to_scheduler_task_wrap_runtime_info(task_info)
-            )
-        return task_record
-
     async def handle_task_submit(self, task_meta: TaskMeta):
         self.scheduler.submit_task(task_meta)
 
     async def handle_master_register(
-        self, cluster: Cluster, task_infos: dict[str, RuntimeTaskWrapRuntimeInfo], master_info: ComponentInfo
+        self, cluster: Cluster, task_infos: dict[str, TaskWrapRuntimeInfo], master_info: ComponentInfo
     ) -> bool:
         self.logger.info(f"handle_master_register: {master_info.component_id}")
         await self.cluster_manager.register_master(master_info, cluster)
@@ -163,6 +146,14 @@ class ClusterManager:
         async with self.cluster_lock:
             return self.clusters[cluster_id]
 
+    async def get_gpu_by_gpu_id(self, gpu_id: str) -> GPU:
+        async with self.cluster_lock:
+            for cluster in self.clusters.values():
+                for node in cluster.nodes.values():
+                    for gpu in node.gpus.values():
+                        if gpu.gpu_id == gpu_id:
+                            return gpu
+
     async def get_cluster_by_gpu_id(self, gpu_id: str) -> Cluster:
         async with self.cluster_lock:
             for cluster in self.clusters.values():
@@ -179,15 +170,26 @@ class ClusterManager:
 
 class TaskManager:
     def __init__(self):
-        self.task_infos: dict[str, RuntimeTaskWrapRuntimeInfo] = {}
+        self.task_infos: dict[str, TaskWrapRuntimeInfo] = {}
+        # dict[gpu_id, list[TaskInst]]
+        self.task_queue_map: dict[str, list[TaskInst]] = {}
+        self.task_lock = Lock()
 
-    async def add_task_info(self, task_info: RuntimeTaskWrapRuntimeInfo):
+    async def add_task_info(self, task_info: TaskWrapRuntimeInfo):
         async with self.task_lock:
             self.task_infos[task_info.task_meta.task_id] = task_info
 
-    async def snapshot(self) -> dict[str, RuntimeTaskWrapRuntimeInfo]:
+    async def snapshot(self) -> dict[str, TaskWrapRuntimeInfo]:
         async with self.task_lock:
             return self.task_infos
+
+    async def extend_task_queue_map(self, task_queue_map: dict[str, list[TaskInst]]):
+        async with self.task_lock:
+            self.task_queue_map.update(task_queue_map)
+
+    async def get_task_queue_map(self) -> dict[str, list[TaskInst]]:
+        async with self.task_lock:
+            return self.task_queue_map
 
 
 class FileSystemManager:

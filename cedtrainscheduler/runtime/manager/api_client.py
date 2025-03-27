@@ -8,8 +8,10 @@ from cedtrainscheduler.runtime.types.model import ClusterModel
 from cedtrainscheduler.runtime.types.model import ComponentInfoModel
 from cedtrainscheduler.runtime.types.model import ManagerMasterRegisterModel
 from cedtrainscheduler.runtime.types.model import ManagerTaskSubmitModel
+from cedtrainscheduler.runtime.types.model import TaskInstModel
 from cedtrainscheduler.runtime.types.model import TaskMetaModel
 from cedtrainscheduler.runtime.types.model import TaskWrapRuntimeInfoModel
+from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.types.task import TaskMeta
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.runtime.utils.logger import setup_logger
@@ -54,7 +56,11 @@ class MasterManagerClient(BaseClient):
     """Master客户端，用于注册"""
 
     async def register_master(
-        self, cluster: Cluster, task_infos: dict[str, TaskWrapRuntimeInfo], master_info: ComponentInfo
+        self,
+        cluster: Cluster,
+        task_infos: dict[str, TaskWrapRuntimeInfo],
+        master_info: ComponentInfo,
+        task_queue_map: dict[str, list[TaskInst]],
     ) -> Optional[dict]:
         """
         注册Master到Manager
@@ -63,6 +69,7 @@ class MasterManagerClient(BaseClient):
             cluster: 集群信息
             task_infos: 集群上的任务信息
             master_info: Master信息
+            task_queue_map: 任务队列信息
         Returns:
             Optional[dict]: 注册结果，失败时返回None
         """
@@ -73,6 +80,10 @@ class MasterManagerClient(BaseClient):
                 for task_id, task in task_infos.items()
             },
             master_info=ComponentInfoModel.from_component_info(master_info),
+            task_queue_map={
+                gpu_id: [TaskInstModel.from_task_inst(task_inst) for task_inst in task_insts]
+                for gpu_id, task_insts in task_queue_map.items()
+            },
         ).model_dump()
         return await self._make_request("/api/master/register", data)
 

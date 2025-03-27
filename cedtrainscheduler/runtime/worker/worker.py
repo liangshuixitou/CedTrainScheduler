@@ -79,14 +79,13 @@ class Worker(BaseServer, WorkerService):
         task_record = []
         for executor in self.executors.values():
             task_record.extend(await executor.get_task_record())
-        response = await self.worker_client.register_worker(self.node, task_record)
-        if response:
-            self.logger.info(
-                f"Worker registered to Master {self.master_info.component_ip}:"
-                f"{self.master_info.component_port}: {response}"
-            )
-        else:
-            self.logger.error("Worker registration failed")
+
+        task_queue_map = {gpu_id: executor.task_queue for gpu_id, executor in self.executors.items()}
+        response = await self.worker_client.register_worker(self.node, task_record, task_queue_map)
+        self.logger.info(
+            f"Worker registered to Master {self.master_info.component_ip}:{self.master_info.component_port}:"
+            f"Response: {response}"
+        )
 
     async def handle_task_inst_submit(self, task_inst: TaskInst, gpu_id: str):
         executor = self.executors[gpu_id]

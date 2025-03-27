@@ -220,6 +220,7 @@ class ManagerMasterRegisterModel(BaseModel):
     cluster: ClusterModel
     task_infos: dict[str, TaskWrapRuntimeInfoModel]
     master_info: ComponentInfoModel
+    task_queue_map: dict[str, list[TaskInstModel]]
 
 
 # master model
@@ -230,6 +231,8 @@ class MasterTaskSubmitModel(BaseModel):
 class MasterWorkerRegisterModel(BaseModel):
     node: NodeModel
     tasks: list[TaskInstModel]
+    task_queue_map: dict[str, list[TaskInstModel]]
+
 
 # worker model
 class WorkerTaskInstSubmitModel(BaseModel):

@@ -46,7 +46,11 @@ class ManagerAPIServer:
             cluster = request.cluster.to_cluster()
             task_infos = {task_id: task.to_task_wrap_runtime_info() for task_id, task in request.task_infos.items()}
             master_info = request.master_info.to_component_info()
-            return await self.manager_service.handle_master_register(cluster, task_infos, master_info)
+            task_queue_map = {
+                gpu_id: [task_inst.to_task_inst() for task_inst in task_insts]
+                for gpu_id, task_insts in request.task_queue_map.items()
+            }
+            return await self.manager_service.handle_master_register(cluster, task_infos, master_info, task_queue_map)
 
     async def start(self, host="0.0.0.0", port=5000) -> asyncio.Task:
         """启动API服务器，返回服务器运行的Task"""

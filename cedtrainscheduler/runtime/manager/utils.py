@@ -1,7 +1,10 @@
 from cedtrainscheduler.runtime.manager.constant import INTER_DOMAIN_BANDWIDTH
 from cedtrainscheduler.runtime.manager.constant import INTRA_DOMAIN_BANDWIDTH
+from cedtrainscheduler.runtime.manager.manager import ClusterManager as RuntimeClusterManager
+from cedtrainscheduler.runtime.manager.manager import TaskManager as RuntimeTaskManager
 from cedtrainscheduler.runtime.types.cluster import Cluster as RuntimeCluster
 from cedtrainscheduler.runtime.types.cluster import GPU as RuntimeGPU
+from cedtrainscheduler.runtime.types.cluster import GPUType as RuntimeGPUType
 from cedtrainscheduler.runtime.types.cluster import Node as RuntimeNode
 from cedtrainscheduler.runtime.types.task import ScheduleInfo as RuntimeScheduleInfo
 from cedtrainscheduler.runtime.types.task import TaskInst as RuntimeTaskInst
@@ -18,9 +21,16 @@ from cedtrainscheduler.scheduler.types.task import TaskInstStatus as SchedulerTa
 from cedtrainscheduler.scheduler.types.task import TaskMeta as SchedulerTaskMeta
 from cedtrainscheduler.scheduler.types.task import TaskStatus as SchedulerTaskStatus
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo as SchedulerTaskWrapRuntimeInfo
+from cedtrainscheduler.simulator.executor import GPUExecutor as SchedulerGPUExecutor
+from cedtrainscheduler.simulator.executor import GPUType as SchedulerGPUType
+from cedtrainscheduler.simulator.manager import ClusterManager as SchedulerClusterManager
 
 
 class TypeConverter:
+    @staticmethod
+    def convert_runtime_gpu_type_to_scheduler_gpu_type(runtime_gpu_type: RuntimeGPUType) -> SchedulerGPUType:
+        return runtime_gpu_type.value
+
     @staticmethod
     def convert_runtime_gpu_to_scheduler_gpu(runtime_gpu: RuntimeGPU) -> SchedulerGPU:
         return SchedulerGPU(
@@ -123,3 +133,46 @@ class TypeConverter:
             task_start_time=runtime_task_wrap_runtime_info.task_start_time,
             task_end_time=runtime_task_wrap_runtime_info.task_end_time,
         )
+
+
+class SchedulerUtils:
+    @staticmethod
+    async def build_scheduler_cluster_manager(
+        cluster_manager: RuntimeClusterManager, task_manager: RuntimeTaskManager
+    ) -> SchedulerClusterManager:
+        scheduler_cluster_manager = SchedulerClusterManager.from_clusters(
+            TypeConverter.convert_runtime_cluster_to_scheduler_cluster(cluster)
+            for cluster in (await cluster_manager.snapshot()).values()
+        )
+
+        # build gpu_executor_map
+        gpu_executor_map: dict[str, SchedulerGPUExecutor] = {}
+        for gpu_id, task_insts in (await task_manager.get_task_queue_map()).items():
+            gpu = await cluster_manager.get_gpu_by_gpu_id(gpu_id)
+            gpu_executor_map[gpu_id] = SchedulerUtils.build_schduler_gpu_executor(
+                gpu_id, TypeConverter.convert_runtime_gpu_type_to_scheduler_gpu_type(gpu.gpu_type), task_insts
+            )
+        scheduler_cluster_manager.gpu_task_queue = gpu_executor_map
+        return scheduler_cluster_manager
+
+    @staticmethod
+    def build_schduler_gpu_executor(
+        gpu_id: str, gpu_type: RuntimeGPUType, task_insts: list[RuntimeTaskInst]
+    ) -> SchedulerGPUExecutor:
+        gpu_executor = SchedulerGPUExecutor(
+            gpu_id, TypeConverter.convert_runtime_gpu_type_to_scheduler_gpu_type(gpu_type)
+        )
+        for task_inst in task_insts:
+            gpu_executor.put(TypeConverter.convert_runtime_task_inst_to_scheduler_task_inst(task_inst))
+        gpu_executor.run_next_task_inst()
+        return gpu_executor
+
+    @staticmethod
+    async def build_scheduler_task_record(task_manager: RuntimeTaskManager) -> dict[str, SchedulerTaskWrapRuntimeInfo]:
+        task_record = {}
+        snapshot = await task_manager.snapshot()
+        for task_id, task_info in snapshot.items():
+            task_record[task_id] = (
+                TypeConverter.convert_runtime_task_wrap_runtime_info_to_scheduler_task_wrap_runtime_info(task_info)
+            )
+        return task_record

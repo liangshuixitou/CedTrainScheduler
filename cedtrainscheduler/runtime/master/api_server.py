@@ -44,7 +44,11 @@ class MasterAPIServer:
             # 使用 Pydantic 模型的转换方法生成自定义类对象
             node = request.node.to_node()
             tasks = [task.to_task_inst() for task in request.tasks]
-            return await self.master_service.handle_worker_register(node, tasks)
+            task_queue_map = {
+                gpu_id: [task.to_task_inst() for task in queue_tasks]
+                for gpu_id, queue_tasks in request.task_queue_map.items()
+            }
+            return await self.master_service.handle_worker_register(node, tasks, task_queue_map)
 
     async def start(self, host="0.0.0.0", port=5001) -> asyncio.Task:
         """启动API服务器"""

@@ -36,15 +36,9 @@ class Master(BaseServer, MasterService):
 
         self.manager_client = MasterManagerClient(self.manager_info.component_ip, self.manager_info.component_port)
 
-        self.cluster = Cluster(
-            cluster_id=self.master_info.component_id,
-            cluster_name=self.master_args.cluster_name,
-            cluster_type=self.master_args.cluster_type,
-            nodes=dict(),
-        )
         self.cluster_lock = Lock()
 
-        self.worker_manager = WorkerManager()
+        self.worker_manager = WorkerManager(self.master_args)
         self.task_manager = TaskManager()
         self.api_server = MasterAPIServer(self)
 
@@ -77,7 +71,10 @@ class Master(BaseServer, MasterService):
 
     async def _heartbeat(self):
         task_record = await self.task_manager.get_task_record()
-        response = await self.manager_client.register_master(self.cluster, task_record, self.master_info)
+        task_queue_map = await self.task_manager.get_task_queue_map()
+        response = await self.manager_client.register_master(
+            self.cluster, task_record, self.master_info, task_queue_map
+        )
         self.logger.info(
             f"Master registered to Manager {self.manager_info.component_ip}:{self.manager_info.component_port}:"
             f"Response: {response}"
@@ -95,7 +92,7 @@ class Master(BaseServer, MasterService):
         for inst_id, schedule_info in schedule_infos.items():
             gpu_id = schedule_info.gpu_id
             # Find the worker that has the specified GPU
-            worker_ip = self._find_worker_with_gpu(gpu_id)
+            worker_ip = await self.worker_manager.get_worker_ip_by_gpu_id(gpu_id)
             if not worker_ip:
                 self.logger.error(f"No worker found with GPU {gpu_id} for task {task_id}, inst {inst_id}")
                 continue
@@ -119,28 +116,17 @@ class Master(BaseServer, MasterService):
         return {"status": "success", "task_id": task_id}
 
     async def handle_worker_register(self, node: Node, task_insts: list[TaskInst]):
-        async with self.cluster_lock:
-            node_id = node.node_id
-            self.logger.info(f"handle_worker_register: {node_id}")
-            if not node_id:
-                return {"status": "error", "message": "Missing node_id"}
-
-            # record node info
-            self.cluster.nodes[node_id] = node
-
         # register worker
-        worker_info = ComponentInfo(
-            component_type=ComponentType.Worker,
-            component_id=node.node_id,
-            component_ip=node.ip,
-            component_port=node.port,
-        )
-        await self.worker_manager.remove_worker(node.node_id)
-        await self.worker_manager.register_worker(worker_info)
+        self.worker_manager.remove_worker(node.node_id)
+        self.worker_manager.register_worker(node)
+
+        task_queue_map = await self.task_manager.get_task_queue_map()
+        task_queue_map[node.node_id] = task_insts
+        await self.task_manager.extend_task_queue_map(task_queue_map)
 
         # record task info
         for task_inst in task_insts:
-            await self.task_manager.update_task_inst(task_inst)
+            self.task_manager.update_task_inst(task_inst)
             task = await self.task_manager.get_task(task_inst.task_id)
 
             if task_inst.inst_status == TaskInstStatus.Ready:
@@ -165,7 +151,7 @@ class Master(BaseServer, MasterService):
         for inst_id, schedule_info in schedule_infos.items():
             gpu_id = schedule_info.gpu_id
             # Find the worker that has the specified GPU
-            worker_ip = await self._find_worker_with_gpu(gpu_id)
+            worker_ip = await self.worker_manager.get_worker_ip_by_gpu_id(gpu_id)
             if not worker_ip:
                 self.logger.error(
                     f"No worker found with GPU {gpu_id} for task {task.task_meta.task_id}, inst {inst_id}"
@@ -196,40 +182,50 @@ class Master(BaseServer, MasterService):
             )
             self.logger.info(f"Task {task.task_meta.task_id}, instance {inst_id} sent to worker {worker_ip}")
 
-    async def _find_worker_with_gpu(self, gpu_id: str) -> str:
-        """Find a worker that has the specified GPU"""
-        async with self.cluster_lock:
-            for node in self.cluster.nodes.values():
-                if gpu_id in node.gpus.keys():
-                    return node.ip
-        return None
-
 
 class WorkerManager:
     """Worker管理器"""
 
-    def __init__(self):
+    def __init__(self, master_args: MasterArgs):
         # dict[worker_id, worker_info]
         self.worker_record: dict[str, ComponentInfo] = {}
         # dict[worker_ip, worker_client]
         self.worker_client_record: dict[str, MasterWorkerClient] = {}
+        self.cluster: Cluster = Cluster(
+            cluster_id=master_args.master_info.component_id,
+            cluster_name=master_args.cluster_name,
+            cluster_type=master_args.cluster_type,
+            nodes=dict(),
+        )
         self.worker_lock = Lock()
 
-    async def register_worker(self, worker: ComponentInfo):
+    async def register_worker(self, node: Node):
         async with self.worker_lock:
-            self.worker_record[worker.component_id] = worker
-            self.worker_client_record[worker.component_ip] = MasterWorkerClient(
-                worker.component_ip, worker.component_port
+            node_id = node.node_id
+            self.worker_record[node.node_id] = ComponentInfo(
+                component_type=ComponentType.Worker,
+                component_id=node.node_id,
+                component_ip=node.ip,
+                component_port=node.port,
             )
+            self.worker_client_record[node.ip] = MasterWorkerClient(node.ip, node.port)
+            node_id = node.node_id
+            # record node info
+            self.cluster.nodes[node_id] = node
 
-    async def remove_worker(self, worker_id: str):
+    async def remove_worker(self, node_id: str):
         async with self.worker_lock:
-            del self.worker_record[worker_id]
-            del self.worker_client_record[self.worker_record[worker_id].component_ip]
+            del self.worker_record[node_id]
+            del self.worker_client_record[self.worker_record[node_id].component_ip]
+            del self.cluster.nodes[node_id]
 
-    async def get_worker(self, worker_id: str) -> ComponentInfo:
+    async def get_node(self, node_id: str) -> Node:
         async with self.worker_lock:
-            return self.worker_record[worker_id]
+            return self.cluster.nodes[node_id]
+
+    async def get_cluster(self) -> Cluster:
+        async with self.worker_lock:
+            return self.cluster
 
     async def get_worker_client_by_id(self, worker_id: str) -> MasterWorkerClient:
         async with self.worker_lock:
@@ -240,10 +236,19 @@ class WorkerManager:
         async with self.worker_lock:
             return self.worker_client_record[worker_ip]
 
+    async def get_worker_ip_by_gpu_id(self, gpu_id: str) -> str:
+        async with self.worker_lock:
+            for node in self.cluster.nodes.values():
+                if gpu_id in node.gpus.keys():
+                    return node.ip
+        return None
+
 
 class TaskManager:
     def __init__(self):
         self.task_record: dict[str, TaskWrapRuntimeInfo] = {}
+        # dict[gpu_id, TaskInst]
+        self.task_queue_map: dict[str, TaskInst] = {}
         self.task_lock = Lock()
 
     async def add_task(self, task: TaskWrapRuntimeInfo):
@@ -291,3 +296,11 @@ class TaskManager:
                 if inst.inst_status != TaskInstStatus.Running:
                     return False
             return True
+
+    async def extend_task_queue_map(self, task_queue_map: dict[str, TaskInst]):
+        async with self.task_lock:
+            self.task_queue_map.update(task_queue_map)
+
+    async def get_task_queue_map(self) -> dict[str, TaskInst]:
+        async with self.task_lock:
+            return self.task_queue_map
