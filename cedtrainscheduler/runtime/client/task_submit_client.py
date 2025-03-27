@@ -55,7 +55,7 @@ async def main():
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
-    test_submit_one_task(task_submit_client)
+    await test_submit_one_task(task_submit_client)
 
 
 if __name__ == "__main__":

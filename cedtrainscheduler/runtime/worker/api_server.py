@@ -5,10 +5,10 @@ import uvicorn
 from fastapi import FastAPI
 from uvicorn.config import Config
 
+from cedtrainscheduler.runtime.types.model import WorkerTaskInstStartModel
+from cedtrainscheduler.runtime.types.model import WorkerTaskInstSubmitModel
 from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.runtime.worker.service import WorkerService
-from cedtrainscheduler.runtime.worker.types import TaskInstStartModel
-from cedtrainscheduler.runtime.worker.types import TaskInstSubmitModel
 
 
 class WorkerAPIServer:
@@ -33,14 +33,14 @@ class WorkerAPIServer:
         """配置API端点"""
 
         @self.app.post("/api/task/inst/submit")
-        async def handle_task_inst_submit(request: TaskInstSubmitModel):
+        async def handle_task_inst_submit(request: WorkerTaskInstSubmitModel):
             """处理来自Master的任务提交"""
             task_inst = request.task_inst.to_task_inst()
             gpu_id = request.gpu_id
             return await self.worker_service.handle_task_inst_submit(task_inst, gpu_id)
 
         @self.app.post("/api/task/inst/start")
-        async def handle_task_inst_start(request: TaskInstStartModel):
+        async def handle_task_inst_start(request: WorkerTaskInstStartModel):
             """处理来自Master的任务启动"""
             task_inst = request.task_inst.to_task_inst()
             gpu_id = request.gpu_id

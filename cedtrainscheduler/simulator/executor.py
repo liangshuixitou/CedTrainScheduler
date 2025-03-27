@@ -9,7 +9,6 @@ class GPUExecutor:
     def __init__(self, gpu_id: str, gpu_type: GPUType):
         self.gpu_type = gpu_type
         self.gpu_id = gpu_id
-        self.task_map: dict[str, TaskInst] = {}
         self.pending_queue: Queue[TaskInst] = Queue()
         self.running_task: TaskInst = None
 
@@ -17,7 +16,6 @@ class GPUExecutor:
         return self.pending_queue.empty() and self.running_task is None
 
     def put(self, task: TaskInst):
-        self.task_map[task.task_id] = task
         self.pending_queue.put(task)
 
     def run_next_task_inst(self):

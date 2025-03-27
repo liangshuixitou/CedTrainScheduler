@@ -3,8 +3,12 @@ from typing import Optional
 import requests
 
 from cedtrainscheduler.runtime.types.cluster import Node
+from cedtrainscheduler.runtime.types.model import MasterTaskSubmitModel
+from cedtrainscheduler.runtime.types.model import MasterWorkerRegisterModel
+from cedtrainscheduler.runtime.types.model import NodeModel
+from cedtrainscheduler.runtime.types.model import TaskInstModel
+from cedtrainscheduler.runtime.types.model import TaskWrapRuntimeInfoModel
 from cedtrainscheduler.runtime.types.task import TaskInst
-from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.runtime.utils.logger import setup_logger
 
 
@@ -57,16 +61,17 @@ class WorkerMasterClient(BaseClient):
         Returns:
             Optional[dict]: 注册结果，失败时返回None
         """
-        data = {"node": node.__dict__, "tasks": [task.__dict__ for task in tasks]}
+        data = MasterWorkerRegisterModel(
+            node=NodeModel.from_node(node), tasks=[TaskInstModel.from_task_inst(task) for task in tasks]
+        ).model_dump()
 
-        self.logger.info(f"Register worker {node.node_id} to master")
-        return self._make_request("/api/worker/register", data)
+        return await self._make_request("/api/worker/register", data)
 
 
 class ManagerMasterClient(BaseClient):
     """管理客户端，用于任务提交"""
 
-    async def submit_task(self, task: TaskWrapRuntimeInfo) -> Optional[dict]:
+    async def submit_task(self, task: MasterTaskSubmitModel) -> Optional[dict]:
         """
         向Master提交任务
 
@@ -76,7 +81,6 @@ class ManagerMasterClient(BaseClient):
         Returns:
             Optional[dict]: 任务提交结果，失败时返回None
         """
-        data = {"task": task.__dict__}
+        data = MasterTaskSubmitModel(task=TaskWrapRuntimeInfoModel.from_task_wrap_runtime_info(task)).model_dump()
 
-        self.logger.info(f"Submit task {task.task_meta.task_id} to master")
-        return self._make_request("/api/task/submit", data)
+        return await self._make_request("/api/task/submit", data)

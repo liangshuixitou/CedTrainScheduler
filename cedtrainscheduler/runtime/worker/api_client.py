@@ -2,6 +2,9 @@ from typing import Optional
 
 import requests
 
+from cedtrainscheduler.runtime.types.model import TaskInstModel
+from cedtrainscheduler.runtime.types.model import WorkerTaskInstStartModel
+from cedtrainscheduler.runtime.types.model import WorkerTaskInstSubmitModel
 from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.utils.logger import setup_logger
 
@@ -55,9 +58,8 @@ class MasterWorkerClient(BaseClient):
             Optional[dict]: 任务提交结果，失败时返回None
         """
 
-        self.logger.info(f"Submit task {task_inst.task_id} to worker")
-        data = {"task_inst": task_inst.__dict__, "gpu_id": gpu_id}
-        return self._make_request("/api/task/inst/submit", data)
+        data = WorkerTaskInstSubmitModel(task_inst=TaskInstModel.from_task_inst(task_inst), gpu_id=gpu_id).model_dump()
+        return await self._make_request("/api/task/inst/submit", data)
 
     async def start_task_inst(
         self,
@@ -82,13 +84,13 @@ class MasterWorkerClient(BaseClient):
         Returns:
             Optional[dict]: 任务启动结果，失败时返回None
         """
-        data = {
-            "task_inst": task_inst.__dict__,
-            "gpu_id": gpu_id,
-            "task_name": task_name,
-            "world_size": world_size,
-            "inst_rank": inst_rank,
-            "master_addr": master_addr,
-            "master_port": master_port,
-        }
-        return self._make_request("/api/task/inst/start", data)
+        data = WorkerTaskInstStartModel(
+            task_inst=TaskInstModel.from_task_inst(task_inst),
+            gpu_id=gpu_id,
+            task_name=task_name,
+            world_size=world_size,
+            inst_rank=inst_rank,
+            master_addr=master_addr,
+            master_port=master_port,
+        ).model_dump()
+        return await self._make_request("/api/task/inst/start", data)

@@ -6,8 +6,8 @@ from fastapi import FastAPI
 from uvicorn.config import Config
 
 from cedtrainscheduler.runtime.manager.service import ManagerService
-from cedtrainscheduler.runtime.manager.types import MasterRegisterModel
-from cedtrainscheduler.runtime.manager.types import TaskSubmitModel
+from cedtrainscheduler.runtime.types.model import ManagerMasterRegisterModel
+from cedtrainscheduler.runtime.types.model import ManagerTaskSubmitModel
 from cedtrainscheduler.runtime.utils.logger import setup_logger
 
 
@@ -33,14 +33,14 @@ class ManagerAPIServer:
         """配置API端点"""
 
         @self.app.post("/api/task/submit")
-        async def handle_task_submit(request: TaskSubmitModel):
+        async def handle_task_submit(request: ManagerTaskSubmitModel):
             """处理来自Worker的任务提交"""
             # 使用 Pydantic 模型的转换方法生成自定义类对象
             task_meta = request.task.to_task_meta()
             return await self.manager_service.handle_task_submit(task_meta)
 
         @self.app.post("/api/master/register")
-        async def handle_master_register(request: MasterRegisterModel):
+        async def handle_master_register(request: ManagerMasterRegisterModel):
             """处理Master注册"""
             # 使用 Pydantic 模型的转换方法生成自定义类对象
             cluster = request.cluster.to_cluster()

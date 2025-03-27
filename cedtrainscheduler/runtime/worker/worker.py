@@ -67,7 +67,7 @@ class Worker(BaseServer, WorkerService):
     async def _heartbeat_daemon(self):
         try:
             while self._running:
-                self._heartbeat()
+                await self._heartbeat()
                 await asyncio.sleep(WORKER_HEARTBEAT_INTERVAL)
         except asyncio.CancelledError:
             self.logger.info("Heartbeat daemon cancelled")

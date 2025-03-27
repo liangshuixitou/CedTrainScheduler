@@ -73,8 +73,8 @@ class Manager(BaseServer, ManagerService):
 
     async def _schedule(self):
         if self.scheduler.is_queue_full():
-            cluster_manager = self._build_scheduler_cluster_manager()
-            task_record = self._build_scheduler_task_record()
+            cluster_manager = await self._build_scheduler_cluster_manager()
+            task_record = await self._build_scheduler_task_record()
             task_queue = self.scheduler.task_queue
             self.file_system_manager.set_file_system(FS_CONFIG_PATH, cluster_manager)
             task_wrap_runtime_info, _ = self.scheduler.schedule(
@@ -86,24 +86,29 @@ class Manager(BaseServer, ManagerService):
                     task_queue=task_queue,
                 )
             )
-            self.task_manager.add_task_info(task_wrap_runtime_info)
+            await self.task_manager.add_task_info(task_wrap_runtime_info)
             # gpu_id -> cluster_id
-            cluster_id = self.cluster_manager.get_cluster_by_gpu_id(task_wrap_runtime_info.schedule_infos[0].gpu_id)
-            master_client = self.cluster_manager.get_master_client_by_cluster_id(cluster_id)
+            cluster_id = await self.cluster_manager.get_cluster_by_gpu_id(
+                task_wrap_runtime_info.schedule_infos[0].gpu_id
+            )
+            master_client = await self.cluster_manager.get_master_client_by_cluster_id(cluster_id)
             await master_client.submit_task(task_wrap_runtime_info)
             self.logger.info(
                 f"Scheduler scheduled task {task_wrap_runtime_info.task_meta.task_id} to cluster {cluster_id}"
             )
 
-    def _build_scheduler_cluster_manager(self) -> SchedulerClusterManager:
-        return SchedulerClusterManager.from_clusters(
+    async def _build_scheduler_cluster_manager(self) -> SchedulerClusterManager:
+        scheduler_cluster_manager = SchedulerClusterManager.from_clusters(
             TypeConverter.convert_runtime_cluster_to_scheduler_cluster(cluster)
-            for cluster in self.cluster_manager.snapshot().values()
+            for cluster in (await self.cluster_manager.snapshot()).values()
         )
 
-    def _build_scheduler_task_record(self) -> dict[str, SchedulerTaskWrapRuntimeInfo]:
+        # TODO: build gpu_executor_map
+        return scheduler_cluster_manager
+
+    async def _build_scheduler_task_record(self) -> dict[str, SchedulerTaskWrapRuntimeInfo]:
         task_record = {}
-        snapshot = self.task_manager.snapshot()
+        snapshot = await self.task_manager.snapshot()
         for task_id, task_info in snapshot.items():
             task_record[task_id] = (
                 TypeConverter.convert_runtime_task_wrap_runtime_info_to_scheduler_task_wrap_runtime_info(task_info)
@@ -115,10 +120,11 @@ class Manager(BaseServer, ManagerService):
 
     async def handle_master_register(
         self, cluster: Cluster, task_infos: dict[str, RuntimeTaskWrapRuntimeInfo], master_info: ComponentInfo
-    ):
-        self.cluster_manager.register_master(master_info, cluster)
+    ) -> bool:
+        self.logger.info(f"handle_master_register: {master_info.component_id}")
+        await self.cluster_manager.register_master(master_info, cluster)
         for task_info in task_infos.values():
-            self.task_manager.add_task_info(task_info)
+            await self.task_manager.add_task_info(task_info)
 
 
 class ClusterManager:
@@ -131,34 +137,34 @@ class ClusterManager:
         self.clusters: dict[str, Cluster] = {}
         self.cluster_lock = Lock()
 
-    def register_master(self, master: ComponentInfo, cluster: Cluster):
-        with self.cluster_lock:
+    async def register_master(self, master: ComponentInfo, cluster: Cluster):
+        async with self.cluster_lock:
             self.master_record[master.component_id] = master
             self.master_client_record[master.component_id] = ManagerMasterClient(
                 master.component_ip, master.component_port
             )
             self.clusters[cluster.cluster_id] = cluster
 
-    def remove_master(self, master_id: str):
-        with self.cluster_lock:
+    async def remove_master(self, master_id: str):
+        async with self.cluster_lock:
             del self.master_record[master_id]
             del self.master_client_record[self.master_record[master_id].component_ip]
             del self.clusters[self.master_record[master_id].cluster_id]
 
-    def get_master(self, master_id: str) -> ComponentInfo:
-        with self.cluster_lock:
+    async def get_master(self, master_id: str) -> ComponentInfo:
+        async with self.cluster_lock:
             return self.master_record[master_id]
 
-    def get_master_client_by_cluster_id(self, cluster_id: str) -> ManagerMasterClient:
-        with self.cluster_lock:
+    async def get_master_client_by_cluster_id(self, cluster_id: str) -> ManagerMasterClient:
+        async with self.cluster_lock:
             return self.master_client_record[self.clusters[cluster_id].master_info.component_ip]
 
-    def get_cluster(self, cluster_id: str) -> Cluster:
-        with self.cluster_lock:
+    async def get_cluster(self, cluster_id: str) -> Cluster:
+        async with self.cluster_lock:
             return self.clusters[cluster_id]
 
-    def get_cluster_by_gpu_id(self, gpu_id: str) -> Cluster:
-        with self.cluster_lock:
+    async def get_cluster_by_gpu_id(self, gpu_id: str) -> Cluster:
+        async with self.cluster_lock:
             for cluster in self.clusters.values():
                 for node in cluster.nodes.values():
                     for gpu in node.gpus.values():
@@ -166,22 +172,21 @@ class ClusterManager:
                             return cluster
         return None
 
-    def snapshot(self) -> dict[str, Cluster]:
-        with self.cluster_lock:
+    async def snapshot(self) -> dict[str, Cluster]:
+        async with self.cluster_lock:
             return self.clusters
 
 
 class TaskManager:
     def __init__(self):
         self.task_infos: dict[str, RuntimeTaskWrapRuntimeInfo] = {}
-        self.task_lock = Lock()
 
-    def add_task_info(self, task_info: RuntimeTaskWrapRuntimeInfo):
-        with self.task_lock:
+    async def add_task_info(self, task_info: RuntimeTaskWrapRuntimeInfo):
+        async with self.task_lock:
             self.task_infos[task_info.task_meta.task_id] = task_info
 
-    def snapshot(self) -> dict[str, RuntimeTaskWrapRuntimeInfo]:
-        with self.task_lock:
+    async def snapshot(self) -> dict[str, RuntimeTaskWrapRuntimeInfo]:
+        async with self.task_lock:
             return self.task_infos
 
 

@@ -4,6 +4,12 @@ import requests
 
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.types.cluster import Cluster
+from cedtrainscheduler.runtime.types.model import ClusterModel
+from cedtrainscheduler.runtime.types.model import ComponentInfoModel
+from cedtrainscheduler.runtime.types.model import ManagerMasterRegisterModel
+from cedtrainscheduler.runtime.types.model import ManagerTaskSubmitModel
+from cedtrainscheduler.runtime.types.model import TaskMetaModel
+from cedtrainscheduler.runtime.types.model import TaskWrapRuntimeInfoModel
 from cedtrainscheduler.runtime.types.task import TaskMeta
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.runtime.utils.logger import setup_logger
@@ -60,13 +66,15 @@ class MasterManagerClient(BaseClient):
         Returns:
             Optional[dict]: 注册结果，失败时返回None
         """
-        data = {
-            "cluster": cluster.__dict__,
-            "task_infos": {task_id: task.__dict__ for task_id, task in task_infos.items()},
-            "master_info": master_info.__dict__,
-        }
-        self.logger.info(f"Register master {master_info.component_id} to manager")
-        return self._make_request("/api/master/register", data)
+        data = ManagerMasterRegisterModel(
+            cluster=ClusterModel.from_cluster(cluster),
+            task_infos={
+                task_id: TaskWrapRuntimeInfoModel.from_task_wrap_runtime_info(task)
+                for task_id, task in task_infos.items()
+            },
+            master_info=ComponentInfoModel.from_component_info(master_info),
+        ).model_dump()
+        return await self._make_request("/api/master/register", data)
 
 
 class TaskManagerClient(BaseClient):
@@ -82,6 +90,5 @@ class TaskManagerClient(BaseClient):
         Returns:
             Optional[dict]: 任务提交结果，失败时返回None
         """
-        data = {"task_meta": task_meta.__dict__}
-        self.logger.info(f"Submit task {task_meta.task_id} to manager")
-        return self._make_request("/api/task/submit", data)
+        data = ManagerTaskSubmitModel(task=TaskMetaModel.from_task_meta(task_meta)).model_dump()
+        return await self._make_request("/api/task/submit", data)
