@@ -37,7 +37,7 @@ async def main():
             gpu_type=args.gpu_type,
         )
     )
-    await worker.start()
+    await worker.run()
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
 import asyncio
-import logging
 
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.components import ComponentType
@@ -46,13 +45,8 @@ async def main():
             component_id=args.id,
             component_ip=args.ip,
             component_port=args.port,
-            component_type=ComponentType.TASK_SUBMIT_CLIENT,
+            component_type=ComponentType.MANAGER,
         ),
-    )
-
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     await test_submit_one_task(task_submit_client)

@@ -15,6 +15,7 @@ from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.types.task import TaskInstStatus
 from cedtrainscheduler.runtime.types.task import TaskStatus
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
+from cedtrainscheduler.runtime.utils.ip_util import IPUtil
 from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.runtime.worker.api_client import MasterWorkerClient
 
@@ -61,7 +62,6 @@ class Master(BaseServer, MasterService):
         try:
             while self._running:
                 await self._heartbeat()
-                self.logger.info(f"Master heartbeat: {self.cluster}")
                 await asyncio.sleep(MASTER_HEARTBEAT_INTERVAL)
         except asyncio.CancelledError:
             self.logger.info("Heartbeat daemon cancelled")
@@ -70,11 +70,10 @@ class Master(BaseServer, MasterService):
             raise
 
     async def _heartbeat(self):
+        cluster = await self.worker_manager.get_cluster()
         task_record = await self.task_manager.get_task_record()
         task_queue_map = await self.task_manager.get_task_queue_map()
-        response = await self.manager_client.register_master(
-            self.cluster, task_record, self.master_info, task_queue_map
-        )
+        response = await self.manager_client.register_master(cluster, task_record, self.master_info, task_queue_map)
         self.logger.info(
             f"Master registered to Manager {self.manager_info.component_ip}:{self.manager_info.component_port}:"
             f"Response: {response}"
@@ -115,18 +114,17 @@ class Master(BaseServer, MasterService):
 
         return {"status": "success", "task_id": task_id}
 
-    async def handle_worker_register(self, node: Node, task_insts: list[TaskInst]):
+    async def handle_worker_register(
+        self, node: Node, task_insts: list[TaskInst], task_queue_map: dict[str, list[TaskInst]]
+    ):
         # register worker
-        self.worker_manager.remove_worker(node.node_id)
-        self.worker_manager.register_worker(node)
+        await self.worker_manager.register_worker(node)
 
-        task_queue_map = await self.task_manager.get_task_queue_map()
-        task_queue_map[node.node_id] = task_insts
         await self.task_manager.extend_task_queue_map(task_queue_map)
 
         # record task info
         for task_inst in task_insts:
-            self.task_manager.update_task_inst(task_inst)
+            await self.task_manager.update_task_inst(task_inst)
             task = await self.task_manager.get_task(task_inst.task_id)
 
             if task_inst.inst_status == TaskInstStatus.Ready:
@@ -147,6 +145,8 @@ class Master(BaseServer, MasterService):
         return {"status": "success", "message": "Worker registered"}
 
     async def _start_task(self, task: TaskWrapRuntimeInfo):
+        first_worker_ip: str = None
+
         schedule_infos = task.schedule_infos
         for inst_id, schedule_info in schedule_infos.items():
             gpu_id = schedule_info.gpu_id
@@ -164,6 +164,9 @@ class Master(BaseServer, MasterService):
                 self.logger.error(f"Worker client not found for worker {worker_ip}")
                 continue
 
+            if first_worker_ip is None:
+                first_worker_ip = worker_ip
+
             # Prepare instance info for the worker
             inst_data = TaskInst(
                 task_id=task.task_meta.task_id,
@@ -171,14 +174,16 @@ class Master(BaseServer, MasterService):
                 inst_status=TaskInstStatus.Pending,
             )
 
+            master_inst_ip = first_worker_ip
+            master_inst_port = IPUtil.get_available_port(first_worker_ip)
             await worker_client.start_task_inst(
                 task_inst=inst_data,
                 gpu_id=gpu_id,
                 task_name=task.task_meta.task_name,
                 world_size=len(schedule_infos),
                 inst_rank=inst_id,
-                master_addr=self.ip,  # TODO: 需要修改为master的地址
-                master_port=self.port,  # TODO: 需要修改为master的端口
+                master_addr=master_inst_ip,
+                master_port=master_inst_port,
             )
             self.logger.info(f"Task {task.task_meta.task_id}, instance {inst_id} sent to worker {worker_ip}")
 
@@ -203,7 +208,7 @@ class WorkerManager:
         async with self.worker_lock:
             node_id = node.node_id
             self.worker_record[node.node_id] = ComponentInfo(
-                component_type=ComponentType.Worker,
+                component_type=ComponentType.WORKER,
                 component_id=node.node_id,
                 component_ip=node.ip,
                 component_port=node.port,
@@ -247,8 +252,8 @@ class WorkerManager:
 class TaskManager:
     def __init__(self):
         self.task_record: dict[str, TaskWrapRuntimeInfo] = {}
-        # dict[gpu_id, TaskInst]
-        self.task_queue_map: dict[str, TaskInst] = {}
+        # dict[gpu_id, list[TaskInst]]
+        self.task_queue_map: dict[str, list[TaskInst]] = {}
         self.task_lock = Lock()
 
     async def add_task(self, task: TaskWrapRuntimeInfo):
@@ -297,10 +302,10 @@ class TaskManager:
                     return False
             return True
 
-    async def extend_task_queue_map(self, task_queue_map: dict[str, TaskInst]):
+    async def extend_task_queue_map(self, task_queue_map: dict[str, list[TaskInst]]):
         async with self.task_lock:
             self.task_queue_map.update(task_queue_map)
 
-    async def get_task_queue_map(self) -> dict[str, TaskInst]:
+    async def get_task_queue_map(self) -> dict[str, list[TaskInst]]:
         async with self.task_lock:
             return self.task_queue_map

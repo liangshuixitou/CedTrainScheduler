@@ -22,7 +22,7 @@ class Worker(BaseServer, WorkerService):
         self.worker_info = worker_args.worker_info
         self.master_info = worker_args.master_info
 
-        self.node = Node()
+        self.node: Node = None
         self.node_lock = Lock()
 
         self.executors: dict[str, Executor] = {}
@@ -36,10 +36,13 @@ class Worker(BaseServer, WorkerService):
         self.logger = setup_logger(__name__)
 
     def _init_node(self, worker_args: WorkerArgs):
-        self.node.node_id = worker_args.worker_info.component_id
-        self.node.ip = worker_args.worker_info.component_ip
-        self.node.port = worker_args.worker_info.component_port
-        self.node.cluster_id = worker_args.cluster_id
+        self.node = Node(
+            node_id=worker_args.worker_info.component_id,
+            ip=worker_args.worker_info.component_ip,
+            port=worker_args.worker_info.component_port,
+            cluster_id=worker_args.master_info.component_id,
+            gpus={},
+        )
 
         # init_gpu
         self.node.gpus = {}
@@ -72,13 +75,14 @@ class Worker(BaseServer, WorkerService):
         except asyncio.CancelledError:
             self.logger.info("Heartbeat daemon cancelled")
         except Exception as e:
-            self.logger.error(f"Heartbeat daemon error: {e}")
+            self.logger.exception(f"Heartbeat daemon error: {e}")
             raise
 
     async def _heartbeat(self):
         task_record = []
         for executor in self.executors.values():
-            task_record.extend(await executor.get_task_record())
+            gpu_task_record = await executor.get_task_record()
+            task_record.extend(gpu_task_record)
 
         task_queue_map = {gpu_id: executor.task_queue for gpu_id, executor in self.executors.items()}
         response = await self.worker_client.register_worker(self.node, task_record, task_queue_map)

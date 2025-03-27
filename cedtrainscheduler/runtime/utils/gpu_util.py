@@ -2,12 +2,8 @@ import torch
 
 
 class GPUUtil:
-    def __init__(self):
-        self.gpu_count = 0
-        self.gpus = []
-
     @staticmethod
-    def get_gpu_count(self) -> int:
+    def get_gpu_count() -> int:
         """
         获取当前节点可用的GPU数量
         Returns:
@@ -18,13 +14,13 @@ class GPUUtil:
         return torch.cuda.device_count()
 
     @staticmethod
-    def get_gpus(self, node_id: str) -> list[str]:
+    def get_gpus(node_id: str) -> list[str]:
         """
         获取当前节点上所有GPU-ID
         Returns:
             List[str]: GPU-ID列表
         """
-        gpu_count = self.get_gpu_count()
+        gpu_count = GPUUtil.get_gpu_count()
         gpus = []
         for i in range(gpu_count):
             gpus.append(f"{node_id}-gpu-{i}")

@@ -1,5 +1,4 @@
 from cedtrainscheduler.runtime.workload.workload import WORKLOAD_INFOS
-from cedtrainscheduler.runtime.workload.workload import WorkloadType
 
 
 class ScriptGenerator:
@@ -46,8 +45,3 @@ class ScriptGenerator:
         ]
 
         return "\n".join(cmd_parts)
-
-print(ScriptGenerator.generate_script(world_size=2, inst_rank=0, gpu_rank=0, task_name=WorkloadType.RESNET50,
-                                      master_addr="127.0.0.1", master_port="29500"))
-print(ScriptGenerator.generate_script(world_size=2, inst_rank=1, gpu_rank=1, task_name=WorkloadType.RESNET50,
-                                      master_addr="127.0.0.1", master_port="29500"))
