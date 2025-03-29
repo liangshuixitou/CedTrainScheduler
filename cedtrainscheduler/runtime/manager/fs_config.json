@@ -1,7 +1,7 @@
 {
   "tasks": [
     {
-      "model_name": "ResNet50",
+      "model_name": "resnet50",
       "task_type": "Image Classification",
       "batch_sizes": [
         16,

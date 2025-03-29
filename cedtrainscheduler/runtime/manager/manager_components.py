@@ -39,7 +39,7 @@ class ClusterManager:
 
     async def get_master_client_by_cluster_id(self, cluster_id: str) -> ManagerMasterClient:
         async with self.cluster_lock:
-            return self.master_client_record[self.clusters[cluster_id].master_info.component_ip]
+            return self.master_client_record[cluster_id]
 
     async def get_cluster(self, cluster_id: str) -> Cluster:
         async with self.cluster_lock:

@@ -10,7 +10,7 @@ from cedtrainscheduler.runtime.types.task import TaskStatus
 
 class TaskSubmitClient:
     def __init__(self, manager_info: ComponentInfo):
-        self.task_manager_client = TaskManagerClient(manager_info.host, manager_info.port)
+        self.task_manager_client = TaskManagerClient(manager_info.component_ip, manager_info.component_port)
 
     async def submit_task(self, task_meta: TaskMeta):
         await self.task_manager_client.submit_task(task_meta)
@@ -20,6 +20,7 @@ async def test_submit_one_task(task_submit_client: TaskSubmitClient):
     task_meta = TaskMeta(
         task_id="task-001",
         task_name="resnet50",
+        task_inst_num=1,
         task_plan_cpu=0,
         task_plan_mem=0,
         task_plan_gpu=1,

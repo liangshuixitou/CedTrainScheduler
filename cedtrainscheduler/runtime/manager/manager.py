@@ -70,35 +70,21 @@ class Manager(BaseServer, ManagerService):
             raise
 
     async def _schedule(self):
-        if self.scheduler.is_queue_full():
-            cluster_manager = await SchedulerUtils.build_scheduler_cluster_manager(
-                self.cluster_manager, self.task_manager
-            )
-            task_record = await SchedulerUtils.build_scheduler_task_record(self.task_manager)
-            task_queue = self.scheduler.task_queue
-            self.file_system_manager.set_file_system(FS_CONFIG_PATH, cluster_manager)
-            task_wrap_runtime_info, _ = self.scheduler.schedule(
-                SchedulerContext(
-                    current_time=time.time(),
-                    cluster_manager=cluster_manager,
-                    task_record=task_record,
-                    file_system=self.file_system_manager.get_file_system(),
-                    task_queue=task_queue,
-                )
-            )
+        if len(self.scheduler.task_queue) > 0:
+            scheduler_context = await self._build_scheduler_context()
+            task_wrap_runtime_info, _ = self.scheduler.schedule(scheduler_context)
             await self.task_manager.add_task_info(task_wrap_runtime_info)
             # gpu_id -> cluster_id
-            cluster_id = await self.cluster_manager.get_cluster_by_gpu_id(
-                task_wrap_runtime_info.schedule_infos[0].gpu_id
-            )
-            master_client = await self.cluster_manager.get_master_client_by_cluster_id(cluster_id)
+            cluster = await self.cluster_manager.get_cluster_by_gpu_id(task_wrap_runtime_info.schedule_infos[0].gpu_id)
+            master_client = await self.cluster_manager.get_master_client_by_cluster_id(cluster.cluster_id)
             await master_client.submit_task(task_wrap_runtime_info)
             self.logger.info(
-                f"Scheduler scheduled task {task_wrap_runtime_info.task_meta.task_id} to cluster {cluster_id}"
+                f"Scheduler scheduled task {task_wrap_runtime_info.task_meta.task_id} to cluster {cluster.cluster_id}"
             )
 
     async def handle_task_submit(self, task_meta: TaskMeta):
-        self.scheduler.submit_task(task_meta)
+        scheduler_context = await self._build_scheduler_context()
+        self.scheduler.submit_task(scheduler_context, task_meta)
 
     async def handle_master_register(
         self,
@@ -112,3 +98,16 @@ class Manager(BaseServer, ManagerService):
         for task_info in task_infos.values():
             await self.task_manager.add_task_info(task_info)
         await self.task_manager.extend_task_queue_map(task_queue_map)
+
+    async def _build_scheduler_context(self) -> SchedulerContext:
+        cluster_manager = await SchedulerUtils.build_scheduler_cluster_manager(self.cluster_manager, self.task_manager)
+        task_record = await SchedulerUtils.build_scheduler_task_record(self.task_manager)
+        task_queue = self.scheduler.task_queue
+        self.file_system_manager.set_file_system(FS_CONFIG_PATH, cluster_manager)
+        return SchedulerContext(
+            current_time=time.time(),
+            cluster_manager=cluster_manager,
+            task_record=task_record,
+            file_system=self.file_system_manager.get_file_system(),
+            task_queue=task_queue,
+        )

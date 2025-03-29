@@ -1,6 +1,7 @@
 import asyncio
 import time
 from asyncio import Lock
+from typing import Optional
 
 from cedtrainscheduler.runtime.components import BaseServer
 from cedtrainscheduler.runtime.components import ComponentInfo
@@ -145,7 +146,7 @@ class Master(BaseServer, MasterService):
         return {"status": "success", "message": "Worker registered"}
 
     async def _start_task(self, task: TaskWrapRuntimeInfo):
-        first_worker_ip: str = None
+        first_worker_ip: Optional[str] = None
 
         schedule_infos = task.schedule_infos
         for inst_id, schedule_info in schedule_infos.items():

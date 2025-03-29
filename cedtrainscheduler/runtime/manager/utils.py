@@ -29,7 +29,7 @@ from cedtrainscheduler.simulator.manager import ClusterManager as SchedulerClust
 class TypeConverter:
     @staticmethod
     def convert_runtime_gpu_type_to_scheduler_gpu_type(runtime_gpu_type: RuntimeGPUType) -> SchedulerGPUType:
-        return runtime_gpu_type.value
+        return runtime_gpu_type
 
     @staticmethod
     def convert_runtime_gpu_to_scheduler_gpu(runtime_gpu: RuntimeGPU) -> SchedulerGPU:
@@ -141,8 +141,10 @@ class SchedulerUtils:
         cluster_manager: RuntimeClusterManager, task_manager: RuntimeTaskManager
     ) -> SchedulerClusterManager:
         scheduler_cluster_manager = SchedulerClusterManager.from_clusters(
-            TypeConverter.convert_runtime_cluster_to_scheduler_cluster(cluster)
-            for cluster in (await cluster_manager.snapshot()).values()
+            {
+                cluster_id: TypeConverter.convert_runtime_cluster_to_scheduler_cluster(cluster)
+                for cluster_id, cluster in (await cluster_manager.snapshot()).items()
+            }
         )
 
         # build gpu_executor_map
