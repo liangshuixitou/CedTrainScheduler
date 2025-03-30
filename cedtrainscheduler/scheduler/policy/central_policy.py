@@ -72,7 +72,6 @@ class ResourceAffinityPolicy(CentralPolicy):
                         cluster_queue_time[cluster_id][0] + 1,
                         cluster_queue_time[cluster_id][1] + gpu_time,
                     )
-        # 选择gpu_time最少的前5名
         avg_queue_times: dict[str, float] = {}
 
         for cluster_id, (gpu_count, total_queue_time) in cluster_queue_time.items():

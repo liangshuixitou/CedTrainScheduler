@@ -8,7 +8,7 @@
       "name": "Scheduler Simulator",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/examples/simulator_example.py",
+      "program": "${workspaceFolder}/examples/example.py",
       "console": "integratedTerminal"
     },
     {
@@ -19,10 +19,14 @@
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
-        "--id", "manager",
-        "--ip", "127.0.0.1",
-        "--port", "5000",
-        "--scheduler-name", "sjf"
+        "--id",
+        "manager",
+        "--ip",
+        "127.0.0.1",
+        "--port",
+        "5000",
+        "--scheduler-name",
+        "sjf"
       ]
     },
     {
@@ -33,14 +37,22 @@
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
-        "--id", "master",
-        "--ip", "127.0.0.1",
-        "--port", "5001",
-        "--manager-id", "manager",
-        "--manager-ip", "127.0.0.1",
-        "--manager-port", "5000",
-        "--cluster-name", "local-cluster",
-        "--cluster-type", "cloud"
+        "--id",
+        "master",
+        "--ip",
+        "127.0.0.1",
+        "--port",
+        "5001",
+        "--manager-id",
+        "manager",
+        "--manager-ip",
+        "127.0.0.1",
+        "--manager-port",
+        "5000",
+        "--cluster-name",
+        "local-cluster",
+        "--cluster-type",
+        "cloud"
       ]
     },
     {
@@ -51,13 +63,20 @@
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
-        "--worker-id", "worker1",
-        "--worker-ip", "127.0.0.1",
-        "--worker-port", "5002",
-        "--master-id", "master",
-        "--master-ip", "127.0.0.1",
-        "--master-port", "5001",
-        "--gpu-type", "T4"
+        "--worker-id",
+        "worker1",
+        "--worker-ip",
+        "127.0.0.1",
+        "--worker-port",
+        "5002",
+        "--master-id",
+        "master",
+        "--master-ip",
+        "127.0.0.1",
+        "--master-port",
+        "5001",
+        "--gpu-type",
+        "T4"
       ]
     },
     {
@@ -68,20 +87,32 @@
       "console": "integratedTerminal",
       "justMyCode": false,
       "args": [
-        "--id", "manager",
-        "--ip", "127.0.0.1",
-        "--port", "5000"
+        "--id",
+        "manager",
+        "--ip",
+        "127.0.0.1",
+        "--port",
+        "5000"
       ]
     },
   ],
   "compounds": [
     {
       "name": "Manager + Master + Worker",
-      "configurations": ["Manager", "Master", "Worker"]
+      "configurations": [
+        "Manager",
+        "Master",
+        "Worker"
+      ]
     },
     {
       "name": "Manager + Master + Worker + TaskSubmitClient",
-      "configurations": ["Manager", "Master", "Worker", "TaskSubmitClient"]
+      "configurations": [
+        "Manager",
+        "Master",
+        "Worker",
+        "TaskSubmitClient"
+      ]
     }
   ]
 }

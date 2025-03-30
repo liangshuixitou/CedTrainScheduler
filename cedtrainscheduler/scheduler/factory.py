@@ -9,6 +9,8 @@ class SchedulerType(Enum):
     FCFS = auto()
     SJF_DATA = auto()
     SJF = auto()
+    DTSM = auto()
+    TIRESIAS = auto()
     CED = auto()
 
 
@@ -19,18 +21,21 @@ class SchedulerFactory:
     ) -> SchedulerBase:
         # 延迟导入以避免循环依赖
         from cedtrainscheduler.scheduler.ced_scheduler import CedScheduler
+        from cedtrainscheduler.scheduler.dtsm_scheduler import DTSMScheduler
         from cedtrainscheduler.scheduler.fcfs_data_scheduler import FCFSDataScheduler
         from cedtrainscheduler.scheduler.fcfs_scheduler import FCFSScheduler
         from cedtrainscheduler.scheduler.sjf_data_scheduler import SJFDataScheduler
         from cedtrainscheduler.scheduler.sjf_scheduler import SJFScheduler
+        from cedtrainscheduler.scheduler.tiresias_scheduler import TiresiasScheduler
 
         scheduler_map = {
-            "k8s-data": FCFSDataScheduler,
-            "k8s": FCFSScheduler,
+            "fcfs-data": FCFSDataScheduler,
+            "fcfs": FCFSScheduler,
             "sjf-data": SJFDataScheduler,
             "sjf": SJFScheduler,
-            "ced": CedScheduler,
-            "greedy": SJFScheduler,
+            "dtsm": DTSMScheduler,
+            "sc-rm": CedScheduler,
+            "tiresias": TiresiasScheduler,
         }
 
         if scheduler_name.lower() not in scheduler_map:
