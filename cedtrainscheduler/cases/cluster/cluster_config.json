@@ -7,972 +7,541 @@
         "cluster_type": "cloud",
         "nodes": [
           {
-            "node_id": "cloud_node_9962",
-            "cpu_cores": 64,
-            "memory": 128,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "725dd79b-abae-4013-b18d-75f9d35bbde0",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f82c3530-55d0-40c4-9a5d-60518f9c6888",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "85743585-275b-4478-a0ba-4db30125035f",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a9892801-3118-4e1e-bde1-6667b1e85e21",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "8706f63e-2168-4e74-b532-6b73655a4455",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "8b3d7040-4ba3-4f4d-b997-eed9e4e96c35",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7c4bcb09-9a24-4b43-bcb6-18bd80b6a378",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "1bd0953b-1f7c-49bc-bcdd-55a660e6a962",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.164.179"
-          },
-          {
-            "node_id": "cloud_node_9941",
-            "cpu_cores": 64,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "90487f3a-99d2-4f5f-a6c9-b3863f294c76",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "1472cd9d-7b56-49e8-9a8c-5332156a6265",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a798e3ee-84e3-459a-bcdb-d481fd7cffbb",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "00ea22cc-5a8e-4155-9c7d-dbc5e7aa63fc",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.47.48"
-          },
-          {
-            "node_id": "cloud_node_7313",
-            "cpu_cores": 48,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "bff87638-ecf1-4ac5-801e-2a382d5bb27f",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2677fc75-fdad-4496-9829-209a089e3b68",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "34eebdb0-0347-4cea-b05c-327e6656cffe",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "29083016-cc05-4fe4-a497-5b3d4ac6a02b",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.29.8"
-          },
-          {
-            "node_id": "cloud_node_6719",
-            "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "0cc87666-99f2-458a-b303-addf63afbe94",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "64d965e2-81d8-4dc7-aa2f-e6f7c2551d21",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2affca5e-0882-43f2-ad1e-970c29fb9361",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "0eaca569-9866-4139-b143-1645a7d0832d",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "08436684-4400-4002-9f28-e226e166c04c",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "bfcb423c-6359-44cc-959a-0f9ea23efa28",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "afd27c00-931c-46d9-b231-52edb5a5e937",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "c63b4b03-899b-44fb-b2a3-f74a6886a93c",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.200.243"
-          },
-          {
-            "node_id": "cloud_node_3645",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "76813dd2-ff1d-4b3f-abae-3e156f1aef96",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "451e0748-8bed-49ff-93a9-700accda0001",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "83f5eedd-9cd1-4076-972d-9f17a7052dfe",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "db3488f1-643f-4af0-b5a5-0829d4715e53",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "e3446d13-2af7-48fa-a286-57940c667076",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a06614b1-7af4-460e-b2ff-7fcd87c3e8ff",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "251fd2fe-da94-4f07-995a-6709a7ac1b79",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ad320e49-ea9b-421d-b893-f6bc3be4720d",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.4.32"
-          },
-          {
-            "node_id": "cloud_node_1349",
-            "cpu_cores": 48,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "e470fcf7-c64e-4b24-8c77-2f2ad168a6dd",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "6c0e014f-a2a4-4d60-9617-a2ecabfb356a",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "47158194-b876-411e-9d78-d25ec9cce28a",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "28cd852c-42f3-444b-9f4e-2d1dc7576f9d",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.106.153"
-          },
-          {
-            "node_id": "cloud_node_5574",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "cf2c9083-fade-49e3-bc8e-267fbe8ff995",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "dd5f1829-a85d-47ac-8d50-41ee9407bf43",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "851b5fdc-fde3-4513-8bc1-202fefede647",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "cb364a05-3cb6-4c0f-8d84-3f0fa4ea8382",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.231.143"
-          },
-          {
-            "node_id": "cloud_node_7848",
-            "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "5e8956a1-ae82-43f1-87df-52311e27aa3c",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "add36044-cad7-45e4-9b4f-fa2621752965",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "68faeef3-237c-4a4b-9cdd-c4e81abbadc4",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "6bc699db-f5c8-46f2-ba5e-309c897dba81",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "1690520d-1251-457d-acc6-6fc2a3ddd595",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "82d0f1ff-400b-41b2-bff9-e648e0366fa8",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d6561b01-b660-427e-90a0-3da70737c8b8",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "14dffc30-b253-4c9f-80d9-6581ce986c4a",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.13.77"
-          },
-          {
-            "node_id": "cloud_node_7110",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "c72ddb78-e552-4e25-b137-3ee59b0fcfba",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "e7b81b40-ab04-4fa7-9325-d17658216119",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "5ae6df6c-2397-4037-82a4-de95d3cb2e5d",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "066cbcfa-a76a-4067-ad00-a6da68f55145",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.84.214"
-          },
-          {
-            "node_id": "cloud_node_3622",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "8bc18d2b-a386-4032-b9bb-9d4f4f964bd6",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "fb10e879-1d0b-4013-b6aa-bb436e27b7b0",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "91f560dc-3230-40d7-bed8-0c4158d26df4",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "0627eafc-3b84-4397-8476-5a915eec46b1",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "e81c2572-ea42-4a96-a8c9-93d0ae21c982",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "3899626e-30ec-458e-acc2-717836cb748c",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "5c823dae-59fe-4375-9b89-25029ffbba06",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "53ff93fd-b959-458d-a519-19ff4283628e",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.244.168"
-          },
-          {
-            "node_id": "cloud_node_7310",
+            "node_id": "cloud_node_2617",
             "cpu_cores": 48,
             "memory": 512,
             "gpu_count": 4,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "c5c99b98-a90c-4280-b883-1a036b2bae92",
+                "gpu_id": "b2f2476f-6bdd-4384-8453-8d6afd322729",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "eced8594-c3a0-485b-a9d9-ca87544777c2",
+                "gpu_id": "5e8e4285-5d3f-49cd-9356-fdb1e88209fd",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "47cb5199-3ab7-44a0-a4c3-1f61025e3fa0",
+                "gpu_id": "e69f2faf-8ee2-4653-b350-d00f3588a28a",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "9e1264d5-54dc-4960-b628-6a2b51f96855",
+                "gpu_id": "17d8c09d-c794-4b9d-8d94-e7c1e3a1ae20",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.72.124"
+            "ip_address": "192.168.118.75"
           },
           {
-            "node_id": "cloud_node_1162",
-            "cpu_cores": 64,
-            "memory": 128,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "3465b6fb-baf5-4dfa-be0a-1984b2dc4bd2",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "c76cbe27-05b8-49d2-9cdf-cd7f68a4bede",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "611df2c0-5d81-4101-a3f5-058bd069f0ca",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "6f12efb3-b717-4cc2-8274-04d159326f36",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "6a640da1-ade5-4acb-95f4-1de0d51da899",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f6c4a24b-4694-4c8a-9544-257942bf264b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "1ab81653-fbd7-4f74-8146-986d99d74b2d",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "6fc00c6f-58f1-463d-b969-7aac49c7189d",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.102.74"
-          },
-          {
-            "node_id": "cloud_node_3667",
-            "cpu_cores": 64,
+            "node_id": "cloud_node_9625",
+            "cpu_cores": 32,
             "memory": 256,
             "gpu_count": 8,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "c3fc553e-82c9-4ea8-a1f6-c68aee8b33a3",
+                "gpu_id": "05e67c8f-6b8c-465e-97ea-cd643646f8b4",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "882eca76-1b1b-4643-9d7c-f36938f1adf2",
+                "gpu_id": "c001752c-3c14-4f2a-a22d-152e8017b55d",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "a6f67eab-4ced-488a-a161-2beaa91876be",
+                "gpu_id": "d4be6a61-de40-4446-9719-07a75d0f7052",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "94cbbbaf-3b40-4a9c-8240-e8ab7b11b308",
+                "gpu_id": "d69ce4f6-fc27-4717-b8fa-b2c21e86d87b",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "7c937adb-40cd-4654-8d31-46e1e4259b9f",
+                "gpu_id": "8108b059-4efd-4448-817e-af04cebb08f4",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "565b75e6-dde9-4baa-82c8-1fd9a7842abd",
+                "gpu_id": "89d8c672-3e4f-4a78-8dfc-676ba345a300",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "a137dbba-411a-4b60-9edd-9a8f7ec83248",
+                "gpu_id": "0088e62f-4849-4415-b592-e6b059385952",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "da43cfbb-cdc3-4124-ba54-641b49888862",
+                "gpu_id": "22fd29a2-f82a-48ff-af91-38654e8555ec",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.106.31"
+            "ip_address": "192.168.89.98"
           },
           {
-            "node_id": "cloud_node_5285",
+            "node_id": "cloud_node_3971",
             "cpu_cores": 64,
             "memory": 512,
             "gpu_count": 4,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "461e5915-1d0a-4fd6-92d5-28e821997bef",
+                "gpu_id": "2a342a78-6199-4114-892a-518eeb65b923",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "311007d3-d733-4daf-bd8e-bee89928ef50",
+                "gpu_id": "0e2df983-9902-4c90-a600-2d5afc63ff6b",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "dc895614-da5c-4221-aeb8-509d40add3ea",
+                "gpu_id": "c303088c-ec5e-47c5-930a-c8c8035b9064",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "5e8985eb-67f1-4c88-bcfa-06f80b34d980",
+                "gpu_id": "3dcd237b-9741-4faf-8e8d-5d72dc83d3bd",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.64.210"
+            "ip_address": "192.168.97.165"
           },
           {
-            "node_id": "cloud_node_5559",
-            "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "3708aa2e-e540-43cc-b09b-7e2f53f0aae1",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "e41bf5a3-1dc3-4be4-879f-4c1acbaa9310",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "005bda02-fbcc-416f-96a6-9903318770d6",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "02bda647-f144-49d7-a101-bd063b12c31d",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.241.154"
-          },
-          {
-            "node_id": "cloud_node_6321",
-            "cpu_cores": 64,
-            "memory": 256,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "7e806895-f881-4afa-97c1-bc05336d0025",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "29339dfd-6014-4cdb-bbff-7c8ad8869c55",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d61a66d1-65a8-4d31-994e-3c3649af4147",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "e151c893-1fae-4bea-a9ed-d70c2730d05e",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "4c8beef2-a4d1-4497-9ee1-278715f3785a",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "0ed65f39-d579-464e-8ef7-4b16fb25acbf",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "3b86560d-6527-41fb-8c66-5fdafebefc78",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "07b9ff30-3b5d-4269-9d3a-5224d1ed7467",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.210.7"
-          },
-          {
-            "node_id": "cloud_node_9915",
-            "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "2986a768-57b3-444e-953a-4d18ba1ee30d",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2b6ce2c2-193f-422c-bfac-9404fbf04c8c",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "981032b3-8e48-4d12-be90-5283fc6824f4",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f13db590-fd51-4b38-bf4d-fb9b96dbd561",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.170.181"
-          },
-          {
-            "node_id": "cloud_node_3819",
-            "cpu_cores": 32,
-            "memory": 512,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "b28b7e94-f05f-4737-8bae-ea8d2ff872ce",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "053d5921-2e7a-4c07-a014-a96d4c70b140",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "98e66e56-3411-4f04-b2fe-e4a37c2560a1",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "3b2b7971-d516-4af2-b017-738e2ccbdb7e",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.198.172"
-          },
-          {
-            "node_id": "cloud_node_4613",
-            "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "74b6f696-a9be-4cc1-874c-d4772c53f4fb",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "8415b53c-d881-4d49-8e6a-99095939244e",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "43b186b9-c5fd-4ffd-8550-28871443e1a5",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ebe26831-81fa-440c-840e-87f89132ce1e",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.136.145"
-          },
-          {
-            "node_id": "cloud_node_5688",
-            "cpu_cores": 64,
-            "memory": 512,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "db571e38-2066-4ed1-bc23-1608ad56f19b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a70a9531-91a1-458b-a06c-ce36d5d06b50",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "5e536d3e-cfd3-4707-aea3-4f1b845a535f",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "3423a159-771c-460b-97ec-008699c30f35",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "c80e5f4d-5317-43e0-84b8-0552c02bc573",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "4a458d21-5e4b-43ee-a824-f3b356cad755",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "78b1951c-9f01-42e3-9fad-d40d52b1520b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "38067e93-c9c5-44d8-a5ea-03ccc0b8375b",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.253.34"
-          },
-          {
-            "node_id": "cloud_node_2263",
+            "node_id": "cloud_node_3838",
             "cpu_cores": 48,
             "memory": 128,
             "gpu_count": 4,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "fba92ddf-cd6a-40d3-b5b6-68b4bbc6cb85",
+                "gpu_id": "9f6e5687-cd0d-4cf0-8452-ef9d7e4f1d4b",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "b1c5a980-5071-4010-a74f-1cc8f7cee559",
+                "gpu_id": "9babc9c4-d14e-462d-828c-6051eccb19d0",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "1f5878b5-e5fd-48cc-9c86-191d51ad0fba",
+                "gpu_id": "311ddca9-aaa4-41f9-8917-4b685fcb794d",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "6f98cb43-687b-4a55-bca5-8ce2f77f34f5",
+                "gpu_id": "1381e87b-affd-48bd-ace7-be67a585edd3",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.168.193"
+            "ip_address": "192.168.213.207"
           },
           {
-            "node_id": "cloud_node_4184",
+            "node_id": "cloud_node_6672",
+            "cpu_cores": 64,
+            "memory": 256,
+            "gpu_count": 8,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "9d4b8e3f-d9a1-4dc1-8df3-72fd3ebbb49b",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "0be2e904-8f97-42b7-a0c9-4ca9b7d91fa9",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "91cebce5-6afd-4542-a6f7-586701257b0f",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "b7b04c1a-b320-4e9f-bb01-da88982046e2",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "22ad2f43-a878-4622-b8ce-c51414650653",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "a7444597-955b-4356-8579-1e50c7ad2e52",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "258a0b2a-fc11-4502-94fa-c8f84de0ead0",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "e01c5980-eafc-469d-990b-20cfc4eeb408",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.113.125"
+          },
+          {
+            "node_id": "cloud_node_7968",
             "cpu_cores": 32,
+            "memory": 512,
+            "gpu_count": 8,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "226ca2eb-78b5-4577-9928-2fd04ccb13eb",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "26feea7e-3896-4590-bdfe-6b2917ddcbab",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "4399af6a-9bb1-44d9-ae50-e17650abe7e5",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "995e577f-0ebc-4dd3-b332-f0c7fa237962",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "b469b09b-f550-41e6-baf2-d5197b5c04cb",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "b8af71de-a5f9-4fc4-9ac4-de2d119a5b50",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "9fa7ad03-22d0-4487-9010-931ed88442c8",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "969a0450-9246-4834-9f69-4388ed0510c6",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.178.245"
+          },
+          {
+            "node_id": "cloud_node_7974",
+            "cpu_cores": 64,
+            "memory": 128,
+            "gpu_count": 4,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "2035440b-72b9-44a1-9aba-0b49d3a3c727",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "dd509b40-4f2c-496a-bfb4-bbb43b6e062d",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "cc7ddb8b-b226-4a5b-b3ed-cc736cb1e759",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "926d154d-22a8-4c51-94fa-5560e26f8e6f",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.211.97"
+          },
+          {
+            "node_id": "cloud_node_5263",
+            "cpu_cores": 48,
+            "memory": 256,
+            "gpu_count": 8,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "306c2230-8973-481e-8e43-19497b8e7909",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "d2b1e96b-d453-48cb-b7d4-64f728a6b7e0",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "315178bc-d39d-494b-916d-2a95e8fa19ef",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "dde6f510-0c36-47bc-982c-6f49b8363fdf",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "32992537-b3c3-47b4-be09-445be27beb68",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "b9f8e6b6-88a1-4059-aace-cb081cbf54c7",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "7d376e04-fc0e-4f2c-9718-6dbbb6cbdfe8",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "f58b0592-1f5e-4cd5-bc17-aaee03c35328",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.64.119"
+          },
+          {
+            "node_id": "cloud_node_4459",
+            "cpu_cores": 64,
             "memory": 256,
             "gpu_count": 4,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "f843cc10-a938-4cc0-9aa3-1d8142895c6a",
+                "gpu_id": "15629597-624c-4f4c-9238-f226ff9860aa",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "45154e3b-9319-4b16-8783-49ae03e25648",
+                "gpu_id": "2ecb562f-fde7-467a-a750-06f8e10a9792",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "452a4d55-1bfd-4da2-b416-229701a0a85e",
+                "gpu_id": "edce333c-07a5-49a6-adba-b149c6f6e57f",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "6419dcd6-9792-49a7-ab74-c6af744dfa38",
+                "gpu_id": "594a3eff-a7e6-415e-ad28-67cca068f1be",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.254.5"
+            "ip_address": "192.168.192.56"
           },
           {
-            "node_id": "cloud_node_5707",
-            "cpu_cores": 64,
-            "memory": 128,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "ede0a2f7-227c-4b63-9f80-7758b0ec3fed",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "90ef17c0-0bea-4fbb-92a3-9a81223e8149",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "6f7cfdf5-0f18-42aa-9684-3fc74fd6e21d",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f1ff26a1-a82d-426e-8674-3c5823138a57",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "54a10b09-d411-4c87-80b3-8a64a8b719b5",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "59ba6b62-8f77-4a12-895c-3744ce5196ce",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d8acfb73-b124-4516-8042-466fc81ebfa4",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "cc2fbfc2-6dc6-498f-898b-f7ecf4fa04ef",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.154.14"
-          },
-          {
-            "node_id": "cloud_node_2545",
-            "cpu_cores": 64,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "0d34b9d3-dfcc-4198-97ae-27e2eb414e74",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "21f13781-2cf0-453c-b3a4-557a2e0f949e",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d290a5aa-108b-46c0-a470-d5bb9be42323",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2c5b41d2-98c3-491e-a21e-e81aba10beea",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.119.193"
-          },
-          {
-            "node_id": "cloud_node_4464",
+            "node_id": "cloud_node_8083",
             "cpu_cores": 64,
             "memory": 512,
             "gpu_count": 8,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "a13e9184-4ee5-42d3-883e-a63a5e5fbdb1",
+                "gpu_id": "96684ca5-9851-410a-9ba8-1cc80c33a4fe",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "b889f7ce-5569-46ab-b1cf-f122b4e1fa2d",
+                "gpu_id": "c550b9cc-9565-4f07-bdde-0dd33da792c4",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "35022684-0bfc-4e3b-8701-8a2e02767bc0",
+                "gpu_id": "1a54366c-4633-4ba8-ad66-5a0e6993dd0f",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "18aa05bd-6645-4399-ae41-6df2a774e3ba",
+                "gpu_id": "53d84f38-0104-4415-9e83-1996375958e3",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "0a377560-c5db-47c9-9526-c3a62201e8a8",
+                "gpu_id": "d5dc3e85-befa-4ac0-aded-355b6cb8ce91",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "b488ef12-d70d-44ca-8aaf-ee7dddea4209",
+                "gpu_id": "02a8be56-9854-4350-adfd-fd8dbcd5ead1",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "b663dd75-1b9e-435a-9d40-e2cc43bdc6e8",
+                "gpu_id": "8ec809c1-793f-4859-b36f-30d092ad878e",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "3d0b1e30-0b15-44b3-93aa-38a3eb2e71b2",
+                "gpu_id": "c4087b98-fc74-43dd-bb94-52db90d3f864",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.210.6"
+            "ip_address": "192.168.17.245"
           },
           {
-            "node_id": "cloud_node_7236",
-            "cpu_cores": 64,
-            "memory": 512,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "c276ff27-23e8-4ed9-92ae-8b48dbb723d6",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "284eb00f-5610-4515-a46c-d6dc0ae85ea5",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "885f9479-49f7-4ef7-af00-49d20ad937c7",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "b8d4b215-7c63-490d-ad9b-67da01bec5ac",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7e44a444-7976-4c84-beba-d1687a1e9cbd",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "54bdb420-0bf6-45f3-9c29-4bc1f22d5aec",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d29c1286-0178-4730-a1b0-f70ebc1681b0",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f343b74f-2467-410c-a180-ea8da5539a4d",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.53.24"
-          },
-          {
-            "node_id": "cloud_node_6327",
+            "node_id": "cloud_node_2718",
             "cpu_cores": 32,
+            "memory": 128,
+            "gpu_count": 4,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "fbf8445d-e0ca-42ab-80fc-8d03ebbaa119",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "c8571e0d-1895-427c-82fc-9e2fe5d0ff01",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "f75829fc-3811-40de-be1c-339828dd2d35",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "de67171d-dbcd-49d3-bc84-1da97421d557",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.58.104"
+          },
+          {
+            "node_id": "cloud_node_3430",
+            "cpu_cores": 64,
+            "memory": 512,
+            "gpu_count": 8,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "d8481fcd-0ccc-4624-9a3b-27d0b2bc5ac7",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "d25d9698-a836-4018-8c65-7555ee9dff7e",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "69471af2-b586-4796-b591-a65b25436374",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "965b2897-d480-4325-ace3-6b97c7fd3883",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "58d94845-da35-48d6-ada0-48d1cff40de7",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "085f977f-51c7-432a-8353-e987248a091a",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "8f4e7d30-cad5-40db-a565-d1017756d5ca",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "b208ca5a-4d59-4f1d-ac1d-882bcfd6f8f7",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.68.241"
+          },
+          {
+            "node_id": "cloud_node_6874",
+            "cpu_cores": 64,
             "memory": 512,
             "gpu_count": 4,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "dcf9232f-2ec6-4846-afda-92cca009b7b2",
+                "gpu_id": "ce0aee02-994a-46ee-a829-9eb4f345d50e",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "9964b58a-db50-4acb-a76d-9d43d3c796d9",
+                "gpu_id": "f734bdca-9b19-45d0-a1eb-dc50344704d2",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "a941c722-e9b4-4f4f-baab-90b7338f4a8b",
+                "gpu_id": "814ba1b0-7fe1-4dea-8d8e-4f8a4b4535ea",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "1591dc12-46b4-4843-a73b-80398aeba4bf",
+                "gpu_id": "7a7d9659-b21f-4cf9-8a41-6a87995b6bd5",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.93.35"
+            "ip_address": "192.168.78.249"
           },
           {
-            "node_id": "cloud_node_7831",
+            "node_id": "cloud_node_4331",
+            "cpu_cores": 48,
+            "memory": 128,
+            "gpu_count": 8,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "52092da2-dc04-423d-a14c-f5810e17ff3b",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "e52af4d3-13c2-4afc-98a6-b8ca3845d7bf",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "63799081-9d40-450e-80a4-1999ef8c934d",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "f770b8ba-be45-4e8b-b666-4bea37415f8e",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "0988e038-7caa-4fee-b8ab-ecddad391980",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "75e435b4-2b52-451f-8373-888d8601a41d",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "9efe87fe-3cfc-4fab-b31e-3e05725c3385",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "5744d447-5127-45cb-8faa-48a4c310ea9b",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.85.156"
+          },
+          {
+            "node_id": "cloud_node_3109",
             "cpu_cores": 48,
             "memory": 512,
             "gpu_count": 8,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "03d06aa9-cbe2-40ae-bfa4-5cab6bf56968",
+                "gpu_id": "7e40d2f5-8b46-4d23-99d1-cffbeef6f5f5",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "bb6f39c2-2fda-4b4d-8227-2065d9e5cf5d",
+                "gpu_id": "949ffe6a-e9d2-4cda-a5ce-f0c5843c74b1",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "f4041a02-85e4-48be-8851-b38deff04d23",
+                "gpu_id": "aeba9f99-a55f-47f9-a187-e773264839ba",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "505b749f-dcd1-48b2-93d7-a3d4f8a096d9",
+                "gpu_id": "975441b8-2b68-434e-bbab-a3d86ab5f0b4",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "f786e308-10c4-444f-8022-56727e935cb3",
+                "gpu_id": "fd5b4dc7-3a28-4018-a324-6712adad67df",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "083654a5-4d5a-4d93-8633-60c10bb02158",
+                "gpu_id": "9cbcc743-24a9-47f6-b558-4e9d409788ef",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "597326b5-b8af-4a75-9306-c140fca9d5b0",
+                "gpu_id": "43acdc85-f34f-4bed-8cad-a9e022225851",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "300d21d8-27ca-4ead-aff4-144178d90d6d",
+                "gpu_id": "03aababa-02f0-4a13-9dc6-e0ada6ea75ec",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.30.212"
+            "ip_address": "192.168.184.94"
           }
         ],
-        "intra_domain_bandwidth": 67058,
-        "inter_domain_bandwidth": 264
+        "intra_domain_bandwidth": 76862,
+        "inter_domain_bandwidth": 217
       },
       {
         "cluster_id": "cloud_cluster_2",
@@ -980,1042 +549,487 @@
         "cluster_type": "cloud",
         "nodes": [
           {
-            "node_id": "cloud_node_1133",
-            "cpu_cores": 48,
-            "memory": 256,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "fc81589d-c249-409b-b4ca-42fea4485bc0",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "33af084b-758b-4070-9510-b74d37102bc4",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "8e46a492-51bb-4952-bfa7-fc50330a44a7",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "02b3bf22-633b-4a9b-b1c1-34ad6658e2a8",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "344d7f23-da2a-448b-b087-4c323f6a33e3",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f094369d-e082-49bf-936d-d38f0c086773",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d57d0aeb-1ba4-427a-bc29-9273e71757ac",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2344c999-f8b5-417b-9e38-179ff2e53216",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.10.10"
-          },
-          {
-            "node_id": "cloud_node_1961",
-            "cpu_cores": 32,
-            "memory": 512,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "b2aa1bd2-2c43-4cac-a0d8-ec5aa074355b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ab8506aa-6a27-4b41-8ef3-7b70260199da",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "164788bf-4d0c-4a36-8f57-cf74c983fc9b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "151b5100-2c8c-4dc5-844d-e3493cce1485",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.70.89"
-          },
-          {
-            "node_id": "cloud_node_9693",
-            "cpu_cores": 48,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "195c6a6b-84df-45df-b2fb-791b84d5e7d9",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2c254f82-fcc6-4638-a871-c631afd1bda5",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "dd3e7bb4-7bef-4a58-a92d-716ee9cd1274",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ab6a666f-03aa-465c-84bf-4181f5568bab",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.213.30"
-          },
-          {
-            "node_id": "cloud_node_8947",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "e50f3743-a289-4e86-8515-323e2c8a080c",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "73cc56e1-ba02-44e1-940a-23d48189f318",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "5721a2b0-5089-4160-bfe4-21a0da43d146",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "6a917847-45ff-4762-b1dc-739e43c847b4",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "5a0dc1c4-c936-4fc5-be15-c00dc5dbca7f",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a18097e2-45cd-4885-97b8-7487330c2a5a",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "82592b80-309e-4cce-9621-41bee5d20deb",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7ab2bd35-5c18-4420-885b-a135a5f5c79d",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.64.173"
-          },
-          {
-            "node_id": "cloud_node_6457",
-            "cpu_cores": 48,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "8213f13a-cea7-4759-a09c-65d099cfc6ef",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "5518fd7b-e890-489e-898a-f2dea16e64ae",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a440dd16-bc94-412e-b71f-2419e475da32",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "8d1736f5-b2be-45d2-a24e-34c3d63e265c",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.82.202"
-          },
-          {
-            "node_id": "cloud_node_3454",
+            "node_id": "cloud_node_3959",
             "cpu_cores": 64,
             "memory": 128,
             "gpu_count": 4,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "6c2dfbc8-3135-4344-b958-32fe97e2d63f",
+                "gpu_id": "a5358abc-18b1-40b6-a2cc-426ecd538a49",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "2d676440-4b0d-403d-9e44-e7e1a7ee70c6",
+                "gpu_id": "accabbb8-ea1c-4014-ad44-2406c98e043f",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "2ebf917a-bba7-412d-853f-0ca745acbb6b",
+                "gpu_id": "618df4ed-060e-44dc-a222-91848a8cab6a",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "7cf86a59-bacd-4039-b247-7244db249118",
+                "gpu_id": "42ec5538-bb4c-420f-92f9-8bfde59becb0",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.39.22"
+            "ip_address": "192.168.32.104"
           },
           {
-            "node_id": "cloud_node_7544",
-            "cpu_cores": 48,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "a0ebc1af-506a-4c75-9182-553009a6a2bb",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7623fda0-67aa-4505-a073-bf5e392bb9a0",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ee726b29-031d-442e-b1e5-305e45142d50",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "e78dda36-8994-4fc3-a547-349dd9773657",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.160.42"
-          },
-          {
-            "node_id": "cloud_node_1819",
-            "cpu_cores": 48,
-            "memory": 128,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "8ba99649-861a-41b1-8985-1da4cf4c5408",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f8b526d4-24e5-48e3-9d4b-6e7d3083f729",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f03b2ec1-0c56-4c5b-8896-8ec35a7407a8",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ec832b46-a44c-41c4-928e-707de5683042",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "56d54f84-263a-4bd9-b12e-243e3a825044",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7786e28d-0c09-45e0-b1e1-df23e4f14a10",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7e7b54cb-102a-4b1e-88c7-372382173da6",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "b06f10f0-6d2a-4fc9-996c-34be937ac9cf",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.110.178"
-          },
-          {
-            "node_id": "cloud_node_5727",
-            "cpu_cores": 64,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "397bc3af-6e82-426d-8ad7-8531f8310672",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "218b8661-62dd-455e-8e3f-701407074030",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "1a4ae50e-230a-4970-a9f1-d23932233b8d",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d0a0d6e0-cf2f-4f85-bca4-07f1732d91d1",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.230.224"
-          },
-          {
-            "node_id": "cloud_node_3291",
-            "cpu_cores": 48,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "ea0b7393-c382-425c-b1fb-b03a7b31ded8",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "8e8dce26-4c85-4cb9-a6f1-722f77ae0c71",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "708e9194-55b4-4cb0-8e00-08587c7d6528",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7b14869b-f722-4315-91fb-a5cef67984b9",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.98.215"
-          },
-          {
-            "node_id": "cloud_node_5729",
-            "cpu_cores": 48,
-            "memory": 128,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "30201fed-ef30-465f-ab32-3bca94c9e104",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "00e5b86f-c307-4442-8104-6c4f38f83eb3",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "46c39c6e-6d31-4ed3-83f7-0b470bb560e0",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "c92b485a-ace5-422d-b83c-fafe1aa3c287",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "b6d03af9-b2e1-4338-9256-86adeaf6c209",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "775e4758-f92a-42cc-afc3-5084395b6d66",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "fe2c1d3e-34f8-48b3-ae20-da32ac6903c8",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "e386c05f-318b-48cd-bf43-d748793ef450",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.219.152"
-          },
-          {
-            "node_id": "cloud_node_5890",
-            "cpu_cores": 64,
-            "memory": 256,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "0b9c6e43-f661-4c06-a543-7b15b022b993",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7eeb52fb-6f70-4d74-a334-cec34cdd40c0",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "b5d4049e-cc0c-4353-ac68-9dd5b04fe817",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "e54745dd-10cf-4adb-b2a3-95bb3511480d",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "9b2c34de-1ba8-4eaf-9f00-6a93059a6fbf",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f5ad478d-08f9-4891-8da7-82d0723ede83",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ca85e8fc-1c80-47b7-9cb5-a8ac6bce2468",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "18927991-cd19-456a-8063-ac50bae2047c",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.181.141"
-          },
-          {
-            "node_id": "cloud_node_2244",
-            "cpu_cores": 48,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "54335105-699f-4bc8-8b6e-7b507e1ddad7",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "e851884f-5f51-4ec7-b316-407adda40d28",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2550a28b-5432-4caf-b88d-ced9916698cd",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7f2b6dfa-096e-43c7-a8a5-42afda47881e",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.73.53"
-          },
-          {
-            "node_id": "cloud_node_1802",
-            "cpu_cores": 48,
-            "memory": 512,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "482f604b-173b-4b81-ad3f-236762b558c4",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7c140dd5-d24a-4ab8-9aa0-069a2fbeee85",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "183ec340-b91e-48f9-8118-ca2692bd61e0",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "9803f1b6-2d29-414d-a7b0-4783d0dae157",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "c2b5f102-e321-497b-8057-abb2b49a403b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "60d82fcf-ce0a-4a54-bcee-c892947f6e30",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "79ea682a-c01b-477b-a7f6-3436c8df4897",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a01be943-5c2c-44e5-aa27-3ed8ca265c16",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.115.199"
-          },
-          {
-            "node_id": "cloud_node_5011",
+            "node_id": "cloud_node_7398",
             "cpu_cores": 32,
             "memory": 256,
             "gpu_count": 4,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "4afbab64-ef52-4e18-b3e2-a9d1c98cfb75",
+                "gpu_id": "681e5557-ee53-418a-9772-c93dde472852",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "5bbee2eb-8ce7-4d6c-b123-398d75b724bd",
+                "gpu_id": "a506e354-aec2-4c85-a7fd-d8497993e937",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "22c75d23-a6ce-4c81-bc29-0683d0c8ade2",
+                "gpu_id": "fabd52cd-5837-493d-b850-b3f8479e9f60",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "a1a8cc29-a6e7-422b-84a6-c674e5c8d88c",
+                "gpu_id": "0b48e03b-a270-4877-bb8e-6a83b2ab91ec",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.59.182"
+            "ip_address": "192.168.216.251"
           },
           {
-            "node_id": "cloud_node_2863",
-            "cpu_cores": 64,
-            "memory": 512,
-            "gpu_count": 4,
+            "node_id": "cloud_node_6643",
+            "cpu_cores": 48,
+            "memory": 256,
+            "gpu_count": 8,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "0fb4b98a-d023-425b-8601-3ff632f797f3",
+                "gpu_id": "8163138f-63eb-4a04-ba59-0941fcb9c4e5",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "4cfe6a6c-16a7-43f9-9a06-946d0245c11f",
+                "gpu_id": "8da66f04-f13e-437b-89d2-af6b31dfc7ab",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "c0714e0e-9234-415d-87e2-d2899fc1e526",
+                "gpu_id": "a1d142f9-86be-46a8-a3c4-e6681c5eebf7",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "f6bf454b-4ce5-4030-b90c-7abcd7133803",
+                "gpu_id": "9e413cf6-a7d5-4590-ad8a-36e081d01ffa",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "59cff5b7-6722-4d6f-8582-fba734f30233",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "68e79c97-5f82-4582-b5b8-ad8a345f5281",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "33196898-8ff5-4da1-95ac-bfa731aa0686",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "cd4a85a7-2ed9-447c-b6a2-f3bc6a81409e",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.133.3"
+            "ip_address": "192.168.58.238"
           },
           {
-            "node_id": "cloud_node_4699",
+            "node_id": "cloud_node_4823",
             "cpu_cores": 32,
             "memory": 512,
             "gpu_count": 8,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "be4fb5e5-b2bd-4df3-873c-1476751bb9bf",
+                "gpu_id": "8732e021-dc41-434f-8abc-3554aa027b4c",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "02088c4f-fd65-47a9-a1a3-d98fd5d477c7",
+                "gpu_id": "cbe3ff01-313f-4224-bd6f-7ef89482004c",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "0ece1d1d-28a7-425c-91fb-a4ddb4a699f9",
+                "gpu_id": "ae36ea38-c380-4d46-9787-cb4e2eb1f6af",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "fbd100c1-5b7d-41ee-b069-f176deedd8af",
+                "gpu_id": "ce75ef58-c28f-49f4-a707-1b4c1b4e4072",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "be89dba3-21ce-43b7-8ca8-6cd4702021b2",
+                "gpu_id": "b9ca23a8-d0d2-408c-835e-d766732e68f2",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "cd3c6752-83b5-440a-b2c6-e1a7ed9e7034",
+                "gpu_id": "882aa66f-358f-4832-a578-705d4afaff51",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "4f15fd2a-4956-4eee-a60d-c11f7a91a801",
+                "gpu_id": "b5724196-b832-42c5-89db-02e228e7a74e",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "ae599fb2-a492-41ca-9d04-88d83e1fdb31",
+                "gpu_id": "50e8cff3-bd73-4854-a7d7-5056dc2f4f7e",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.166.107"
+            "ip_address": "192.168.23.140"
           },
           {
-            "node_id": "cloud_node_7351",
+            "node_id": "cloud_node_5013",
             "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "3f9bbcb2-db69-4028-82e6-6e55b6c9f0be",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "3caa21b9-96d7-4bd9-9709-6cca62574c66",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d19031c8-8d14-435b-9819-5fea0ac45f01",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a48dada7-570e-4581-9fc6-3ca3774fe04c",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "86ff1779-70f2-41ce-854e-3132c1cd0e12",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "575ee235-ec2d-45a6-a275-692b9e1bc5a5",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7daf0e35-e761-4f8f-823b-6dfc4a838e17",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "b8667e70-71f5-4f5d-87ff-44439b46e9d4",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.219.42"
-          },
-          {
-            "node_id": "cloud_node_6010",
-            "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "db6d36e9-e639-43f7-9d5b-db0a6b587489",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "5fc7fee8-17c5-4886-a507-e8948bd22cb0",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "359c852c-5e09-4634-99a8-45cf0c4f02a5",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "6d3a949c-52a7-4602-8ca7-f5eca68ffa7c",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.96.95"
-          },
-          {
-            "node_id": "cloud_node_7839",
-            "cpu_cores": 64,
-            "memory": 512,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "1d909cba-94a9-45c9-a4c0-84a2fe2185af",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f8d5361f-fb82-42be-be50-20354f5b3bf7",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "12e1ce47-9111-4dda-9b20-62b89a4d615c",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ae6cac24-3e97-442b-9907-1d9a2086b100",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "f8da6293-05aa-4739-9160-8af7b7a35256",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "287e3846-0bed-4619-b8f1-106ebfdde18b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "1ac813be-b5c6-4ca5-8a8f-150008ade6fa",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "3266958c-e4cf-4a1a-a183-b306fe9dce5c",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.33.108"
-          },
-          {
-            "node_id": "cloud_node_3044",
-            "cpu_cores": 48,
-            "memory": 256,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "a095d06a-a5f3-4682-9a73-3b26236a085e",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d50ebd95-820d-4c85-b4be-52b4830c97eb",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d0ee4804-e916-41a2-9904-ce0b177bcac6",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d0fd87d6-eda8-42a1-a3f9-5c8d8e3179b1",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "901b4b12-d4d1-4475-83d7-90701fea7b0b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "6ee8e58d-db9b-49e3-a368-a233f1039994",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "54a34a7c-3887-4ac2-9558-554ff7609431",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "7dce3406-452d-4b0a-b6ec-7ba9f8666816",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.92.161"
-          },
-          {
-            "node_id": "cloud_node_4266",
-            "cpu_cores": 48,
-            "memory": 512,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "2d2b7dfd-617b-466f-a3aa-14d822837afe",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "44211706-53d1-401a-8159-8eeee6b7eb5a",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "5037e64a-6ca2-424e-921c-b9f1a50fe2a7",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "519b0541-af68-4def-8db0-6b78b7729c21",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "e7de0959-bdfb-4afc-a495-2c756a5d6b68",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a214cf07-1b73-47fb-b62e-2693ca42e106",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "d626d4f1-15ec-4e18-95f6-2ac2f01917f3",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "1d764c6c-f6cb-416b-96fc-02ca9f4e3216",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.176.189"
-          },
-          {
-            "node_id": "cloud_node_3863",
-            "cpu_cores": 64,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "1a7067aa-5a38-4942-a477-e76173433ee4",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "c88c630e-cab0-449a-b3a4-44f1434546dd",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "dc03443d-459d-4d44-bdfc-1f8b8b0622e7",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a185cb12-4e20-4f36-99da-8dcc1131b535",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.148.51"
-          },
-          {
-            "node_id": "cloud_node_9145",
-            "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "811ad89a-3865-47be-a7f6-e8abba974313",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "5193d54b-0593-4fa2-9cd1-0968a4eb4054",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "452a389d-44e7-474f-a817-ba44c562d5cf",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2c816756-0b33-4355-8949-4088876bb2a5",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.37.116"
-          },
-          {
-            "node_id": "cloud_node_5284",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "b0d22349-2d44-44a0-8fac-c232e78a475a",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2e8e94ca-d610-41af-8704-45b3a01ab1ba",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "cdecf179-6a34-4b2f-aed8-6eaa3068301e",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ac169c23-f389-487b-a3e0-c56816017741",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.221.13"
-          },
-          {
-            "node_id": "cloud_node_2517",
-            "cpu_cores": 64,
-            "memory": 128,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "6bb801e6-9529-4497-9246-55446477c60b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "fcfa25a5-3691-4022-8971-96c8b6e7595c",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2362ab21-1643-4a9f-b5ff-0869c0ff29a8",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "8493dac7-c77c-439e-bdd3-c39596bfd230",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "692ab951-d26a-4448-993c-2debcbc13010",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ba80dbde-8a7a-459c-ba39-47bd823b6230",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "5eb1f455-ecbe-434b-9066-ce902c89127a",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "458bf43e-d832-4023-87ac-d7cf0130a28b",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.21.10"
-          },
-          {
-            "node_id": "cloud_node_6538",
-            "cpu_cores": 64,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "7019387a-e384-4508-9147-417795620077",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ee000057-4a05-431b-a41b-bca45a0104d4",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "a572c24a-51f1-412c-81fc-bf14cd0536e1",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "06cb2ce6-1151-4b93-bb5d-6c75d21e2ef8",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.229.32"
-          },
-          {
-            "node_id": "cloud_node_6402",
-            "cpu_cores": 48,
-            "memory": 128,
-            "gpu_count": 8,
-            "gpu_model": "V100",
-            "gpus": [
-              {
-                "gpu_id": "46f52805-c148-40df-b662-81e7ac624a6b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "9edb050f-d4d5-4941-b0de-1432f18b0757",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "2293e8c0-aae3-4e61-8dee-9690368331e2",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "26716588-1832-4f77-a877-a304f3e39515",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "ce267509-3df6-4691-9c95-5315d5e5014b",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "1db7ef09-46d0-4e97-96f7-6ad2609b6781",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "1e2da8d4-9be9-45a3-a9a0-7f9abf6b7fcf",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "95f6cd11-f305-4931-979f-6e7cb1801a08",
-                "gpu_type": "V100"
-              }
-            ],
-            "gpu_memory": 32,
-            "ip_address": "192.168.217.244"
-          },
-          {
-            "node_id": "cloud_node_3425",
-            "cpu_cores": 48,
             "memory": 512,
             "gpu_count": 4,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "4b50cdd6-b747-4142-90a9-9ebddd0d1c21",
+                "gpu_id": "458ff1d2-4677-4655-b86b-d7f476d31030",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "d166b5bc-3e29-47d1-89f7-7056a12a5c45",
+                "gpu_id": "23aaf265-2b80-4618-9069-1218d9dd170c",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "70a97fcf-421d-488a-b245-76f19f1ccb1e",
+                "gpu_id": "3866556f-1cc7-4aef-86cf-a306984f2be4",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "35247253-c0b9-469c-8a5b-f48d34343cf1",
+                "gpu_id": "4b64ef70-cd27-4c46-b1ef-853ba6fe1497",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.97.218"
+            "ip_address": "192.168.249.9"
           },
           {
-            "node_id": "cloud_node_3175",
-            "cpu_cores": 32,
+            "node_id": "cloud_node_8940",
+            "cpu_cores": 64,
             "memory": 128,
             "gpu_count": 8,
             "gpu_model": "V100",
             "gpus": [
               {
-                "gpu_id": "2ba3bd22-c08d-4822-a19d-c03a21b923a2",
+                "gpu_id": "df35a0ef-6d19-458a-8c2b-870b16022aa4",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "a8214255-24e6-47fb-a097-cb6389f2ecbe",
+                "gpu_id": "02eff861-4fd7-4c6a-b7d5-5162bb7b9d5c",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "d351ea8c-7095-4393-8bbe-4c73cc1f5ed9",
+                "gpu_id": "293129f9-0eb1-4ff9-a2ac-bfc63d2b8660",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "7a59e3b5-2d0c-416e-9fcb-e56d95117c09",
+                "gpu_id": "5758c78c-e864-4e4e-b867-4707618eb49c",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "f480e97c-bd8c-4d8c-8867-76580a97a97c",
+                "gpu_id": "fabf8186-ee13-4b21-b421-66cc3a656098",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "b1258854-3a55-4eb5-b097-829c4d7784dc",
+                "gpu_id": "32065819-d6a0-4dc8-8926-fa99c86ec0b0",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "9812fbef-2f66-45e1-a427-234dae289895",
+                "gpu_id": "1a97f796-00ab-4ef4-bf13-ee09f167e0a1",
                 "gpu_type": "V100"
               },
               {
-                "gpu_id": "ea399f50-10a0-4a0b-a7c0-87c4a834ce82",
+                "gpu_id": "3ed6f4fa-17a2-4993-b65a-44dd92e30a8d",
                 "gpu_type": "V100"
               }
             ],
             "gpu_memory": 32,
-            "ip_address": "192.168.58.216"
+            "ip_address": "192.168.23.209"
+          },
+          {
+            "node_id": "cloud_node_2576",
+            "cpu_cores": 48,
+            "memory": 128,
+            "gpu_count": 8,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "9beea99c-cd47-4086-a37f-a7ad626b8e1f",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "e423d991-1127-4f11-8fd1-5bbedc4f8f64",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "388d5375-2f27-4183-ac62-f6ffc868e1d9",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "be8fe218-fc38-48a0-85ca-1883532d631e",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "02877ff7-964b-4e0a-981e-405199883265",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "d6ec6be8-5290-434a-a0ef-29fdce1c85c6",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "fe0e08a5-5db9-49c8-b21c-8217c1ddc966",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "a4060b13-86ed-45e6-b740-67649829f3cd",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.247.99"
+          },
+          {
+            "node_id": "cloud_node_6667",
+            "cpu_cores": 32,
+            "memory": 128,
+            "gpu_count": 4,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "dc397bb1-388f-4811-aafb-4bd66ade0323",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "d3620303-ca83-4191-a2ff-b3e626a89588",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "eb3bd427-030b-4844-8d68-5b916343ac7f",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "31c02de0-3bb7-47fd-92c7-3799a0b1556e",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.11.197"
+          },
+          {
+            "node_id": "cloud_node_4891",
+            "cpu_cores": 32,
+            "memory": 256,
+            "gpu_count": 8,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "74598a87-e07e-4b92-bd44-97b4c3657f7a",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "8dd7c703-7370-4280-9cdb-92c1b9941c67",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "fd736395-195c-46a6-99fc-64b9661df4c7",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "5f7cdd04-f7c0-48d3-ad39-24e6bc2a6228",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "a3037e6d-3a45-46ff-97d0-3780afd70879",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "1a4baadf-3409-4492-b34c-8a4be24a58ae",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "d9bbbaa9-300b-495b-b00c-e19e052674ca",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "ef36e7e9-c505-4331-b882-90e1d4bd82c1",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.247.167"
+          },
+          {
+            "node_id": "cloud_node_9039",
+            "cpu_cores": 64,
+            "memory": 128,
+            "gpu_count": 8,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "6a0afeba-b8b3-4610-836f-76cb94381fcb",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "8b275e17-ae38-4f11-a44b-f744aff21c72",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "8dd29704-f324-42c9-ba96-3a1d370e2732",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "336c9160-5e99-4ef0-9308-c5440ff1faaa",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "0f37dbf6-3254-4b48-ae98-ca90b42382c9",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "a6193323-6898-43a9-98ac-f46fcc813b4a",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "8460d1fe-60a7-4c9d-9030-fd3bccb99cc5",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "8b274fbb-2053-4071-ab92-ab63c8d39de9",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.167.225"
+          },
+          {
+            "node_id": "cloud_node_5601",
+            "cpu_cores": 64,
+            "memory": 128,
+            "gpu_count": 8,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "01d1bf45-cb6f-4d00-9c14-6acede9362af",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "f9245ad3-d79e-4b8d-9e0d-9baaccba4374",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "18a110eb-fc38-40eb-8cf1-cb1a4115ad59",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "5f6c623d-3f0a-4974-a37f-884dc11e53bb",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "1e044ba1-9bf5-4540-8ef1-1269a658122e",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "427ca920-fe84-4ed4-b263-54aa86ad5255",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "e1c8103e-d7ed-4243-84c5-15effd44c37d",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "b12d15a7-af45-4963-ad2b-486562855466",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.150.26"
+          },
+          {
+            "node_id": "cloud_node_4846",
+            "cpu_cores": 64,
+            "memory": 256,
+            "gpu_count": 8,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "e29d83e6-2dd2-4fbd-af85-316be98d17c0",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "5412d360-1e1f-4218-9b7a-755fce7eb5c7",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "287b3e69-a9aa-49a2-9353-5ff38c53641a",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "9c6eafdb-9655-40c7-9405-9e1925a35bbb",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "2bb2736c-233e-460b-b482-ce6c569bd96a",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "9cf6cc48-2aef-4a3a-ba02-6e57f54b5c09",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "58e011f3-f40d-4cca-a843-bdfe5b1232f7",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "0b4c5834-2667-42b8-9e4f-90094f991ecb",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.129.147"
+          },
+          {
+            "node_id": "cloud_node_2929",
+            "cpu_cores": 48,
+            "memory": 128,
+            "gpu_count": 4,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "6b2cccd3-13a4-4c06-8047-d6e9a84e9741",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "9cab7616-df10-474c-b99e-1b4ac4293f18",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "56f12c19-aea3-4c74-a894-f97990e84339",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "96867c25-c89f-4229-8cbb-5bcdb4564b8a",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.157.242"
           }
         ],
-        "intra_domain_bandwidth": 62290,
-        "inter_domain_bandwidth": 241
+        "intra_domain_bandwidth": 73757,
+        "inter_domain_bandwidth": 228
       }
     ],
     "edge_clusters": [
@@ -2025,246 +1039,119 @@
         "cluster_type": "edge",
         "nodes": [
           {
-            "node_id": "edge_node_4893",
-            "cpu_cores": 32,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "c5d21f8b-9a44-4b64-8d18-36ceda7fc6f3",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "47a293a4-6e5e-42e6-8d27-093f11bcdb47",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "ce2d150d-dd25-4ae2-abe2-679d2de41ecf",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "89525509-f372-44de-bb76-abf1bc15f37a",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.244.189"
-          },
-          {
-            "node_id": "edge_node_5874",
-            "cpu_cores": 24,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "d5d23114-dd9c-4665-a673-a849ab027c4c",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "580b4e20-11d9-42d1-98aa-52354734f1ff",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "df879c99-c396-43de-82a6-90a2196bb701",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "69321b40-97b1-4a63-91a2-7eec9d81e5c7",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.77.237"
-          },
-          {
-            "node_id": "edge_node_3155",
-            "cpu_cores": 32,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "cb9bcf84-8525-4af6-8bc2-c6da26dc0f56",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "93ca8659-6d23-4f0f-a3a5-adc2d106e385",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "45393629-417d-416d-9db3-adca4b609cc2",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "0b652cf8-0771-4933-8fdb-1f6fdb6d691b",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.156.75"
-          },
-          {
-            "node_id": "edge_node_9928",
-            "cpu_cores": 16,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "be5038c3-fc84-4f0c-b457-8303361a9dbf",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "36cdf5dd-4d53-44ea-bf9a-8cf8b2bbe2e7",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.204.7"
-          },
-          {
-            "node_id": "edge_node_1783",
-            "cpu_cores": 24,
-            "memory": 256,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "b0a2d1cd-d80b-4b34-98f0-cf1d8e583de1",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "abd12403-c64a-4b81-809f-aa09af7905c3",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.202.197"
-          },
-          {
-            "node_id": "edge_node_6381",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "7edaef6b-cc57-47df-90a8-566717f7c557",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "8585fc1f-716e-4e33-81c8-6e76d080a873",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.1.168"
-          },
-          {
-            "node_id": "edge_node_7633",
+            "node_id": "edge_node_5047",
             "cpu_cores": 32,
             "memory": 256,
             "gpu_count": 2,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "744acfa3-e35e-45dd-a0c9-68709b6b35d2",
+                "gpu_id": "13533ecb-f248-4368-aac3-997d660f3db1",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "e67fe1bb-1c9f-4106-9565-2d0abb589d8f",
+                "gpu_id": "2cc019dd-3438-4b17-8df5-3f909da4b3c2",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.79.4"
+            "ip_address": "192.168.155.120"
           },
           {
-            "node_id": "edge_node_2125",
+            "node_id": "edge_node_6469",
+            "cpu_cores": 32,
+            "memory": 256,
+            "gpu_count": 2,
+            "gpu_model": "P100",
+            "gpus": [
+              {
+                "gpu_id": "c4270f46-edaa-49b4-ba97-79952ac29b48",
+                "gpu_type": "P100"
+              },
+              {
+                "gpu_id": "08c4d25f-1fd5-41e9-a434-b73aa0bd42d3",
+                "gpu_type": "P100"
+              }
+            ],
+            "gpu_memory": 16,
+            "ip_address": "192.168.252.190"
+          },
+          {
+            "node_id": "edge_node_3104",
             "cpu_cores": 32,
             "memory": 64,
             "gpu_count": 4,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "a41a27e7-da58-4e3e-8a32-34a642b295fa",
+                "gpu_id": "9565dfb9-55df-43e2-a34d-846172bf0376",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "a7f271f1-4a1f-482a-8841-c36da5b79a3d",
+                "gpu_id": "29e0c1b1-8792-43e8-8676-065a12af2238",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "f9e81fef-8e40-4f4f-ac0e-5dfea0935627",
+                "gpu_id": "71bb1431-1526-47ec-8146-50a42e161f2c",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "9c37db12-77e7-43f3-89f2-cb6dfdb2d873",
+                "gpu_id": "8ed3ab70-eec4-480d-8aed-af8e02928cdd",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.227.64"
+            "ip_address": "192.168.143.210"
           },
           {
-            "node_id": "edge_node_2702",
-            "cpu_cores": 24,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "baff0a6f-3895-442c-9992-9ed8a7382360",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "5484a0bb-707a-4630-b19c-1db0ce03f962",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "9601cbc1-b2cb-4323-83d2-c27315ad8e8f",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "b53379b4-6362-4851-8c8b-75c62486b8da",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.141.200"
-          },
-          {
-            "node_id": "edge_node_3362",
+            "node_id": "edge_node_4219",
             "cpu_cores": 16,
             "memory": 256,
-            "gpu_count": 4,
+            "gpu_count": 2,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "c5dd7ce1-b408-4a2e-80d5-ebf1e298c49c",
+                "gpu_id": "6cf6615b-7d82-4352-8686-73588779f2f6",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "221b2d7b-86f7-4873-aca4-a6fa4b314585",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "80e8c28d-82f1-4cee-9404-424b7f6a774a",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "40a26072-ffad-4487-9cce-12843d358d69",
+                "gpu_id": "3a6ab658-fc5a-46a4-83cb-e4cff33c4036",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.5.82"
+            "ip_address": "192.168.150.210"
+          },
+          {
+            "node_id": "edge_node_4927",
+            "cpu_cores": 16,
+            "memory": 64,
+            "gpu_count": 4,
+            "gpu_model": "P100",
+            "gpus": [
+              {
+                "gpu_id": "0e6c3714-7ddf-49fb-863f-787c1390adec",
+                "gpu_type": "P100"
+              },
+              {
+                "gpu_id": "ee02aad3-0167-49a4-8440-b1211c8d2b7b",
+                "gpu_type": "P100"
+              },
+              {
+                "gpu_id": "8d6364f7-de0a-4f22-b563-d971effc6500",
+                "gpu_type": "P100"
+              },
+              {
+                "gpu_id": "8cbba4d7-b2ed-4002-a25f-fe1dbe94aeb7",
+                "gpu_type": "P100"
+              }
+            ],
+            "gpu_memory": 16,
+            "ip_address": "192.168.208.241"
           }
         ],
-        "intra_domain_bandwidth": 13786,
-        "inter_domain_bandwidth": 274
+        "intra_domain_bandwidth": 10827,
+        "inter_domain_bandwidth": 246
       },
       {
         "cluster_id": "edge_cluster_2",
@@ -2272,376 +1159,92 @@
         "cluster_type": "edge",
         "nodes": [
           {
-            "node_id": "edge_node_1531",
-            "cpu_cores": 16,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "16be35f4-7ab9-4513-8fe2-1373b296ef55",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "dbe3db7f-30c4-4d63-9ea0-55de9fc63366",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.46.204"
-          },
-          {
-            "node_id": "edge_node_3937",
+            "node_id": "edge_node_8270",
             "cpu_cores": 32,
-            "memory": 128,
+            "memory": 64,
             "gpu_count": 4,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "fbb23126-ea2a-49cd-80d5-53dc1b62d173",
+                "gpu_id": "f92c78f9-dd89-497c-9d4a-26109ef8c38f",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "a41c5a56-f632-4ff0-955f-a5966efe6def",
+                "gpu_id": "5e0343bf-51b3-4775-b443-5e46c6803187",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "a33c601c-4456-4df4-a18a-f29466b2fe96",
+                "gpu_id": "d1586332-c444-4b72-9a61-c74c6f0d12c4",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "719fdb21-5327-4bd0-bb60-9947c17a6ff6",
+                "gpu_id": "04dec507-ce1c-4ef2-b135-d5c839d7b980",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.118.145"
+            "ip_address": "192.168.92.203"
           },
           {
-            "node_id": "edge_node_4307",
-            "cpu_cores": 32,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "5f4ad03d-a39d-4106-b6c6-ffac07cf52c9",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "58c59317-4855-4c80-b79e-45d5eb744876",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.37.67"
-          },
-          {
-            "node_id": "edge_node_6080",
-            "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "ef192147-34e4-453f-8bdd-bdcd170e7db6",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "9ff1b873-9576-44a5-99bd-c48c574f8766",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "878dc5d8-a8a6-409d-997e-1b718b78aae4",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "3c181f81-0a3a-4510-afa0-e59b830e501f",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.110.75"
-          },
-          {
-            "node_id": "edge_node_5422",
+            "node_id": "edge_node_2031",
             "cpu_cores": 24,
             "memory": 256,
             "gpu_count": 2,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "5f0ca85e-f45c-45b1-8c78-873d502743a5",
+                "gpu_id": "fb4db3a9-430d-4f9a-97c3-b41849ea89f9",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "132b20cd-2424-44e5-b31e-0921830441e0",
+                "gpu_id": "343916d3-416a-4cd6-b3c5-8ffd9e3fb25e",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.155.180"
+            "ip_address": "192.168.156.132"
           },
           {
-            "node_id": "edge_node_6410",
-            "cpu_cores": 24,
-            "memory": 256,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "4cf040ff-e45f-4f7b-a75a-2b3cae4a38cf",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "40a1f840-cce7-4d8c-8050-0fb4b7cdd8e6",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.50.23"
-          },
-          {
-            "node_id": "edge_node_2285",
-            "cpu_cores": 32,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "b9dfb7fd-139b-4530-a6ff-b02c9da2c4a0",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "0e8ef83d-ecb5-429e-ba5d-3509710921fd",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "48cf6805-f1ac-4c39-b155-959682d4a95e",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "42a03bc8-a707-4025-8ae5-a4125704f0c0",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.9.48"
-          },
-          {
-            "node_id": "edge_node_2744",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "a52542cb-699d-40bc-8712-0da36968b239",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "c420c2fa-c95a-4595-81d1-7eefafe436db",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.63.44"
-          },
-          {
-            "node_id": "edge_node_3224",
-            "cpu_cores": 16,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "9331e226-dbf5-4947-8d37-b8a552fd8e5e",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "aa0e2659-becf-44d5-9fb6-1ffdf7b4a733",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "f2e9a3f7-5341-4a75-b47d-ca4c06c3d242",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "445c90fc-a397-4cce-a432-7fbd0eba565c",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.211.221"
-          },
-          {
-            "node_id": "edge_node_4283",
+            "node_id": "edge_node_3087",
             "cpu_cores": 24,
             "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "5190708e-1164-425d-b59b-6af9bd6e9b95",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "29647ee2-d7ad-4f7e-9d6a-c59cec744450",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "b2e44093-2dc9-4fa1-8efb-e1e2ed5411c2",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "35923340-8926-4229-8853-4901c33af118",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.4.1"
-          },
-          {
-            "node_id": "edge_node_8385",
-            "cpu_cores": 32,
-            "memory": 128,
             "gpu_count": 2,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "35d8cdc2-0fc7-4be0-9fe1-c6d0da15e2f6",
+                "gpu_id": "1ab98c1f-dbbc-48d4-9eab-cf48d6d54045",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "4f5f01ca-f2dd-4b4e-a0d0-b34cbbd540db",
+                "gpu_id": "fe0d80f4-8ac9-4449-8f6d-c7b0b539e827",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.142.189"
+            "ip_address": "192.168.222.254"
           },
           {
-            "node_id": "edge_node_1262",
-            "cpu_cores": 32,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "bbdda429-0f6e-4328-a11e-f873a6dd1b12",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "7230c444-7cad-40a0-b1c2-227961b7c3ef",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "77a24da5-07c5-4462-a486-bfd1dcbc829e",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "b92d6ce3-e9f4-4dd0-867f-36d95f038d95",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.96.156"
-          },
-          {
-            "node_id": "edge_node_4807",
-            "cpu_cores": 16,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "41306061-b628-4225-ae7f-75b639e11743",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "4084bd4f-0e95-4b6b-95e4-bd06f2079b0e",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.210.53"
-          },
-          {
-            "node_id": "edge_node_8699",
+            "node_id": "edge_node_6935",
             "cpu_cores": 16,
             "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "1d47496f-beb7-4afd-9faf-ceb0fbcd6bc6",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "2c27ee88-23d2-4b26-87d8-b5970259f661",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "9d2bc00d-ba63-44ba-8c74-5d27aadda2ad",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "5bfb93cf-9738-4452-8424-a53165ab3992",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.209.145"
-          },
-          {
-            "node_id": "edge_node_8017",
-            "cpu_cores": 24,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "adb4755a-2ec0-4244-a395-4ed4f7d5826c",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "eb776aa9-dbec-4f84-8b11-d9dec31a2e0b",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "c8f10a15-8d57-4897-b990-98f97379bca8",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "b560f89a-e75d-46c5-87fd-b802d3f4a91c",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.95.243"
-          },
-          {
-            "node_id": "edge_node_2944",
-            "cpu_cores": 32,
-            "memory": 64,
             "gpu_count": 2,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "d6dde3b4-c9c9-4052-876f-5fe22a30621f",
+                "gpu_id": "d814bf40-0f37-409d-b163-7497f3d5fa63",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "7de70f57-9be2-4892-b8d0-9d8a050beb2d",
+                "gpu_id": "06f85433-62cd-4f90-8e22-f2a0de5f92f6",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.31.46"
+            "ip_address": "192.168.94.102"
           }
         ],
-        "intra_domain_bandwidth": 12327,
-        "inter_domain_bandwidth": 287
+        "intra_domain_bandwidth": 27609,
+        "inter_domain_bandwidth": 255
       },
       {
         "cluster_id": "edge_cluster_3",
@@ -2649,808 +1252,165 @@
         "cluster_type": "edge",
         "nodes": [
           {
-            "node_id": "edge_node_1374",
+            "node_id": "edge_node_1292",
             "cpu_cores": 24,
-            "memory": 256,
+            "memory": 128,
             "gpu_count": 4,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "2b68194c-0b78-49c8-805e-1b0f341e3e16",
+                "gpu_id": "4feb3e64-f4eb-4bbe-be91-ba57a314bb0a",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "019c9c39-21ae-4f98-99c1-e85081b02c08",
+                "gpu_id": "399d3f5f-0e99-4f4d-ab7b-839e29279998",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "3159a77f-383b-4caf-8e90-a529c04e05c5",
+                "gpu_id": "b1cb0433-fcbf-4cc7-b5bb-a571f8c785a4",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "9da4415d-66ec-4fd8-9109-32cb3f312669",
+                "gpu_id": "16a12ade-9f32-449f-9dfd-d316f51701cb",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.146.131"
+            "ip_address": "192.168.90.76"
           },
           {
-            "node_id": "edge_node_1392",
-            "cpu_cores": 24,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "1f6e2dc9-057c-4130-b2c2-f7b345f1c399",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "6f2c4155-4327-4d29-9078-cf5222515aa2",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.28.224"
-          },
-          {
-            "node_id": "edge_node_8419",
+            "node_id": "edge_node_8479",
             "cpu_cores": 16,
             "memory": 64,
             "gpu_count": 2,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "b003017c-c947-4e66-91da-0ff1680d7337",
+                "gpu_id": "9d4c4bf5-3f3e-4bdf-92ca-08ba0aca099a",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "e2728dcb-403f-4678-ab2d-9405558976bd",
+                "gpu_id": "4d34650b-ba43-4dac-987e-6541262feb6c",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.180.47"
+            "ip_address": "192.168.176.210"
           },
           {
-            "node_id": "edge_node_6868",
-            "cpu_cores": 24,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "3dee9a51-b801-497d-9dcb-6fbd3293c433",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "6fa8aa1d-a2a1-4082-ba27-7e1952d384ea",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.156.80"
-          },
-          {
-            "node_id": "edge_node_6009",
+            "node_id": "edge_node_8931",
             "cpu_cores": 32,
             "memory": 256,
             "gpu_count": 2,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "79815762-3e9b-4b23-86ba-4f2e1b63cf39",
+                "gpu_id": "44e8dad2-a5c9-45f3-9c1b-9ad1c4e65e6f",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "3f5be89b-e39d-4c43-afe9-a8e92d4f69f6",
+                "gpu_id": "102c1b01-65d3-4b19-a9bd-36b87db7f6f3",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.69.30"
+            "ip_address": "192.168.213.38"
           },
           {
-            "node_id": "edge_node_8771",
+            "node_id": "edge_node_1272",
             "cpu_cores": 16,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "59280546-c4e5-40b5-a744-cc2b50914a65",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "8fde7e5a-d1fd-4d99-ad10-87cbee30aed3",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "197a74b6-fe14-4b55-951e-9cc7f8fe03ea",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "96d827f7-66de-4f54-bf46-713b753cdc57",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.127.121"
-          },
-          {
-            "node_id": "edge_node_4614",
-            "cpu_cores": 32,
             "memory": 64,
             "gpu_count": 2,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "230034ac-d6de-4890-adb4-3eb43ea42e0f",
+                "gpu_id": "6e06b13d-29dd-46cd-9710-2ea5eb7d83ed",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "0a4efe70-b1fe-49c6-8e71-42fa915b3dbe",
+                "gpu_id": "e0b78e8e-dd00-4042-9234-bb87d641ef83",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.71.229"
+            "ip_address": "192.168.18.185"
           },
           {
-            "node_id": "edge_node_7792",
-            "cpu_cores": 32,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "b13bde2b-aebc-4d95-8089-38c1f7641e2e",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "206233b6-977c-4929-af14-5289f7780180",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.88.124"
-          },
-          {
-            "node_id": "edge_node_6970",
-            "cpu_cores": 24,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "e99e3b72-4fe0-4376-b527-b6ffcaa5aa06",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "f3564937-316d-488d-b8a4-133dea208cf7",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.80.48"
-          },
-          {
-            "node_id": "edge_node_7935",
-            "cpu_cores": 24,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "26ef665d-3c39-487b-9ddd-f8bf045f13ca",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "299fe981-8fe4-4b4f-8494-01d6bdbeef95",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "8493b5ba-6262-48ee-a98b-e55928f1c5ab",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "2182f840-73f9-43f7-b4dc-02b15c7cd0ff",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.67.142"
-          },
-          {
-            "node_id": "edge_node_8955",
+            "node_id": "edge_node_8482",
             "cpu_cores": 32,
             "memory": 256,
             "gpu_count": 4,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "aa39c89e-b90b-4116-a114-148452e30635",
+                "gpu_id": "92f13983-49b0-4b1f-8cfa-5205ce7f935a",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "363bed72-c055-4f36-a476-261f59318c33",
+                "gpu_id": "55853fa4-0738-42c0-917e-5e349e647219",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "64b37ab5-845e-44f9-a02a-096dbc1359e1",
+                "gpu_id": "940c39a3-0ddd-472f-8528-d691b4843b27",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "52b542fd-00ed-4763-9d52-6cae094b56fb",
+                "gpu_id": "435e60ee-3c8f-4152-b4fc-836f61a85e5f",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.13.224"
+            "ip_address": "192.168.224.69"
           },
           {
-            "node_id": "edge_node_9212",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "edc2d42c-5583-47b1-bd32-4a792abfcbb9",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "fc8208f1-eb04-450f-9069-c9c4c8d9e9ef",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.156.234"
-          },
-          {
-            "node_id": "edge_node_8603",
-            "cpu_cores": 24,
-            "memory": 64,
+            "node_id": "edge_node_9102",
+            "cpu_cores": 16,
+            "memory": 256,
             "gpu_count": 4,
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "d39eecb9-4a52-4ebc-81cb-d6091d629b35",
+                "gpu_id": "a09cf2d5-a36a-4df7-96d1-e0cb4ca9d362",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "9d3b1bad-73bb-4139-a44c-1c2930f0d909",
+                "gpu_id": "58f4d522-6135-4321-82a8-6b85679fd8a3",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "796829dd-a8ec-4a79-95b9-ca0826228f44",
+                "gpu_id": "66c89a52-0f58-4fd9-8cbb-3836bc589ad6",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "a3a37a93-7e3e-4c2c-a742-9ca0f140b2bd",
+                "gpu_id": "eda29a49-70cb-42ca-89c6-425e5308dcd0",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.91.231"
+            "ip_address": "192.168.195.177"
+          },
+          {
+            "node_id": "edge_node_1942",
+            "cpu_cores": 24,
+            "memory": 256,
+            "gpu_count": 2,
+            "gpu_model": "P100",
+            "gpus": [
+              {
+                "gpu_id": "347f955b-a72c-47e6-ac78-ee793321efd8",
+                "gpu_type": "P100"
+              },
+              {
+                "gpu_id": "68a4dbb8-8a06-46c6-9573-f77f8f9e4c46",
+                "gpu_type": "P100"
+              }
+            ],
+            "gpu_memory": 16,
+            "ip_address": "192.168.32.123"
           }
         ],
-        "intra_domain_bandwidth": 27205,
-        "inter_domain_bandwidth": 287
-      },
-      {
-        "cluster_id": "edge_cluster_4",
-        "cluster_name": "EdgeCluster-4",
-        "cluster_type": "edge",
-        "nodes": [
-          {
-            "node_id": "edge_node_7038",
-            "cpu_cores": 24,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "97735b80-3eab-41a2-a772-f484d478d4a8",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "20c943dc-7486-44aa-9656-42562693ef15",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "e914207f-9c2d-487a-8c6b-291aabd52470",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "2db7f5ed-3709-42e4-b7b9-6c7f5c1993b0",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.157.252"
-          },
-          {
-            "node_id": "edge_node_3040",
-            "cpu_cores": 32,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "988a3db2-66a3-450b-ac55-6752a19881fb",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "6d81ed4b-3824-4369-94be-b4fe0e399f97",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.89.244"
-          },
-          {
-            "node_id": "edge_node_8813",
-            "cpu_cores": 32,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "eb735f76-b28a-4a61-969b-dc58f946cbce",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "fcdf7598-bd40-410b-8a96-9a8b5fd00fae",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "197e3518-37e8-4771-a20a-27ef633e3cf3",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "bffadca0-90ad-4a5f-8ffc-7f8ccd2c8f69",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.82.224"
-          },
-          {
-            "node_id": "edge_node_1960",
-            "cpu_cores": 24,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "e39ba64f-dad9-4e73-93fa-cece5689d327",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "2c89d69a-57f7-4c8a-97fc-b2f38e4e49fb",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "5f0a0a8b-82f0-4432-bedf-28a1439487f4",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "0542db05-4c7b-48c1-b771-d9472d3f281d",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.80.115"
-          },
-          {
-            "node_id": "edge_node_8860",
-            "cpu_cores": 32,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "2b34ca56-c6ee-4a20-8e4f-a0a9be914fb9",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "8c7004b2-3640-4ff0-8060-62e1c0e2bb31",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.83.105"
-          },
-          {
-            "node_id": "edge_node_2596",
-            "cpu_cores": 24,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "aedb2787-3691-4af7-b3d2-9d6133aadd82",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "00397275-b6cb-4b38-986b-82522cb7ca42",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "da467fe4-5a2e-4b41-9e02-b5c8e9f9d713",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "04d57dc4-7a3c-4ecc-bfeb-5b5c16c05ea1",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.177.182"
-          },
-          {
-            "node_id": "edge_node_2596",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "af6c1278-c6e4-406c-adc6-22e92f4c6248",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "6bfce369-e0f0-49ca-91fc-8fafd90082d0",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "e7837b94-76d3-47f3-9b5f-798d11ff65e2",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "bd944fbe-3a57-47e8-af70-012ebd34f778",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.54.157"
-          },
-          {
-            "node_id": "edge_node_8114",
-            "cpu_cores": 24,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "e5ca8fbb-3f6b-4e65-a400-d84137385f7e",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "a0cb5258-a997-42a3-ae3d-4c7e00b98cb5",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "a35838d5-6c30-4ed3-8abb-7a04ffc13a90",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "53f283dd-a371-474f-8615-d2467598e86d",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.233.66"
-          },
-          {
-            "node_id": "edge_node_2461",
-            "cpu_cores": 16,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "9d7c4479-8709-4e20-b247-acf11e3cadb5",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "1f8aa71d-9c8f-494d-bdd1-f72595c07900",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "aaaddfcc-2a63-4561-a091-f5314d2234e9",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "43ffc34a-82a6-42e0-ba59-cef15aa0088b",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.138.32"
-          },
-          {
-            "node_id": "edge_node_2628",
-            "cpu_cores": 16,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "9d14ac7b-53e0-451d-a114-a09e28385c20",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "8ff6a0a4-a08e-46f5-acde-d7a4ad948d6e",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "7d79d25a-3d98-42a3-992d-09bad9fd3eed",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "19ba29d6-42c3-4ae2-8324-845d1d673da3",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.155.27"
-          },
-          {
-            "node_id": "edge_node_9984",
-            "cpu_cores": 16,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "f67d9f7a-df04-4a68-9108-81907f4a8764",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "70a41fe6-e1a8-406c-b5e1-fcb47445ad9f",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.41.95"
-          }
-        ],
-        "intra_domain_bandwidth": 36792,
-        "inter_domain_bandwidth": 205
-      },
-      {
-        "cluster_id": "edge_cluster_5",
-        "cluster_name": "EdgeCluster-5",
-        "cluster_type": "edge",
-        "nodes": [
-          {
-            "node_id": "edge_node_4835",
-            "cpu_cores": 16,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "6e95f2c7-4274-40a9-b687-a4400cac6e34",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "1b991bc3-503d-4ad8-a3a3-5712ee90bda3",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "dc27d7a0-c232-411d-9614-b1212e505d25",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "493059af-3151-4330-ad9e-60645e5ff6ef",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.62.130"
-          },
-          {
-            "node_id": "edge_node_9565",
-            "cpu_cores": 24,
-            "memory": 256,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "07848cb5-3a28-4985-b6db-d8fe0ae9c7a2",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "0b1aa351-e401-4d7c-a7a2-74052a2504c6",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.252.193"
-          },
-          {
-            "node_id": "edge_node_6123",
-            "cpu_cores": 16,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "62f329d5-dabd-43ef-9bd6-917ce3070e42",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "ab59c2fa-0eab-4bfc-8b00-7eb8b694d117",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.122.189"
-          },
-          {
-            "node_id": "edge_node_4701",
-            "cpu_cores": 24,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "c4bd704f-00df-4c65-88c5-6c9355dea72e",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "28036e01-44dc-4f25-8155-71e13e8d8a03",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.191.119"
-          },
-          {
-            "node_id": "edge_node_3797",
-            "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "e3e8bda4-7ca5-4c32-953c-a72ea8cc95c4",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "a879b1ea-f325-4d90-af87-57286ca3b66f",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.138.196"
-          },
-          {
-            "node_id": "edge_node_5537",
-            "cpu_cores": 32,
-            "memory": 256,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "2d91068e-c90b-4cc8-986b-22e52649c4b5",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "8a37a6a7-d267-4e33-9645-83933c94272a",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.11.109"
-          },
-          {
-            "node_id": "edge_node_7326",
-            "cpu_cores": 32,
-            "memory": 128,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "549e38f8-55d2-4415-89ac-9bee589357fe",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "16feba10-58a4-4aea-8cb5-110637be4a42",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "30f3d55b-6995-4198-a856-401c81a2467b",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "3b32dbf4-9b86-4629-bf16-6106e6df6066",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.155.36"
-          },
-          {
-            "node_id": "edge_node_2728",
-            "cpu_cores": 16,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "7ee2a455-0159-41cf-9812-bdeb0b68c1e3",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "f0a63b43-6f37-4edd-8461-02d2198addc2",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.233.250"
-          },
-          {
-            "node_id": "edge_node_6186",
-            "cpu_cores": 24,
-            "memory": 64,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "f188319f-3fc4-4a2e-ac1f-3d203c69e670",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "e778d9b1-a337-49ab-a08b-9743e7059925",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "9c8cbe80-fe4a-4983-bea2-4676d100292f",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "0f47a8d8-dc2c-4624-99d4-a27ac7bcbd13",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.46.69"
-          },
-          {
-            "node_id": "edge_node_1877",
-            "cpu_cores": 16,
-            "memory": 256,
-            "gpu_count": 4,
-            "gpu_model": "P100",
-            "gpus": [
-              {
-                "gpu_id": "8b887e85-b651-41d9-9906-f4b89e2a383e",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "f4e393b1-e399-43f3-9009-3fe4490224c6",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "3f3c8a74-4f9f-4565-b7ee-729b97008bb5",
-                "gpu_type": "P100"
-              },
-              {
-                "gpu_id": "7a583f5b-75cb-4826-84ab-5d6f8804ceb8",
-                "gpu_type": "P100"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.102.178"
-          }
-        ],
-        "intra_domain_bandwidth": 29357,
-        "inter_domain_bandwidth": 256
+        "intra_domain_bandwidth": 35421,
+        "inter_domain_bandwidth": 215
       }
     ],
     "terminal_clusters": [
@@ -3460,167 +1420,76 @@
         "cluster_type": "terminal",
         "nodes": [
           {
-            "node_id": "terminal_node_7961",
-            "cpu_cores": 8,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "1a7aefa7-8dc6-4486-951d-202e37c7a63c",
-                "gpu_type": "T4"
-              },
-              {
-                "gpu_id": "69fa8a71-b55e-4fe3-bb3e-4daab8917153",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.197.87"
-          },
-          {
-            "node_id": "terminal_node_8397",
-            "cpu_cores": 16,
-            "memory": 128,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "b3e54429-e613-4b0a-8c05-3ea6a29b433a",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.74.70"
-          },
-          {
-            "node_id": "terminal_node_7547",
+            "node_id": "terminal_node_8925",
             "cpu_cores": 16,
             "memory": 32,
             "gpu_count": 2,
             "gpu_model": "T4",
             "gpus": [
               {
-                "gpu_id": "f98637b9-6484-4eda-bd44-f9d7e19d024f",
+                "gpu_id": "aea678b4-255e-4b65-a4cb-429e3dc87c54",
                 "gpu_type": "T4"
               },
               {
-                "gpu_id": "c7f2bdb7-7aa3-41fd-974c-e0df4c8d07db",
+                "gpu_id": "2cc22c72-8bfd-458d-a97c-2aa4a45a0f12",
                 "gpu_type": "T4"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.41.29"
+            "ip_address": "192.168.90.58"
           },
           {
-            "node_id": "terminal_node_3173",
-            "cpu_cores": 8,
+            "node_id": "terminal_node_5601",
+            "cpu_cores": 16,
             "memory": 64,
             "gpu_count": 1,
             "gpu_model": "T4",
             "gpus": [
               {
-                "gpu_id": "6ddfe660-9283-4e1f-9289-986c7e7bef45",
+                "gpu_id": "50fb9a9d-e00b-4947-98ab-9ba6aa965c11",
                 "gpu_type": "T4"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.125.154"
+            "ip_address": "192.168.94.225"
           },
           {
-            "node_id": "terminal_node_2067",
-            "cpu_cores": 8,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "c6e66a7d-ca10-44a5-93bc-9c7645f020ff",
-                "gpu_type": "T4"
-              },
-              {
-                "gpu_id": "e0c84e68-b595-4a4a-ba8c-fedf02f0f23f",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.236.196"
-          },
-          {
-            "node_id": "terminal_node_4405",
-            "cpu_cores": 8,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "e9c5db65-5245-4423-86f0-b83fb20f0c07",
-                "gpu_type": "T4"
-              },
-              {
-                "gpu_id": "436bf54f-b548-47b9-a50d-62bf77508a8c",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.94.252"
-          },
-          {
-            "node_id": "terminal_node_8832",
-            "cpu_cores": 8,
+            "node_id": "terminal_node_9898",
+            "cpu_cores": 24,
             "memory": 64,
             "gpu_count": 1,
             "gpu_model": "T4",
             "gpus": [
               {
-                "gpu_id": "9bf95c7c-fcf9-40ee-9cf6-eb4b99ddbe77",
+                "gpu_id": "dc7edf9e-fbdc-4d2e-9be9-76bb7b8d7e4c",
                 "gpu_type": "T4"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.55.126"
+            "ip_address": "192.168.70.130"
           },
           {
-            "node_id": "terminal_node_4584",
+            "node_id": "terminal_node_5744",
             "cpu_cores": 8,
-            "memory": 64,
+            "memory": 32,
             "gpu_count": 2,
             "gpu_model": "T4",
             "gpus": [
               {
-                "gpu_id": "3dc8f1e5-e7a2-4868-bb84-cbf7d64e5569",
+                "gpu_id": "9081a5b5-d61f-4fc5-9339-5a21fa04fbf2",
                 "gpu_type": "T4"
               },
               {
-                "gpu_id": "3bb48681-45f5-45fc-b9e9-d9ecac61e170",
+                "gpu_id": "c901fbaf-3351-4e2a-b935-7af290f283bd",
                 "gpu_type": "T4"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.3.44"
-          },
-          {
-            "node_id": "terminal_node_1824",
-            "cpu_cores": 8,
-            "memory": 128,
-            "gpu_count": 2,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "358b4e56-98fd-43ed-8937-55b4768e9808",
-                "gpu_type": "T4"
-              },
-              {
-                "gpu_id": "412c603c-a27d-42af-a8c8-328cefc891f8",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.8.160"
+            "ip_address": "192.168.148.205"
           }
         ],
-        "intra_domain_bandwidth": 5713,
-        "inter_domain_bandwidth": 267
+        "intra_domain_bandwidth": 6477,
+        "inter_domain_bandwidth": 215
       },
       {
         "cluster_id": "terminal_cluster_2",
@@ -3628,110 +1497,42 @@
         "cluster_type": "terminal",
         "nodes": [
           {
-            "node_id": "terminal_node_6181",
-            "cpu_cores": 16,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "94954f87-004a-45d1-a051-9e4c15fef0fc",
-                "gpu_type": "T4"
-              },
-              {
-                "gpu_id": "de84f614-b095-4f94-adac-a45d1f35e381",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.108.134"
-          },
-          {
-            "node_id": "terminal_node_1291",
-            "cpu_cores": 16,
-            "memory": 32,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "71ce26c5-3e41-48ab-9114-ca38b22a0bdd",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.184.221"
-          },
-          {
-            "node_id": "terminal_node_7617",
-            "cpu_cores": 24,
-            "memory": 128,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "0f77409a-1b44-4acb-872f-1e61179c0b89",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.134.202"
-          },
-          {
-            "node_id": "terminal_node_6381",
+            "node_id": "terminal_node_6564",
             "cpu_cores": 8,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "c380f52c-b266-4331-aa43-f1e7eb00c14d",
-                "gpu_type": "T4"
-              },
-              {
-                "gpu_id": "6afe4285-fc3c-47dc-80e6-d1378c13f252",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.224.242"
-          },
-          {
-            "node_id": "terminal_node_6798",
-            "cpu_cores": 16,
-            "memory": 64,
+            "memory": 32,
             "gpu_count": 1,
             "gpu_model": "T4",
             "gpus": [
               {
-                "gpu_id": "0f1eb8e7-248b-45b7-b5a6-614391f88174",
+                "gpu_id": "5a806480-efc5-4636-a542-c02e308ecef4",
                 "gpu_type": "T4"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.239.32"
+            "ip_address": "192.168.190.240"
           },
           {
-            "node_id": "terminal_node_8293",
+            "node_id": "terminal_node_5470",
             "cpu_cores": 24,
-            "memory": 32,
+            "memory": 64,
             "gpu_count": 2,
             "gpu_model": "T4",
             "gpus": [
               {
-                "gpu_id": "3b311af2-c189-4341-91aa-3184cf5684f1",
+                "gpu_id": "25977879-5905-4832-9e00-1fa95bcc4a7e",
                 "gpu_type": "T4"
               },
               {
-                "gpu_id": "341ef7d4-442b-43a8-9cde-2ab1d481b4af",
+                "gpu_id": "f99ce891-71dc-4191-a54b-e94646dda6e5",
                 "gpu_type": "T4"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.85.187"
+            "ip_address": "192.168.185.204"
           }
         ],
-        "intra_domain_bandwidth": 9965,
-        "inter_domain_bandwidth": 236
+        "intra_domain_bandwidth": 3549,
+        "inter_domain_bandwidth": 246
       },
       {
         "cluster_id": "terminal_cluster_3",
@@ -3739,170 +1540,27 @@
         "cluster_type": "terminal",
         "nodes": [
           {
-            "node_id": "terminal_node_7488",
-            "cpu_cores": 8,
-            "memory": 64,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "81b0e102-076d-4cef-b8b7-0534fc958389",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.87.236"
-          },
-          {
-            "node_id": "terminal_node_4812",
+            "node_id": "terminal_node_3940",
             "cpu_cores": 8,
             "memory": 128,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "84cc9c91-b126-40f2-a009-8e1a49e32fb6",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.109.70"
-          },
-          {
-            "node_id": "terminal_node_1057",
-            "cpu_cores": 16,
-            "memory": 128,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "cd7bba7a-ca1f-4951-91bd-29b689173633",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.95.28"
-          },
-          {
-            "node_id": "terminal_node_4552",
-            "cpu_cores": 16,
-            "memory": 64,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "8828937f-6975-4af0-9916-a619c3dfd12d",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.20.32"
-          },
-          {
-            "node_id": "terminal_node_1737",
-            "cpu_cores": 16,
-            "memory": 32,
             "gpu_count": 2,
             "gpu_model": "T4",
             "gpus": [
               {
-                "gpu_id": "39db865e-aea7-4f02-b048-1ca9d5ba83ab",
+                "gpu_id": "454d1b70-3cc7-4ab4-95f4-936a1de269b7",
                 "gpu_type": "T4"
               },
               {
-                "gpu_id": "f5b17de6-b195-48d1-8b1e-5fc059967074",
+                "gpu_id": "92e9a714-add2-4e3a-ac58-73750b6f652e",
                 "gpu_type": "T4"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.58.37"
-          },
-          {
-            "node_id": "terminal_node_6579",
-            "cpu_cores": 24,
-            "memory": 32,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "29c93436-9cd5-47f4-ae95-7d499f4ef285",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.61.183"
-          },
-          {
-            "node_id": "terminal_node_3483",
-            "cpu_cores": 8,
-            "memory": 64,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "3d2587b7-af07-4176-8dd0-c073fd4105f4",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.82.134"
-          },
-          {
-            "node_id": "terminal_node_5796",
-            "cpu_cores": 24,
-            "memory": 32,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "c1937ce8-51b5-4bde-b5d5-ccbbaff5f319",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.201.22"
-          },
-          {
-            "node_id": "terminal_node_1479",
-            "cpu_cores": 8,
-            "memory": 32,
-            "gpu_count": 2,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "189e453e-30e4-4022-be52-850b5b76b3ef",
-                "gpu_type": "T4"
-              },
-              {
-                "gpu_id": "1174fe70-55d7-42cf-93f8-072d4b3a3b73",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.139.254"
-          },
-          {
-            "node_id": "terminal_node_7861",
-            "cpu_cores": 8,
-            "memory": 64,
-            "gpu_count": 2,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "161d6c15-c061-4bcc-a5f9-d0e85c4a2d7a",
-                "gpu_type": "T4"
-              },
-              {
-                "gpu_id": "471ffba4-86cf-4bde-9681-d6b3c538ae65",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.65.132"
+            "ip_address": "192.168.165.2"
           }
         ],
-        "intra_domain_bandwidth": 7181,
-        "inter_domain_bandwidth": 274
+        "intra_domain_bandwidth": 1505,
+        "inter_domain_bandwidth": 200
       },
       {
         "cluster_id": "terminal_cluster_4",
@@ -3910,117 +1568,27 @@
         "cluster_type": "terminal",
         "nodes": [
           {
-            "node_id": "terminal_node_4462",
-            "cpu_cores": 8,
-            "memory": 32,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "cefbcc7e-6f01-48a6-b43a-ad5eda040c87",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.48.13"
-          },
-          {
-            "node_id": "terminal_node_8100",
-            "cpu_cores": 16,
-            "memory": 64,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "f799ea96-b81c-4cde-9f95-6dc527938744",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.248.125"
-          },
-          {
-            "node_id": "terminal_node_4640",
+            "node_id": "terminal_node_3485",
             "cpu_cores": 24,
-            "memory": 128,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "c7acb1ce-8a11-434c-b467-32ae61c8a39d",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.239.37"
-          },
-          {
-            "node_id": "terminal_node_4686",
-            "cpu_cores": 8,
-            "memory": 128,
+            "memory": 32,
             "gpu_count": 2,
             "gpu_model": "T4",
             "gpus": [
               {
-                "gpu_id": "4d8c53b5-6e07-413c-abc1-40d00f9f70b1",
+                "gpu_id": "3b68e946-c020-48ef-bc8c-fb079bc370e8",
                 "gpu_type": "T4"
               },
               {
-                "gpu_id": "c3f6a7d1-e41f-40c7-87c1-ce3faa634d9d",
+                "gpu_id": "6079d87e-f09c-4282-9899-03899dc5aad6",
                 "gpu_type": "T4"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.246.222"
-          },
-          {
-            "node_id": "terminal_node_1034",
-            "cpu_cores": 24,
-            "memory": 64,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "a1f615a9-61c1-4517-8ed0-0f7f807ce9ee",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.53.189"
-          },
-          {
-            "node_id": "terminal_node_8624",
-            "cpu_cores": 24,
-            "memory": 32,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "963798e9-a8e5-481f-a6c9-c991b10a62e5",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.46.34"
-          },
-          {
-            "node_id": "terminal_node_8385",
-            "cpu_cores": 16,
-            "memory": 128,
-            "gpu_count": 1,
-            "gpu_model": "T4",
-            "gpus": [
-              {
-                "gpu_id": "fcea748b-1671-4a1c-993d-782582d56b5a",
-                "gpu_type": "T4"
-              }
-            ],
-            "gpu_memory": 16,
-            "ip_address": "192.168.152.210"
+            "ip_address": "192.168.61.113"
           }
         ],
-        "intra_domain_bandwidth": 2712,
-        "inter_domain_bandwidth": 296
+        "intra_domain_bandwidth": 6511,
+        "inter_domain_bandwidth": 223
       }
     ]
   }
