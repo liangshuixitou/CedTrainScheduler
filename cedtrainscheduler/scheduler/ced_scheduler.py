@@ -1,13 +1,12 @@
-import math  # noqa: I001
-
 from cedtrainscheduler.scheduler.factory import SchedulerType
-
-from cedtrainscheduler.scheduler.policy.ced_policy import CedCentralPolicy, CedClusterPolicy
+from cedtrainscheduler.scheduler.policy.ced_policy import CedCentralPolicy
+from cedtrainscheduler.scheduler.policy.ced_policy import CedClusterPolicy
 from cedtrainscheduler.scheduler.policy.ced_policy import CedQueuePolicy
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 from cedtrainscheduler.scheduler.types.task import TaskMeta
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
+from cedtrainscheduler.scheduler.utils import build_task_wrap_runtime_info
 
 
 class CedScheduler(SchedulerBase):
@@ -33,14 +32,6 @@ class CedScheduler(SchedulerBase):
         schedule_infos = self.cluster_policy.schedule(scheduler_context, task, cluster_id)
 
         # 创建任务运行时信息
-        runtime_info = TaskWrapRuntimeInfo(
-            task_meta=task,
-            schedule_infos=schedule_infos,
-            inst_status={},
-            inst_data_status={},
-            task_submit_time=task.task_start_time,
-            task_start_time=-math.inf,
-            task_end_time=-math.inf,
-        )
+        runtime_info = build_task_wrap_runtime_info(task, schedule_infos)
 
         return runtime_info, False

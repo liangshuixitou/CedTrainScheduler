@@ -1,4 +1,3 @@
-import math
 import pandas as pd
 
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
@@ -178,10 +177,6 @@ class Simulator:
                 return metrics
 
     def count_metrics(self, task_record: dict[str, TaskWrapRuntimeInfo]) -> Metrics:
-        for task in task_record.values():
-            if task.task_start_time == -math.inf:
-                task.task_start_time = task.task_submit_time
-
         start_time = min(task.task_start_time for task in task_record.values())
         end_time = max(task.task_end_time for task in task_record.values())
         total_runtime = end_time - start_time

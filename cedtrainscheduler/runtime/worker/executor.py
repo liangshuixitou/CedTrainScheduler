@@ -7,6 +7,8 @@ from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.runtime.utils.python_util import get_python_executable_path
 from cedtrainscheduler.runtime.workload.script import ScriptGenerator
 
+LOG_DIR = "/tmp/train_logs"
+
 
 class Executor:
     def __init__(self, gpu: GPU):
@@ -19,6 +21,8 @@ class Executor:
 
     async def append_task(self, task: TaskInst):
         async with self.task_record_lock:
+            if len(self.task_queue) == 0:
+                task.inst_status = TaskInstStatus.Ready
             self.task_record.append(task)
             self.task_queue.append(task)
 
@@ -39,7 +43,7 @@ class Executor:
         world_size: int,
         inst_rank: int,
         master_addr: str,
-        master_port: str,
+        master_port: int,
     ):
         script = ScriptGenerator.generate_script(
             gpu_rank=self.gpu.gpu_rank,
@@ -51,24 +55,27 @@ class Executor:
             python_path=get_python_executable_path(),
         )
 
-        with self.task_record_lock:
+        self.logger.info(f"Start task {task_name} with script: {script}")
+
+        async with self.task_record_lock:
             current_task_inst = self.task_queue[0]
 
-        if current_task_inst.inst_id != task_inst.inst_id or current_task_inst.inst_status != TaskInstStatus.Pending:
-            self.logger.error(f"Task {task_name} instance {task_inst.inst_id} is not pending")
+        if current_task_inst.inst_id != task_inst.inst_id or current_task_inst.inst_status != TaskInstStatus.Ready:
+            self.logger.error(f"Task {task_name} instance {task_inst.inst_id} is not ready")
             return
 
         current_task_inst.inst_status = TaskInstStatus.Running
 
         try:
-            # Start the process asynchronously
+            # 不再捕获输出，因为已经重定向到文件
             process = await asyncio.create_subprocess_shell(
-                script, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+                script,
+                stdout=None,  # 使用 None 而不是 PIPE
+                stderr=None,
             )
 
-            # Start a background task to monitor the process completion
+            # 简化监控任务
             asyncio.create_task(self._monitor_task_completion(process, current_task_inst, task_name))
-
             self.logger.info(f"Task {task_name} started with PID {process.pid}")
 
         except Exception as e:
@@ -76,20 +83,15 @@ class Executor:
             await self.task_finished(current_task_inst)
 
     async def _monitor_task_completion(self, process: asyncio.subprocess.Process, task_inst: TaskInst, task_name: str):
-        """Monitor the task process and handle its completion."""
+        """只监控进程退出状态"""
         try:
-            stdout, stderr = await process.communicate()
+            # 直接等待进程结束
+            return_code = await process.wait()
 
-            # Log the output
-            if stdout:
-                self.logger.info(f"Task {task_name} stdout: {stdout.decode()}")
-            if stderr:
-                self.logger.warning(f"Task {task_name} stderr: {stderr.decode()}")
-
-            if process.returncode == 0:
+            if return_code == 0:
                 self.logger.info(f"Task {task_name} completed successfully")
             else:
-                self.logger.error(f"Task {task_name} failed with exit code {process.returncode}")
+                self.logger.error(f"Task {task_name} failed with exit code {return_code}")
 
             await self.task_finished(task_inst)
 

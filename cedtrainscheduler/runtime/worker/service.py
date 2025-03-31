@@ -18,6 +18,6 @@ class WorkerService(ABC):
         world_size: int,
         inst_rank: int,
         master_addr: str,
-        master_port: str,
+        master_port: int,
     ):
         pass

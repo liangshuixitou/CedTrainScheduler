@@ -290,16 +290,16 @@ class TaskManager:
     async def check_task_ready(self, task_id: str) -> bool:
         async with self.task_lock:
             task = self.task_record[task_id]
-            for inst in task.task_insts:
-                if inst.inst_status != TaskInstStatus.Ready:
+            for inst_status in task.inst_status.values():
+                if inst_status != TaskInstStatus.Ready:
                     return False
             return True
 
     async def check_task_running(self, task_id: str) -> bool:
         async with self.task_lock:
             task = self.task_record[task_id]
-            for inst in task.task_insts:
-                if inst.inst_status != TaskInstStatus.Running:
+            for inst_status in task.inst_status.values():
+                if inst_status != TaskInstStatus.Running:
                     return False
             return True
 

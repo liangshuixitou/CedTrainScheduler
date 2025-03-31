@@ -7,6 +7,7 @@ from cedtrainscheduler.runtime.types.args import WorkerArgs
 from cedtrainscheduler.runtime.types.cluster import GPU
 from cedtrainscheduler.runtime.types.cluster import Node
 from cedtrainscheduler.runtime.types.task import TaskInst
+from cedtrainscheduler.runtime.types.task import TaskInstStatus
 from cedtrainscheduler.runtime.utils.gpu_util import GPUUtil
 from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.runtime.worker.api_server import WorkerAPIServer
@@ -96,7 +97,28 @@ class Worker(BaseServer, WorkerService):
         await executor.append_task(task_inst)
 
     async def handle_task_inst_start(
-        self, task_inst: TaskInst, gpu_id: str, task_name: str, world_size: int, inst_rank: int
+        self,
+        task_inst: TaskInst,
+        gpu_id: str,
+        task_name: str,
+        world_size: int,
+        inst_rank: int,
+        master_addr: str,
+        master_port: int,
     ):
         executor = self.executors[gpu_id]
-        await executor.start_task(task_name=task_name, task_inst=task_inst, world_size=world_size, inst_rank=inst_rank)
+        current_task_inst = executor.task_queue[0]
+        if current_task_inst.task_id != task_inst.task_id or current_task_inst.inst_id != task_inst.inst_id:
+            raise ValueError(f"Task inst mismatch: {current_task_inst} != {task_inst}")
+        if current_task_inst.inst_status != TaskInstStatus.Ready:
+            self.logger.info(f"Task inst {task_inst.task_id} is not ready, skip start")
+            return
+
+        await executor.start_task(
+            task_name=task_name,
+            task_inst=task_inst,
+            world_size=world_size,
+            inst_rank=inst_rank,
+            master_addr=master_addr,
+            master_port=master_port,
+        )

@@ -23,7 +23,7 @@ class BaseClient:
         self.base_url = f"http://{worker_host}:{worker_port}"
         self.logger = setup_logger(__name__)
 
-    def _make_request(self, endpoint: str, data: dict) -> Optional[dict]:
+    async def _make_request(self, endpoint: str, data: dict) -> Optional[dict]:
         """
         发送HTTP请求到服务器
 
@@ -69,7 +69,7 @@ class MasterWorkerClient(BaseClient):
         world_size: int,
         inst_rank: int,
         master_addr: str,
-        master_port: str,
+        master_port: int,
     ) -> Optional[dict]:
         """
         启动任务实例
@@ -80,6 +80,8 @@ class MasterWorkerClient(BaseClient):
             task_name: 任务名称
             world_size: 世界大小
             inst_rank: 任务实例排名
+            master_addr: 主节点地址
+            master_port: 主节点端口
 
         Returns:
             Optional[dict]: 任务启动结果，失败时返回None
