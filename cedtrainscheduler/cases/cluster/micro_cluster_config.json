@@ -1,0 +1,117 @@
+{
+  "clusters": {
+    "cloud_clusters": [
+      {
+        "cluster_id": "cloud_cluster_1",
+        "cluster_name": "CloudCluster-1",
+        "cluster_type": "cloud",
+        "nodes": [
+          {
+            "node_id": "cloud_node_1",
+            "cpu_cores": 32,
+            "memory": 128,
+            "gpu_count": 4,
+            "gpu_model": "V100",
+            "gpus": [
+              {
+                "gpu_id": "78ab3d61-b68b-4188-a721-ffe4ab430aae",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "ade614de-454b-4567-8779-973b303ddbc4",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "07b114ed-bcb5-456d-82b8-89c811b4929e",
+                "gpu_type": "V100"
+              },
+              {
+                "gpu_id": "1f66c90e-fb41-4b64-8c98-3021253f9ff7",
+                "gpu_type": "V100"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.253.113"
+          }
+        ],
+        "inter_domain_bandwidth": 1000,
+        "intra_domain_bandwidth": 200
+      },
+      {
+        "cluster_id": "edge_cluster_1",
+        "cluster_name": "EdgeCluster-1",
+        "cluster_type": "edge",
+        "nodes": [
+          {
+            "node_id": "edge_node_1",
+            "cpu_cores": 32,
+            "memory": 128,
+            "gpu_count": 2,
+            "gpu_model": "T4",
+            "gpus": [
+              {
+                "gpu_id": "78ab3d61-b68b-4188-a721-ffe4ab430aae",
+                "gpu_type": "T4"
+              },
+              {
+                "gpu_id": "ade614de-454b-4567-8779-973b303ddbc4",
+                "gpu_type": "T4"
+              }
+            ],
+            "gpu_memory": 16,
+            "ip_address": "192.168.253.113"
+          },
+          {
+            "node_id": "edge_node_2",
+            "cpu_cores": 32,
+            "memory": 128,
+            "gpu_count": 2,
+            "gpu_model": "T4",
+            "gpus": [
+              {
+                "gpu_id": "e5ab9082-e8db-44a6-83ba-ad98fabc7cbd",
+                "gpu_type": "T4"
+              },
+              {
+                "gpu_id": "dbc2afba-6b72-4778-af28-9d84befacd24",
+                "gpu_type": "T4"
+              }
+            ],
+            "gpu_memory": 16,
+            "ip_address": "192.168.141.45"
+          }
+        ],
+        "inter_domain_bandwidth": 1000,
+        "intra_domain_bandwidth": 200
+      },
+      {
+        "cluster_id": "edge_cluster_2",
+        "cluster_name": "EdgeCluster-2",
+        "cluster_type": "edge",
+        "nodes": [
+          {
+            "node_id": "edge_node_3",
+            "cpu_cores": 32,
+            "memory": 128,
+            "gpu_count": 2,
+            "gpu_model": "T4",
+            "gpus": [
+              {
+                "gpu_id": "deea2645-d461-4ce5-9c9e-1eb7531abca3",
+                "gpu_type": "T4"
+              },
+              {
+                "gpu_id": "01371dc2-2552-47e7-bd63-7e4b5c66e288",
+                "gpu_type": "T4"
+              }
+            ],
+            "gpu_memory": 32,
+            "ip_address": "192.168.228.218"
+          }
+        ],
+        "inter_domain_bandwidth": 1000,
+        "intra_domain_bandwidth": 200
+      }
+    ]
+  }
+}

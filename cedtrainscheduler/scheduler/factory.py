@@ -42,7 +42,7 @@ class SchedulerFactory:
             "sjf_data": SJFDataScheduler,
             "sjf": SJFScheduler,
             "dtsm": DTSMScheduler,
-            "ced": SCRMScheduler,
+            "sc_rm": SCRMScheduler,
             "first_fit": FirstFitScheduler,
             "chronus": ChronusScheduler,
             "allox": AlloxScheduler,

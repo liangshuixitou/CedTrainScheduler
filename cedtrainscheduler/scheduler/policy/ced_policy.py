@@ -187,7 +187,7 @@ class CedCentralPolicy(CentralPolicy):
 
 class CedClusterPolicy(ClusterPolicy):
     def _is_large_task(self, task: TaskMeta) -> bool:
-        return task.task_inst_num >= 4
+        return task.task_inst_num >= 2
 
     def _calculate_group_score(self, group: list[str], current_time: float, task: TaskMeta, cluster_type: str) -> float:
         """多维度评估GPU组得分（执行时间 + 负载均衡 + 数据亲和性）"""
