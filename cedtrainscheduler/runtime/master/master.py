@@ -47,9 +47,7 @@ class Master(BaseServer, MasterService):
         self.logger = setup_logger(__name__)
 
     async def _start(self):
-        api_server_task = await self.api_server.start(
-            host=self.master_info.component_ip, port=self.master_info.component_port
-        )
+        api_server_task = await self.api_server.start(port=self.master_info.component_port)
         self._tasks.append(api_server_task)
 
         heartbeat_task = asyncio.create_task(self._heartbeat_daemon())

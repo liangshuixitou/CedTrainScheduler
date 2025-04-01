@@ -58,7 +58,7 @@ class Worker(BaseServer, WorkerService):
             self.executors[gpu_id] = Executor(gpu)
 
     async def _start(self):
-        api_server_task = await self.api_server.start()
+        api_server_task = await self.api_server.start(port=self.worker_info.component_port)
         self._tasks.append(api_server_task)
 
         heartbeat_task = asyncio.create_task(self._heartbeat_daemon())

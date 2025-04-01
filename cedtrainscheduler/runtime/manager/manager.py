@@ -43,9 +43,7 @@ class Manager(BaseServer, ManagerService):
     async def _start(self):
         """实现启动所有服务"""
         # 启动API服务器并追踪任务
-        api_server_task = await self.api_server.start(
-            host=self.component_info.component_ip, port=self.component_info.component_port
-        )
+        api_server_task = await self.api_server.start(port=self.component_info.component_port)
         self._tasks.append(api_server_task)
 
         # 启动调度器守护进程并追踪任务
