@@ -1,5 +1,7 @@
 import argparse
 import os
+import time
+from datetime import timedelta
 
 import pandas as pd
 import torch
@@ -37,33 +39,51 @@ class ImageNetCSV(Dataset):
         # 支持两种路径格式：直接在images目录下或子目录结构
         img_path = os.path.join(self.root_dir, "images", img_name)
         if not os.path.exists(img_path):
-            subdir = img_name.split('_')[0]  # 根据实际目录结构调整
+            subdir = img_name.split("_")[0]  # 根据实际目录结构调整
             img_path = os.path.join(self.root_dir, "images", subdir, img_name)
 
-        image = Image.open(img_path).convert('RGB')
+        image = Image.open(img_path).convert("RGB")
 
         if self.transform:
             image = self.transform(image)
 
         return image, label_idx
 
+
 # ==================== 分布式训练配置 ====================
 def setup():
     dist.init_process_group(
-        backend='nccl',
+        backend="nccl",
         init_method=f"tcp://{args.master_addr}:{args.master_port}",
         world_size=args.world_size,
-        rank=args.rank
+        rank=args.rank,
     )
+
 
 def cleanup():
     dist.destroy_process_group()
+
+
+def format_time(seconds):
+    """将秒数转换为人类可读的格式"""
+    return str(timedelta(seconds=int(seconds)))
+
+
+def log_print(message, flush=True):
+    """统一的日志打印函数"""
+    print(f"[Rank {args.rank}] {message}", flush=flush)
+
 
 # ==================== 训练主函数 ====================
 def train():
     # 初始化分布式环境
     setup()
-    device = torch.device('cuda:0') # 绑定到第一个GPU
+    device = torch.device("cuda:0")  # 绑定到第一个GPU
+    # 记录训练开始时间
+    train_start_time = time.time()
+
+    log_print(f"Starting training on device: {device}")
+    log_print(f"World size: {args.world_size}, Rank: {args.rank}")
 
     # 加载ResNet50模型
     model = models.resnet50(pretrained=False)
@@ -72,42 +92,39 @@ def train():
     # 容错加载预训练权重
     try:
         model.load_state_dict(torch.load(model_path, weights_only=False), strict=True)
-        if args.rank == 0:
-            print("严格模式加载模型成功")
+        log_print("严格模式加载模型成功")
     except RuntimeError:
         model.load_state_dict(torch.load(model_path, weights_only=False), strict=False)
-        if args.rank == 0:
-            print("警告：使用非严格模式加载模型")
+        log_print("警告：使用非严格模式加载模型")
 
     model = model.to(device)
     ddp_model = DDP(model, device_ids=[device])
 
     # ImageNet标准化参数
-    normalize = transforms.Normalize(
-        mean=[0.485, 0.456, 0.406],
-        std=[0.229, 0.224, 0.225]
-    )
+    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
     # 数据预处理
-    train_transform = transforms.Compose([
-        transforms.RandomResizedCrop(224),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        normalize,
-    ])
+    train_transform = transforms.Compose(
+        [
+            transforms.RandomResizedCrop(224),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            normalize,
+        ]
+    )
 
     # 加载训练集
     train_dataset = ImageNetCSV(
         root_dir=args.dataset_dir_path,
         csv_file=os.path.expanduser(f"{args.dataset_dir_path}/train.csv"),
-        transform=train_transform
+        transform=train_transform,
     )
+
+    log_print(f"Dataset size: {len(train_dataset)}")
 
     # 分布式采样器
     train_sampler = torch.utils.data.distributed.DistributedSampler(
-        train_dataset,
-        num_replicas=args.world_size,
-        rank=args.rank
+        train_dataset, num_replicas=args.world_size, rank=args.rank
     )
 
     # 数据加载器
@@ -117,8 +134,10 @@ def train():
         shuffle=False,
         num_workers=4,
         pin_memory=True,
-        sampler=train_sampler
+        sampler=train_sampler,
     )
+
+    log_print(f"DataLoader created with {len(train_loader)} batches")
 
     # 定义优化器和损失函数
     criterion = nn.CrossEntropyLoss().to(device)
@@ -126,11 +145,14 @@ def train():
 
     try:
         # 训练循环
-        for epoch in range(5):
+        epoch_num = 1
+        for epoch in range(epoch_num):
+            epoch_start_time = time.time()
             train_sampler.set_epoch(epoch)
+            log_print(f"Starting epoch {epoch+1}")
+
             for i, (images, labels) in enumerate(train_loader):
                 images = images.to(device)
-                # 现在labels已经是数字，直接转换为张量
                 labels = labels.to(device)
 
                 outputs = ddp_model(images)
@@ -140,12 +162,18 @@ def train():
                 loss.backward()
                 optimizer.step()
 
-                # 主进程打印日志
-                if args.rank == 0 and i % 10 == 0:
-                    print(f'Epoch [{epoch+1}/5], Step [{i}/{len(train_loader)}], Loss: {loss.item():.4f}')
+                # 每个进程都打印日志
+                if i % 10 == 0:
+                    log_print(f"Epoch [{epoch+1}/{epoch_num}], Step [{i}/{len(train_loader)}], Loss: {loss.item():.4f}")
+
+            epoch_time = time.time() - epoch_start_time
+            log_print(f"Epoch {epoch+1} time: {format_time(epoch_time)}")
     finally:
         # 确保在任何情况下都会清理分布式环境
+        total_time = time.time() - train_start_time
+        log_print(f"Total training time: {format_time(total_time)}")
         cleanup()
+
 
 # ==================== 参数解析 ====================
 if __name__ == "__main__":
@@ -162,6 +190,6 @@ if __name__ == "__main__":
     args.master_port = os.environ.get("MASTER_PORT", "29500")
     args.world_size = int(os.environ.get("WORLD_SIZE", "1"))
 
-    print(args)
+    log_print(f"Arguments: {args}")
 
     train()

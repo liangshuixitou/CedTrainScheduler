@@ -1,0 +1,63 @@
+{
+  "task-002": {
+    "task_meta": {
+      "task_id": "task-002",
+      "task_name": "resnet50",
+      "task_inst_num": 2,
+      "task_plan_cpu": 0.0,
+      "task_plan_mem": 0.0,
+      "task_plan_gpu": 1,
+      "task_status": "finished",
+      "task_start_time": 0.0,
+      "task_runtime": {
+        "T4": 100.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "worker1-gpu-0"
+      },
+      "1": {
+        "inst_id": 1,
+        "gpu_id": "worker1-gpu-1"
+      }
+    },
+    "inst_status": {
+      "0": "finished",
+      "1": "finished"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 1743509635.0854957,
+    "task_start_time": 1743509642.9251869,
+    "task_end_time": 1743509693.0523474
+  },
+  "task-001": {
+    "task_meta": {
+      "task_id": "task-001",
+      "task_name": "resnet50",
+      "task_inst_num": 1,
+      "task_plan_cpu": 0.0,
+      "task_plan_mem": 0.0,
+      "task_plan_gpu": 1,
+      "task_status": "finished",
+      "task_start_time": 0.0,
+      "task_runtime": {
+        "T4": 10000.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "worker1-gpu-0"
+      }
+    },
+    "inst_status": {
+      "0": "finished"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 1743509638.119819,
+    "task_start_time": 1743509698.064108,
+    "task_end_time": 1743509788.2738855
+  }
+}

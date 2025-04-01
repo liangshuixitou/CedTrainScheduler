@@ -34,7 +34,8 @@ class Executor:
         current_task_inst.inst_status = TaskInstStatus.Finished
         async with self.task_record_lock:
             self.task_queue.pop(0)
-            self.task_queue[0].inst_status = TaskInstStatus.Ready
+            if len(self.task_queue) > 0:
+                self.task_queue[0].inst_status = TaskInstStatus.Ready
 
     async def start_task(
         self,
@@ -47,6 +48,7 @@ class Executor:
     ):
         script = ScriptGenerator.generate_script(
             gpu_rank=self.gpu.gpu_rank,
+            task_id=task_inst.task_id,
             task_name=task_name,
             world_size=world_size,
             inst_rank=inst_rank,

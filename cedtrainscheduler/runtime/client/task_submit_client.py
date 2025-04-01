@@ -30,6 +30,19 @@ async def test_submit_one_task(task_submit_client: TaskSubmitClient):
     )
     await task_submit_client.submit_task(task_meta)
 
+    task_meta = TaskMeta(
+        task_id="task-002",
+        task_name="resnet50",
+        task_inst_num=2,
+        task_plan_cpu=0,
+        task_plan_mem=0,
+        task_plan_gpu=1,
+        task_status=TaskStatus.Pending,
+        task_start_time=0,
+        task_runtime={GPUType.T4: 100},
+    )
+    await task_submit_client.submit_task(task_meta)
+
 
 async def main():
     import argparse

@@ -19,7 +19,8 @@ from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 
-MANAGER_SCHEDULER_INTERVAL = 1
+MANAGER_SCHEDULER_INTERVAL = 3
+MANAGER_TASK_RECORD_SAVE_INTERVAL = 5
 
 
 class Manager(BaseServer, ManagerService):
@@ -51,6 +52,10 @@ class Manager(BaseServer, ManagerService):
         scheduler_task = asyncio.create_task(self._scheduler_daemon())
         self._tasks.append(scheduler_task)
 
+        # 任务日志保存
+        task_record_save_task = asyncio.create_task(self._save_task_record_daemon())
+        self._tasks.append(task_record_save_task)
+
     async def _stop(self):
         """实现停止所有服务"""
         # 停止API服务器
@@ -67,6 +72,17 @@ class Manager(BaseServer, ManagerService):
             self.logger.info("Scheduler daemon cancelled")
         except Exception as e:
             self.logger.exception(f"Scheduler daemon error: {e}")
+            raise
+
+    async def _save_task_record_daemon(self):
+        try:
+            while self._running:
+                await self.task_manager.save()
+                await asyncio.sleep(MANAGER_TASK_RECORD_SAVE_INTERVAL)
+        except asyncio.CancelledError:
+            self.logger.info("Task record save daemon cancelled")
+        except Exception as e:
+            self.logger.exception(f"Task record save daemon error: {e}")
             raise
 
     async def _schedule(self):
@@ -98,6 +114,7 @@ class Manager(BaseServer, ManagerService):
         for task_info in task_infos.values():
             await self.task_manager.add_task_info(task_info)
         await self.task_manager.extend_task_queue_map(task_queue_map)
+        await self.task_manager.save()
 
     async def _build_scheduler_context(self) -> SchedulerContext:
         cluster_manager = await SchedulerUtils.build_scheduler_cluster_manager(self.cluster_manager, self.task_manager)

@@ -1,9 +1,12 @@
+import json
 from asyncio import Lock
 
 from cedtrainscheduler.runtime.components import ComponentInfo
+from cedtrainscheduler.runtime.manager.constant import TASK_RECORD_SAVE_PATH
 from cedtrainscheduler.runtime.master.api_client import ManagerMasterClient
 from cedtrainscheduler.runtime.types.cluster import Cluster
 from cedtrainscheduler.runtime.types.cluster import GPU
+from cedtrainscheduler.runtime.types.model import TaskWrapRuntimeInfoModel
 from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.simulator.fs import FileSystem
@@ -89,6 +92,16 @@ class TaskManager:
     async def get_task_queue_map(self) -> dict[str, list[TaskInst]]:
         async with self.task_lock:
             return self.task_queue_map
+
+    async def save(self):
+        async with self.task_lock:
+            with open(TASK_RECORD_SAVE_PATH, "w") as f:
+                task_record_dict = {}
+                for task_id, task_info in self.task_infos.items():
+                    task_record_dict[task_id] = TaskWrapRuntimeInfoModel.from_task_wrap_runtime_info(
+                        task_info
+                    ).model_dump()
+                json.dump(task_record_dict, f, indent=2, ensure_ascii=False)
 
 
 class FileSystemManager:

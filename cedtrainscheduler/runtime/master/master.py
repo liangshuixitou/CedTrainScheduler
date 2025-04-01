@@ -130,17 +130,17 @@ class Master(BaseServer, MasterService):
 
             if task_inst.inst_status == TaskInstStatus.Ready:
                 is_task_ready = await self.task_manager.check_task_ready(task_inst.task_id)
-                if is_task_ready:
+                if is_task_ready and task.task_meta.task_status != TaskStatus.Ready:
                     await self.task_manager.update_task_status(task_inst.task_id, TaskStatus.Ready)
                     asyncio.create_task(self._start_task(task))
             elif task_inst.inst_status == TaskInstStatus.Running:
                 is_task_running = await self.task_manager.check_task_running(task_inst.task_id)
-                if is_task_running:
+                if is_task_running and task.task_meta.task_status != TaskStatus.Running:
                     await self.task_manager.update_task_status(task_inst.task_id, TaskStatus.Running)
                     await self.task_manager.update_task_time(task_inst.task_id, time.time())
             elif task_inst.inst_status == TaskInstStatus.Finished:
                 is_task_finished = await self.task_manager.check_task_finished(task_inst.task_id)
-                if is_task_finished:
+                if is_task_finished and task.task_meta.task_status != TaskStatus.Finished:
                     await self.task_manager.update_task_status(task_inst.task_id, TaskStatus.Finished)
                     await self.task_manager.update_task_time(task_inst.task_id, time.time())
         return {"status": "success", "message": "Worker registered"}
@@ -277,11 +277,11 @@ class TaskManager:
         async with self.task_lock:
             task = self.task_record[task_id]
             if task.task_meta.task_status == TaskStatus.Finished:
-                task.task_meta.task_end_time = task_time
+                task.task_end_time = task_time
             elif task.task_meta.task_status == TaskStatus.Running:
-                task.task_meta.task_start_time = task_time
+                task.task_start_time = task_time
             elif task.task_meta.task_status == TaskStatus.Pending:
-                task.task_meta.task_submit_time = task_time
+                task.task_submit_time = task_time
 
     async def update_task_inst(self, task_inst: TaskInst):
         async with self.task_lock:
@@ -300,6 +300,14 @@ class TaskManager:
             task = self.task_record[task_id]
             for inst_status in task.inst_status.values():
                 if inst_status != TaskInstStatus.Running:
+                    return False
+            return True
+
+    async def check_task_finished(self, task_id: str) -> bool:
+        async with self.task_lock:
+            task = self.task_record[task_id]
+            for inst_status in task.inst_status.values():
+                if inst_status != TaskInstStatus.Finished:
                     return False
             return True
 

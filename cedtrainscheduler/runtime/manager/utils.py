@@ -8,7 +8,6 @@ from cedtrainscheduler.runtime.types.cluster import GPUType as RuntimeGPUType
 from cedtrainscheduler.runtime.types.cluster import Node as RuntimeNode
 from cedtrainscheduler.runtime.types.task import ScheduleInfo as RuntimeScheduleInfo
 from cedtrainscheduler.runtime.types.task import TaskInst as RuntimeTaskInst
-from cedtrainscheduler.runtime.types.task import TaskInstStatus as RuntimeTaskInstStatus
 from cedtrainscheduler.runtime.types.task import TaskMeta as RuntimeTaskMeta
 from cedtrainscheduler.runtime.types.task import TaskStatus as RuntimeTaskStatus
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo as RuntimeTaskWrapRuntimeInfo
@@ -17,7 +16,6 @@ from cedtrainscheduler.scheduler.types.cluster import GPU as SchedulerGPU
 from cedtrainscheduler.scheduler.types.cluster import Node as SchedulerNode
 from cedtrainscheduler.scheduler.types.task import ScheduleInfo as SchedulerScheduleInfo
 from cedtrainscheduler.scheduler.types.task import TaskInst as SchedulerTaskInst
-from cedtrainscheduler.scheduler.types.task import TaskInstStatus as SchedulerTaskInstStatus
 from cedtrainscheduler.scheduler.types.task import TaskMeta as SchedulerTaskMeta
 from cedtrainscheduler.scheduler.types.task import TaskStatus as SchedulerTaskStatus
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo as SchedulerTaskWrapRuntimeInfo
@@ -66,12 +64,6 @@ class TypeConverter:
         )
 
     @staticmethod
-    def convert_runtime_task_inst_status_to_scheduler_task_inst_status(
-        runtime_task_inst_status: RuntimeTaskInstStatus,
-    ) -> SchedulerTaskInstStatus:
-        return runtime_task_inst_status.value
-
-    @staticmethod
     def convert_runtime_task_status_to_scheduler_task_status(
         runtime_task_status: RuntimeTaskStatus,
     ) -> SchedulerTaskStatus:
@@ -82,9 +74,7 @@ class TypeConverter:
         return SchedulerTaskInst(
             task_id=runtime_task_inst.task_id,
             inst_id=runtime_task_inst.inst_id,
-            inst_status=TypeConverter.convert_runtime_task_inst_status_to_scheduler_task_inst_status(
-                runtime_task_inst.inst_status
-            ),
+            inst_status=runtime_task_inst.inst_status,
         )
 
     @staticmethod
@@ -120,15 +110,17 @@ class TypeConverter:
             task_meta=TypeConverter.convert_runtime_task_meta_to_scheduler_task_meta(
                 runtime_task_wrap_runtime_info.task_meta
             ),
-            schedule_infos=TypeConverter.convert_runtime_schedule_info_to_scheduler_schedule_info(
-                runtime_task_wrap_runtime_info.schedule_infos
-            ),
-            inst_status=TypeConverter.convert_runtime_task_inst_status_to_scheduler_task_inst_status(
-                runtime_task_wrap_runtime_info.inst_status
-            ),
-            inst_data_status=TypeConverter.convert_runtime_task_inst_data_status_to_scheduler_task_inst_data_status(
-                runtime_task_wrap_runtime_info.inst_data_status
-            ),
+            schedule_infos={
+                inst_id: TypeConverter.convert_runtime_schedule_info_to_scheduler_schedule_info(schedule_info)
+                for inst_id, schedule_info in runtime_task_wrap_runtime_info.schedule_infos.items()
+            },
+            inst_status=runtime_task_wrap_runtime_info.inst_status,
+            inst_data_status={
+                inst_id: TypeConverter.convert_runtime_task_inst_data_status_to_scheduler_task_inst_data_status(
+                    inst_data_status
+                )
+                for inst_id, inst_data_status in runtime_task_wrap_runtime_info.inst_data_status.items()
+            },
             task_submit_time=runtime_task_wrap_runtime_info.task_submit_time,
             task_start_time=runtime_task_wrap_runtime_info.task_start_time,
             task_end_time=runtime_task_wrap_runtime_info.task_end_time,
