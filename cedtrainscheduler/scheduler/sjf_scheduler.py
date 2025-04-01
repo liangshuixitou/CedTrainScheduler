@@ -1,6 +1,6 @@
 from cedtrainscheduler.scheduler.factory import SchedulerType
 from cedtrainscheduler.scheduler.policy.central_policy import ResourceAffinityPolicy
-from cedtrainscheduler.scheduler.policy.cluster_policy import GreedyPolicy
+from cedtrainscheduler.scheduler.policy.cluster_policy import WorstFitPolicy
 from cedtrainscheduler.scheduler.policy.queue_policy import SFJQueuePolicy
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
@@ -15,7 +15,7 @@ class SJFScheduler(SchedulerBase):
         self.scheduler_name = SchedulerType.SJF
         self.queue_policy = SFJQueuePolicy()
         self.central_policy = ResourceAffinityPolicy()
-        self.cluster_policy = GreedyPolicy()
+        self.cluster_policy = WorstFitPolicy()
 
     def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):
         self.queue_policy.add_task(scheduler_context, [task])

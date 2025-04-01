@@ -205,7 +205,7 @@ class CedClusterPolicy(ClusterPolicy):
         # 综合评分（权重可调）
         return exec_time * 0.7 + load_balance * 0.2
 
-    def schedule(self, scheduler_context: SchedulerContext, task: TaskMeta, cluster_id: str) -> ScheduleInfo:
+    def schedule(self, scheduler_context: SchedulerContext, task: TaskMeta, cluster_id: str) -> dict[int, ScheduleInfo]:
         self.set_scheduler_context(scheduler_context)
 
         current_time = scheduler_context.current_time

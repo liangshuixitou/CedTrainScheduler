@@ -1,7 +1,7 @@
 from cedtrainscheduler.scheduler.factory import SchedulerType
-from cedtrainscheduler.scheduler.policy.central_policy import DataAffinityPolicy
-from cedtrainscheduler.scheduler.policy.cluster_policy import WorstFitPolicy
-from cedtrainscheduler.scheduler.policy.queue_policy import FCFSQueuePolicy
+from cedtrainscheduler.scheduler.policy.central_policy import ResourceAffinityPolicy
+from cedtrainscheduler.scheduler.policy.cluster_policy import ChronusPolicy
+from cedtrainscheduler.scheduler.policy.queue_policy import SFJQueuePolicy
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 from cedtrainscheduler.scheduler.types.task import TaskMeta
@@ -9,13 +9,13 @@ from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.scheduler.utils import build_task_wrap_runtime_info
 
 
-class FCFSDataScheduler(SchedulerBase):
+class ChronusScheduler(SchedulerBase):
     def __init__(self):
         super().__init__()
-        self.scheduler_name = SchedulerType.FCFS_DATA
-        self.queue_policy = FCFSQueuePolicy()
-        self.central_policy = DataAffinityPolicy()
-        self.cluster_policy = WorstFitPolicy()
+        self.scheduler_name = SchedulerType.CHRONUS
+        self.queue_policy = SFJQueuePolicy()
+        self.central_policy = ResourceAffinityPolicy()
+        self.cluster_policy = ChronusPolicy()
 
     def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):
         self.queue_policy.add_task(scheduler_context, [task])

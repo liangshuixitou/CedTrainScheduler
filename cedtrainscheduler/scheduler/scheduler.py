@@ -7,7 +7,7 @@ class SchedulerBase:
     def __init__(
         self,
     ):
-        self.max_task_num = 50
+        self.max_task_num = 100
         self.task_queue: list[TaskMeta] = []  # submitted task
 
     def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):

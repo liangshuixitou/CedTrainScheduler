@@ -3,7 +3,7 @@ from cedtrainscheduler.scheduler.types.task import ScheduleInfo
 from cedtrainscheduler.scheduler.types.task import TaskMeta
 
 
-def build_task_wrap_runtime_info(task_meta: TaskMeta, schedule_infos: dict[str, ScheduleInfo]):
+def build_task_wrap_runtime_info(task_meta: TaskMeta, schedule_infos: dict[int, ScheduleInfo]):
     return TaskWrapRuntimeInfo(
         task_meta=task_meta,
         schedule_infos=schedule_infos,

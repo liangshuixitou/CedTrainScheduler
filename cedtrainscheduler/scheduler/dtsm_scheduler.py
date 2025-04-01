@@ -1,5 +1,5 @@
 from cedtrainscheduler.scheduler.factory import SchedulerType
-from cedtrainscheduler.scheduler.policy.cluster_policy import GreedyPolicy
+from cedtrainscheduler.scheduler.policy.cluster_policy import WorstFitPolicy
 from cedtrainscheduler.scheduler.policy.dtsm_policy import DTSMCentralPolicy
 from cedtrainscheduler.scheduler.policy.dtsm_policy import DTSMQueuePolicy
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
@@ -15,7 +15,7 @@ class DTSMScheduler(SchedulerBase):
         self.scheduler_name = SchedulerType.DTSM
         self.queue_policy = DTSMQueuePolicy()
         self.central_policy = DTSMCentralPolicy()
-        self.cluster_policy = GreedyPolicy()
+        self.cluster_policy = WorstFitPolicy()
 
     def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):
         self.queue_policy.add_task(scheduler_context, [task])

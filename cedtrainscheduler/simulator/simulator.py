@@ -21,6 +21,7 @@ from cedtrainscheduler.simulator.fs import FileSystem
 from cedtrainscheduler.simulator.manager import ClusterManager
 from cedtrainscheduler.simulator.record import Record
 from cedtrainscheduler.simulator.types import Metrics
+from cedtrainscheduler.simulator.utils import generate_poisson_timestamps
 
 
 class Simulator:
@@ -39,7 +40,13 @@ class Simulator:
     def load_task_config(self, task_config_path: str):
         df = pd.read_csv(task_config_path)
         task_list = []
-        for _, row in df.iterrows():
+
+        # 生成泊松分布的提交时间
+        submission_times = generate_poisson_timestamps(
+            n_tasks=len(df),
+            time_range=(0, 10000),
+        )
+        for submission_time, (_, row) in zip(submission_times, df.iterrows()):
             task_meta = TaskMeta(
                 task_id=row["job_name"],
                 task_name=row["task_name"],
@@ -47,8 +54,7 @@ class Simulator:
                 task_plan_cpu=float(row["plan_cpu"]),
                 task_plan_mem=float(row["plan_mem"]),
                 task_plan_gpu=float(row["plan_gpu"]) / 100,
-                # task_start_time=float(row["start_time"]),
-                task_start_time=float(0),
+                task_start_time=0,
                 task_status=TaskStatus.Submitted,
                 # 创建运行时间字典
                 task_runtime={

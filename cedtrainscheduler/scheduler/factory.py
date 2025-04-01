@@ -10,8 +10,12 @@ class SchedulerType(Enum):
     SJF_DATA = auto()
     SJF = auto()
     DTSM = auto()
-    TIRESIAS = auto()
-    CED = auto()
+    SCRM = auto()
+    FIRST_FIT = auto()
+    CHRONUS = auto()
+    ALLOX = auto()
+    GREEDY = auto()
+    IOTCP = auto()
 
 
 class SchedulerFactory:
@@ -20,22 +24,30 @@ class SchedulerFactory:
         scheduler_name: str,
     ) -> SchedulerBase:
         # 延迟导入以避免循环依赖
-        from cedtrainscheduler.scheduler.ced_scheduler import CedScheduler
+        from cedtrainscheduler.scheduler.allox_scheduler import AlloxScheduler
+        from cedtrainscheduler.scheduler.chronus_scheduler import ChronusScheduler
         from cedtrainscheduler.scheduler.dtsm_scheduler import DTSMScheduler
         from cedtrainscheduler.scheduler.fcfs_data_scheduler import FCFSDataScheduler
         from cedtrainscheduler.scheduler.fcfs_scheduler import FCFSScheduler
+        from cedtrainscheduler.scheduler.first_fit_scheduler import FirstFitScheduler
+        from cedtrainscheduler.scheduler.greedy_scheduler import GreedyScheduler
+        from cedtrainscheduler.scheduler.iotcp_scheduler import IOTCPScheduler
+        from cedtrainscheduler.scheduler.scrm_scheduler import SCRMScheduler
         from cedtrainscheduler.scheduler.sjf_data_scheduler import SJFDataScheduler
         from cedtrainscheduler.scheduler.sjf_scheduler import SJFScheduler
-        from cedtrainscheduler.scheduler.tiresias_scheduler import TiresiasScheduler
 
         scheduler_map = {
-            "fcfs-data": FCFSDataScheduler,
+            "fcfs_data": FCFSDataScheduler,
             "fcfs": FCFSScheduler,
-            "sjf-data": SJFDataScheduler,
+            "sjf_data": SJFDataScheduler,
             "sjf": SJFScheduler,
             "dtsm": DTSMScheduler,
-            "sc-rm": CedScheduler,
-            "tiresias": TiresiasScheduler,
+            "ced": SCRMScheduler,
+            "first_fit": FirstFitScheduler,
+            "chronus": ChronusScheduler,
+            "allox": AlloxScheduler,
+            "greedy": GreedyScheduler,
+            "io_tcp": IOTCPScheduler,
         }
 
         if scheduler_name.lower() not in scheduler_map:
