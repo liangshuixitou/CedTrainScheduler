@@ -4,10 +4,11 @@ import time
 from cedtrainscheduler.runtime.components import BaseServer
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.manager.api_server import ManagerAPIServer
-from cedtrainscheduler.runtime.manager.constant import FS_CONFIG_PATH, TASK_RECORD_SAVE_PATH
 from cedtrainscheduler.runtime.manager.components import ClusterManager
 from cedtrainscheduler.runtime.manager.components import FileSystemManager
 from cedtrainscheduler.runtime.manager.components import TaskManager
+from cedtrainscheduler.runtime.manager.constant import FS_CONFIG_PATH
+from cedtrainscheduler.runtime.manager.constant import TASK_RECORD_SAVE_PATH
 from cedtrainscheduler.runtime.manager.service import ManagerService
 from cedtrainscheduler.runtime.manager.utils import SchedulerUtils
 from cedtrainscheduler.runtime.types.args import ManagerArgs
@@ -16,7 +17,7 @@ from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.types.task import TaskMeta
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.runtime.utils.logger import setup_logger
-from cedtrainscheduler.runtime.utils.metric_util import calculate_task_metrics, print_task_metrics
+from cedtrainscheduler.runtime.utils.metric_util import calculate_task_metrics
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 
