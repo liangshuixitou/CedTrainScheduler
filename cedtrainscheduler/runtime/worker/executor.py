@@ -48,6 +48,7 @@ class Executor:
         inst_rank: int,
         master_addr: str,
         master_port: int,
+        plan_runtime: int,
         data_transfer_time: float,
     ):
         script = ScriptGenerator.generate_script(
@@ -58,7 +59,8 @@ class Executor:
             inst_rank=inst_rank,
             master_addr=master_addr,
             master_port=master_port,
-            data_transfer_time=data_transfer_time,
+            plan_runtime=plan_runtime,
+            data_transfer_time=int(data_transfer_time),
             python_path=get_python_executable_path(),
         )
 

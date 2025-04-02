@@ -87,7 +87,7 @@ class Master(BaseServer, MasterService):
 
         await self.task_manager.add_task(task_info)
         await self.task_manager.update_task_time(task_id, time.time())
-        await self.task_manager.add_task_sim_data_transfer_time(task_id, sim_data_transfer_time)
+        await self.task_manager.add_task_data_transfer_time(task_id, sim_data_transfer_time)
         schedule_infos = task_info.schedule_infos
         for inst_id, schedule_info in schedule_infos.items():
             gpu_id = schedule_info.gpu_id
@@ -258,7 +258,7 @@ class WorkerManager:
         async with self.worker_lock:
             for node in self.cluster.nodes.values():
                 if gpu_id in node.gpus.keys():
-                    return node.gpus[gpu_id]
+                    return node.gpus[gpu_id].gpu_type
         return None
 
 
@@ -286,7 +286,7 @@ class TaskManager:
         async with self.task_lock:
             self.task_data_transfer_time[task_id] = data_transfer_time
 
-    async def get_task_sim_data_transfer_time(self, task_id: str) -> float:
+    async def get_task_data_transfer_time(self, task_id: str) -> float:
         async with self.task_lock:
             return self.task_data_transfer_time[task_id]
 

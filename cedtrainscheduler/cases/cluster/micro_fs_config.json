@@ -9,16 +9,16 @@
         128
       ],
       "dataset": {
-        "size_mb": 15000,
+        "size_mb": 1500,
         "storage_nodes": [
-          "edge_node_3",
+          "terminal_node_1",
           "cloud_node_1"
         ]
       },
       "model": {
         "size_mb": 98,
         "storage_nodes": [
-          "edge_node_1"
+          "terminal_node_1"
         ]
       }
     },
@@ -31,15 +31,15 @@
         128
       ],
       "dataset": {
-        "size_mb": 17000,
+        "size_mb": 1700,
         "storage_nodes": [
-          "edge_node_2"
+          "edge_node_1"
         ]
       },
       "model": {
         "size_mb": 45,
         "storage_nodes": [
-          "edge_node_2"
+          "edge_node_1"
         ]
       }
     }

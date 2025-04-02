@@ -1,16 +1,48 @@
 {
-  "task-002": {
+  "2c3f875fac9a0e430a443e87": {
     "task_meta": {
-      "task_id": "task-002",
-      "task_name": "resnet50",
-      "task_inst_num": 2,
-      "task_plan_cpu": 0.0,
-      "task_plan_mem": 0.0,
+      "task_id": "2c3f875fac9a0e430a443e87",
+      "task_name": "ResNet18",
+      "task_inst_num": 1,
+      "task_plan_cpu": 600.0,
+      "task_plan_mem": 29.296875,
       "task_plan_gpu": 1,
       "task_status": "finished",
       "task_start_time": 0.0,
       "task_runtime": {
-        "T4": 100.0
+        "T4": 111.0,
+        "P100": 96.0,
+        "V100": 57.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "worker1-gpu-0"
+      }
+    },
+    "inst_status": {
+      "0": "finished"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 0.0,
+    "task_start_time": 1743578994.2318947,
+    "task_end_time": 1743579174.670172
+  },
+  "89d6731a3eaea39dd86d2089": {
+    "task_meta": {
+      "task_id": "89d6731a3eaea39dd86d2089",
+      "task_name": "ResNet18",
+      "task_inst_num": 2,
+      "task_plan_cpu": 1500.0,
+      "task_plan_mem": 48.84765625,
+      "task_plan_gpu": 1,
+      "task_status": "running",
+      "task_start_time": 0.0,
+      "task_runtime": {
+        "T4": 115.0,
+        "P100": 101.0,
+        "V100": 59.0
       }
     },
     "schedule_infos": {
@@ -24,26 +56,88 @@
       }
     },
     "inst_status": {
-      "0": "finished",
-      "1": "finished"
+      "0": "running",
+      "1": "running"
     },
     "inst_data_status": {},
-    "task_submit_time": 1743509635.0854957,
-    "task_start_time": 1743509642.9251869,
-    "task_end_time": 1743509693.0523474
+    "task_submit_time": 0.0,
+    "task_start_time": 1743579179.6822624,
+    "task_end_time": 0.0
   },
-  "task-001": {
+  "f8f772bfb1370af179903c10": {
     "task_meta": {
-      "task_id": "task-001",
-      "task_name": "resnet50",
+      "task_id": "f8f772bfb1370af179903c10",
+      "task_name": "ResNet50",
       "task_inst_num": 1,
-      "task_plan_cpu": 0.0,
-      "task_plan_mem": 0.0,
+      "task_plan_cpu": 600.0,
+      "task_plan_mem": 29.296875,
       "task_plan_gpu": 1,
-      "task_status": "finished",
+      "task_status": "submitted",
       "task_start_time": 0.0,
       "task_runtime": {
-        "T4": 10000.0
+        "T4": 167.0,
+        "P100": 145.0,
+        "V100": 86.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "worker1-gpu-1"
+      }
+    },
+    "inst_status": {
+      "0": "pending"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 0.0,
+    "task_start_time": 0.0,
+    "task_end_time": 0.0
+  },
+  "97e3769e6d0a2614581ef008": {
+    "task_meta": {
+      "task_id": "97e3769e6d0a2614581ef008",
+      "task_name": "ResNet18",
+      "task_inst_num": 1,
+      "task_plan_cpu": 600.0,
+      "task_plan_mem": 29.296875,
+      "task_plan_gpu": 1,
+      "task_status": "submitted",
+      "task_start_time": 0.0,
+      "task_runtime": {
+        "T4": 100.0,
+        "P100": 87.0,
+        "V100": 51.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "worker1-gpu-1"
+      }
+    },
+    "inst_status": {
+      "0": "pending"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 0.0,
+    "task_start_time": 0.0,
+    "task_end_time": 0.0
+  },
+  "9ae8316162136b924c43333a": {
+    "task_meta": {
+      "task_id": "9ae8316162136b924c43333a",
+      "task_name": "ResNet18",
+      "task_inst_num": 1,
+      "task_plan_cpu": 100.0,
+      "task_plan_mem": 29.296875,
+      "task_plan_gpu": 1,
+      "task_status": "submitted",
+      "task_start_time": 0.0,
+      "task_runtime": {
+        "T4": 168.0,
+        "P100": 146.0,
+        "V100": 86.0
       }
     },
     "schedule_infos": {
@@ -53,11 +147,181 @@
       }
     },
     "inst_status": {
-      "0": "finished"
+      "0": "pending"
     },
     "inst_data_status": {},
-    "task_submit_time": 1743509638.119819,
-    "task_start_time": 1743509698.064108,
-    "task_end_time": 1743509788.2738855
+    "task_submit_time": 0.0,
+    "task_start_time": 0.0,
+    "task_end_time": 0.0
+  },
+  "99ecc5ac0912b3ca6f9e4b77": {
+    "task_meta": {
+      "task_id": "99ecc5ac0912b3ca6f9e4b77",
+      "task_name": "ResNet18",
+      "task_inst_num": 2,
+      "task_plan_cpu": 1800.0,
+      "task_plan_mem": 58.59375,
+      "task_plan_gpu": 1,
+      "task_status": "submitted",
+      "task_start_time": 0.0,
+      "task_runtime": {
+        "T4": 173.0,
+        "P100": 151.0,
+        "V100": 89.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "worker1-gpu-0"
+      },
+      "1": {
+        "inst_id": 1,
+        "gpu_id": "worker1-gpu-1"
+      }
+    },
+    "inst_status": {
+      "0": "pending",
+      "1": "pending"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 0.0,
+    "task_start_time": 0.0,
+    "task_end_time": 0.0
+  },
+  "08dbb6c4d26f49d9ab66e6e4": {
+    "task_meta": {
+      "task_id": "08dbb6c4d26f49d9ab66e6e4",
+      "task_name": "ResNet18",
+      "task_inst_num": 2,
+      "task_plan_cpu": 1800.0,
+      "task_plan_mem": 58.59375,
+      "task_plan_gpu": 1,
+      "task_status": "submitted",
+      "task_start_time": 0.0,
+      "task_runtime": {
+        "T4": 176.0,
+        "P100": 154.0,
+        "V100": 91.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "worker1-gpu-0"
+      },
+      "1": {
+        "inst_id": 1,
+        "gpu_id": "worker1-gpu-1"
+      }
+    },
+    "inst_status": {
+      "0": "pending",
+      "1": "pending"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 0.0,
+    "task_start_time": 0.0,
+    "task_end_time": 0.0
+  },
+  "db8934fccee3893894b57a02": {
+    "task_meta": {
+      "task_id": "db8934fccee3893894b57a02",
+      "task_name": "ResNet50",
+      "task_inst_num": 1,
+      "task_plan_cpu": 1800.0,
+      "task_plan_mem": 58.59375,
+      "task_plan_gpu": 1,
+      "task_status": "submitted",
+      "task_start_time": 0.0,
+      "task_runtime": {
+        "T4": 184.0,
+        "P100": 161.0,
+        "V100": 95.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "worker1-gpu-0"
+      }
+    },
+    "inst_status": {
+      "0": "pending"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 0.0,
+    "task_start_time": 0.0,
+    "task_end_time": 0.0
+  },
+  "05296e835746ca7f08393b6b": {
+    "task_meta": {
+      "task_id": "05296e835746ca7f08393b6b",
+      "task_name": "ResNet18",
+      "task_inst_num": 2,
+      "task_plan_cpu": 1600.0,
+      "task_plan_mem": 9.765625,
+      "task_plan_gpu": 1,
+      "task_status": "submitted",
+      "task_start_time": 0.0,
+      "task_runtime": {
+        "T4": 197.0,
+        "P100": 172.0,
+        "V100": 102.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "worker1-gpu-0"
+      },
+      "1": {
+        "inst_id": 1,
+        "gpu_id": "worker1-gpu-1"
+      }
+    },
+    "inst_status": {
+      "0": "pending",
+      "1": "pending"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 0.0,
+    "task_start_time": 0.0,
+    "task_end_time": 0.0
+  },
+  "cea00b20a787640c7cfd83a1": {
+    "task_meta": {
+      "task_id": "cea00b20a787640c7cfd83a1",
+      "task_name": "ResNet50",
+      "task_inst_num": 2,
+      "task_plan_cpu": 1600.0,
+      "task_plan_mem": 58.59375,
+      "task_plan_gpu": 1,
+      "task_status": "submitted",
+      "task_start_time": 0.0,
+      "task_runtime": {
+        "T4": 292.0,
+        "P100": 254.0,
+        "V100": 151.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "worker1-gpu-0"
+      },
+      "1": {
+        "inst_id": 1,
+        "gpu_id": "worker1-gpu-1"
+      }
+    },
+    "inst_status": {
+      "0": "pending",
+      "1": "pending"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 0.0,
+    "task_start_time": 0.0,
+    "task_end_time": 0.0
   }
 }

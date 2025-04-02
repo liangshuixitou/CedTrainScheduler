@@ -17,10 +17,10 @@ class ScriptGenerator:
         master_addr: str,
         master_port: int,
         plan_runtime: int,
-        data_transfer_time: float,
+        data_transfer_time: int,
         python_path: str = "python",
     ) -> str:
-        workload_info = WORKLOAD_INFOS.get(task_name)
+        workload_info = WORKLOAD_INFOS.get(task_name.lower())
         if not workload_info:
             raise ValueError(f"Workload info not found for task name: {task_name}")
 

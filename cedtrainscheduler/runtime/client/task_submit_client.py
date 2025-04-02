@@ -8,6 +8,7 @@ from cedtrainscheduler.runtime.manager.api_client import TaskManagerClient
 from cedtrainscheduler.runtime.types.cluster import GPUType
 from cedtrainscheduler.runtime.types.task import TaskMeta
 from cedtrainscheduler.runtime.types.task import TaskStatus
+from cedtrainscheduler.runtime.utils.metric_util import print_task_metrics
 
 
 class TaskSubmitClient:
@@ -49,10 +50,16 @@ async def test_submit_tasks_from_csv(task_submit_client: TaskSubmitClient, csv_p
 
     # 每5个任务停止10s
     for i, task_meta in enumerate(task_list):
-        if i % 5 == 0:
+        if i % 5 == 0 and i != 0:
             await asyncio.sleep(10)
         await task_submit_client.submit_task(task_meta)
+        print(f"Submitted task_id: {task_meta.task_id}")
 
+async def print_task_metrics_daemon(task_submit_client: TaskSubmitClient):
+    while True:
+        metrics = await task_submit_client.task_manager_client.metrics()
+        print_task_metrics(metrics)
+        await asyncio.sleep(5)
 
 async def test_submit_one_task(task_submit_client: TaskSubmitClient):
     task_meta = TaskMeta(
@@ -89,7 +96,7 @@ async def main():
     parser.add_argument("--id", default="manager", help="Manager component ID")
     parser.add_argument("--ip", default="127.0.0.1", help="Manager IP address")
     parser.add_argument("--port", type=int, default=5001, help="Manager port")
-    parser.add_argument("--csv_path", type=str, default="task_bench.csv", help="CSV file path")
+    parser.add_argument("--csv-path", type=str, default="task_bench.csv", help="CSV file path")
     args = parser.parse_args()
 
     task_submit_client = TaskSubmitClient(
@@ -103,7 +110,7 @@ async def main():
 
     # await test_submit_one_task(task_submit_client)
     await test_submit_tasks_from_csv(task_submit_client, args.csv_path)
-
+    await print_task_metrics_daemon(task_submit_client)
 
 if __name__ == "__main__":
     asyncio.run(main())

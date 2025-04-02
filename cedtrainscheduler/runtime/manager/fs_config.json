@@ -1,21 +1,42 @@
 {
   "tasks": [
     {
-      "model_name": "resnet50",
+      "model_name": "ResNet50",
       "task_type": "Image Classification",
       "batch_sizes": [
-        16,
         32,
-        64
+        64,
+        128
       ],
       "dataset": {
-        "size_mb": 5000,
+        "size_mb": 1500,
         "storage_nodes": [
           "worker1"
         ]
       },
       "model": {
         "size_mb": 98,
+        "storage_nodes": [
+          "worker1"
+        ]
+      }
+    },
+    {
+      "model_name": "ResNet18",
+      "task_type": "Image Classification",
+      "batch_sizes": [
+        32,
+        64,
+        128
+      ],
+      "dataset": {
+        "size_mb": 1700,
+        "storage_nodes": [
+          "worker1"
+        ]
+      },
+      "model": {
+        "size_mb": 45,
         "storage_nodes": [
           "worker1"
         ]

@@ -52,7 +52,7 @@ class ManagerAPIServer:
             }
             return await self.manager_service.handle_master_register(cluster, task_infos, master_info, task_queue_map)
 
-        @self.app.get("/api/metrics")
+        @self.app.post("/api/metrics")
         async def handle_metrics():
             """处理获取Manager的Metrics请求"""
             return await self.manager_service.handle_metrics()
