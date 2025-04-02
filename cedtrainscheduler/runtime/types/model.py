@@ -226,6 +226,7 @@ class ManagerMasterRegisterModel(BaseModel):
 # master model
 class MasterTaskSubmitModel(BaseModel):
     task: TaskWrapRuntimeInfoModel
+    sim_data_transfer_time: float
 
 
 class MasterWorkerRegisterModel(BaseModel):
@@ -248,3 +249,5 @@ class WorkerTaskInstStartModel(BaseModel):
     inst_rank: int
     master_addr: str
     master_port: int
+    plan_runtime: int
+    data_transfer_time: float

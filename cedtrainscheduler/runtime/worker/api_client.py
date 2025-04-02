@@ -70,6 +70,8 @@ class MasterWorkerClient(BaseClient):
         inst_rank: int,
         master_addr: str,
         master_port: int,
+        plan_runtime: int,
+        data_transfer_time: float,
     ) -> Optional[dict]:
         """
         启动任务实例
@@ -94,5 +96,7 @@ class MasterWorkerClient(BaseClient):
             inst_rank=inst_rank,
             master_addr=master_addr,
             master_port=master_port,
+            plan_runtime=plan_runtime,
+            data_transfer_time=data_transfer_time,
         ).model_dump()
         return await self._make_request("/api/task/inst/start", data)

@@ -19,5 +19,7 @@ class WorkerService(ABC):
         inst_rank: int,
         master_addr: str,
         master_port: int,
+        plan_runtime: int,
+        data_transfer_time: float,
     ):
         pass

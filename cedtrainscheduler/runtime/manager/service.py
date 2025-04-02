@@ -22,3 +22,7 @@ class ManagerService(ABC):
         task_queue_map: dict[str, TaskInst],
     ):
         pass
+
+    @abstractmethod
+    async def handle_metrics(self) -> dict:
+        pass

@@ -14,5 +14,5 @@ class MasterService(ABC):
         pass
 
     @abstractmethod
-    async def handle_task_submit(self, task_info: TaskWrapRuntimeInfo):
+    async def handle_task_submit(self, task_info: TaskWrapRuntimeInfo, sim_data_transfer_time: float):
         pass

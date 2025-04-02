@@ -52,6 +52,11 @@ class ManagerAPIServer:
             }
             return await self.manager_service.handle_master_register(cluster, task_infos, master_info, task_queue_map)
 
+        @self.app.get("/api/metrics")
+        async def handle_metrics():
+            """处理获取Manager的Metrics请求"""
+            return await self.manager_service.handle_metrics()
+
     async def start(self, host="0.0.0.0", port=5000) -> asyncio.Task:
         """启动API服务器，返回服务器运行的Task"""
         config = Config(app=self.app, host=host, port=port, log_level="info")

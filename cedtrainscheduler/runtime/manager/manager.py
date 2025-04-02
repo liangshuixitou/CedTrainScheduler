@@ -38,6 +38,7 @@ class Manager(BaseServer, ManagerService):
 
         self.scheduler = SchedulerFactory.create_scheduler(manager_args.scheduler_name)
         self.api_server = ManagerAPIServer(self)
+
         self.logger = setup_logger(__name__)
 
     async def _start(self):
@@ -91,7 +92,10 @@ class Manager(BaseServer, ManagerService):
             # gpu_id -> cluster_id
             cluster = await self.cluster_manager.get_cluster_by_gpu_id(task_wrap_runtime_info.schedule_infos[0].gpu_id)
             master_client = await self.cluster_manager.get_master_client_by_cluster_id(cluster.cluster_id)
-            await master_client.submit_task(task_wrap_runtime_info)
+            sim_data_transfer_time = await self._calculate_data_transfer_time(
+                task_wrap_runtime_info, cluster.cluster_id
+            )
+            await master_client.submit_task(task_wrap_runtime_info, sim_data_transfer_time)
             self.logger.info(
                 f"Scheduler scheduled task {task_wrap_runtime_info.task_meta.task_id} to cluster {cluster.cluster_id}"
             )
@@ -114,15 +118,30 @@ class Manager(BaseServer, ManagerService):
         await self.task_manager.extend_task_queue_map(task_queue_map)
         await self.task_manager.save()
 
+    async def _calculate_data_transfer_time(
+        self, task_wrap_runtime_info: TaskWrapRuntimeInfo, cluster_id: str
+    ) -> float:
+        cluster_manager = await SchedulerUtils.build_scheduler_cluster_manager(self.cluster_manager, self.task_manager)
+        self.file_system_manager.set_file_system(FS_CONFIG_PATH, cluster_manager)
+        file_system = self.file_system_manager.get_file_system()
+        task_data_info = file_system.get_task_data_info(task_wrap_runtime_info.task_meta.task_name)
+        data_transfer_time = file_system.get_data_arrival_time(
+            task_data_info,
+            cluster_id,
+            cluster_manager,
+        )
+        return data_transfer_time
+
     async def _build_scheduler_context(self) -> SchedulerContext:
         cluster_manager = await SchedulerUtils.build_scheduler_cluster_manager(self.cluster_manager, self.task_manager)
         task_record = await SchedulerUtils.build_scheduler_task_record(self.task_manager)
         task_queue = self.scheduler.task_queue
         self.file_system_manager.set_file_system(FS_CONFIG_PATH, cluster_manager)
+        file_system = self.file_system_manager.get_file_system()
         return SchedulerContext(
             current_time=time.time(),
             cluster_manager=cluster_manager,
             task_record=task_record,
-            file_system=self.file_system_manager.get_file_system(),
+            file_system=file_system,
             task_queue=task_queue,
         )

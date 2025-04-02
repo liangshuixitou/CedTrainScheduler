@@ -37,6 +37,9 @@ class Executor:
             if len(self.task_queue) > 0:
                 self.task_queue[0].inst_status = TaskInstStatus.Ready
 
+    async def simulate_data_transfer(self, task_inst: TaskInst):
+        pass
+
     async def start_task(
         self,
         task_name: str,
@@ -45,6 +48,7 @@ class Executor:
         inst_rank: int,
         master_addr: str,
         master_port: int,
+        data_transfer_time: float,
     ):
         script = ScriptGenerator.generate_script(
             gpu_rank=self.gpu.gpu_rank,
@@ -54,6 +58,7 @@ class Executor:
             inst_rank=inst_rank,
             master_addr=master_addr,
             master_port=master_port,
+            data_transfer_time=data_transfer_time,
             python_path=get_python_executable_path(),
         )
 

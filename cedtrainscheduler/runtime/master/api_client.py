@@ -9,6 +9,7 @@ from cedtrainscheduler.runtime.types.model import NodeModel
 from cedtrainscheduler.runtime.types.model import TaskInstModel
 from cedtrainscheduler.runtime.types.model import TaskWrapRuntimeInfoModel
 from cedtrainscheduler.runtime.types.task import TaskInst
+from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
 from cedtrainscheduler.runtime.utils.logger import setup_logger
 
 
@@ -78,16 +79,20 @@ class WorkerMasterClient(BaseClient):
 class ManagerMasterClient(BaseClient):
     """管理客户端，用于任务提交"""
 
-    async def submit_task(self, task: MasterTaskSubmitModel) -> Optional[dict]:
+    async def submit_task(self, task: TaskWrapRuntimeInfo, sim_data_transfer_time: float) -> Optional[dict]:
         """
         向Master提交任务
 
         Args:
             task: 任务包装的运行时信息
+            sim_data_transfer_time: 模拟数据传输时间
 
         Returns:
             Optional[dict]: 任务提交结果，失败时返回None
         """
-        data = MasterTaskSubmitModel(task=TaskWrapRuntimeInfoModel.from_task_wrap_runtime_info(task)).model_dump()
+        data = MasterTaskSubmitModel(
+            task=TaskWrapRuntimeInfoModel.from_task_wrap_runtime_info(task),
+            sim_data_transfer_time=sim_data_transfer_time,
+        ).model_dump()
 
         return await self._make_request("/api/task/submit", data)

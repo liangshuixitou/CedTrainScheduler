@@ -36,7 +36,8 @@ class MasterAPIServer:
             """处理来自Worker的任务提交"""
             # 使用 Pydantic 模型的转换方法生成自定义类对象
             task_info = request.task.to_task_wrap_runtime_info()
-            return await self.master_service.handle_task_submit(task_info)
+            sim_data_transfer_time = request.sim_data_transfer_time
+            return await self.master_service.handle_task_submit(task_info, sim_data_transfer_time)
 
         @self.app.post("/api/worker/register")
         async def handle_worker_register(request: MasterWorkerRegisterModel):

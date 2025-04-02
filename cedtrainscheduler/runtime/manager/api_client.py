@@ -103,3 +103,9 @@ class TaskManagerClient(BaseClient):
         """
         data = ManagerTaskSubmitModel(task=TaskMetaModel.from_task_meta(task_meta)).model_dump()
         return await self._make_request("/api/task/submit", data)
+
+    async def metrics(self) -> Optional[dict]:
+        """
+        获取Manager的Metrics
+        """
+        return await self._make_request("/api/metrics", {})

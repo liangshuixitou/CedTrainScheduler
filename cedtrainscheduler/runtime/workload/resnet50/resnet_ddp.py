@@ -13,6 +13,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.utils.data import Dataset
 from torchvision import models
 from torchvision import transforms
+from tqdm import tqdm
 
 
 # ==================== 自定义数据集类 ====================
@@ -74,6 +75,16 @@ def log_print(message, flush=True):
     print(f"[Rank {args.rank}] {message}", flush=flush)
 
 
+def load_data():
+    """Simulate data loading with progress bar"""
+    log_print(f"Starting data loading (estimated time: {args.data_transfer_time} seconds)")
+    with tqdm(total=args.data_transfer_time, desc="Loading data", unit="s") as pbar:
+        for _ in range(args.data_transfer_time):
+            time.sleep(1)
+            pbar.update(1)
+    log_print("Data loading completed")
+
+
 # ==================== 训练主函数 ====================
 def train():
     # 初始化分布式环境
@@ -92,10 +103,10 @@ def train():
     # 容错加载预训练权重
     try:
         model.load_state_dict(torch.load(model_path, weights_only=False), strict=True)
-        log_print("严格模式加载模型成功")
+        log_print("Strict mode model loading succeeded")
     except RuntimeError:
         model.load_state_dict(torch.load(model_path, weights_only=False), strict=False)
-        log_print("警告：使用非严格模式加载模型")
+        log_print("Warning: Using non-strict mode to load model")
 
     model = model.to(device)
     ddp_model = DDP(model, device_ids=[device])
@@ -145,13 +156,19 @@ def train():
 
     try:
         # 训练循环
-        epoch_num = 1
-        for epoch in range(epoch_num):
+        epoch = 0
+        while True:
             epoch_start_time = time.time()
             train_sampler.set_epoch(epoch)
             log_print(f"Starting epoch {epoch+1}")
 
             for i, (images, labels) in enumerate(train_loader):
+                # 检查是否达到指定的运行时间
+                current_runtime = time.time() - train_start_time
+                if current_runtime >= args.runtime:
+                    log_print("Model converged, training completed")
+                    break
+
                 images = images.to(device)
                 labels = labels.to(device)
 
@@ -164,7 +181,11 @@ def train():
 
                 # 每个进程都打印日志
                 if i % 10 == 0:
-                    log_print(f"Epoch [{epoch+1}/{epoch_num}], Step [{i}/{len(train_loader)}], Loss: {loss.item():.4f}")
+                    log_print(f"Epoch [{epoch+1}], Step [{i}/{len(train_loader)}], Loss: {loss.item():.4f}")
+
+            # 检查是否达到指定的运行时间
+            if time.time() - train_start_time >= args.runtime:
+                break
 
             epoch_time = time.time() - epoch_start_time
             log_print(f"Epoch {epoch+1} time: {format_time(epoch_time)}")
@@ -181,6 +202,8 @@ if __name__ == "__main__":
     parser.add_argument("--rank", type=int, required=True)
     parser.add_argument("--model_file_path", type=str, required=True)
     parser.add_argument("--dataset_dir_path", type=str, required=True)
+    parser.add_argument("--runtime", type=int, default=3600, help="Training duration in seconds")
+    parser.add_argument("--data_transfer_time", type=int, default=10, help="Data transfer time in seconds")
     # 可以添加其他参数
     args = parser.parse_args()
 
@@ -191,5 +214,7 @@ if __name__ == "__main__":
     args.world_size = int(os.environ.get("WORLD_SIZE", "1"))
 
     log_print(f"Arguments: {args}")
+
+    load_data()
 
     train()

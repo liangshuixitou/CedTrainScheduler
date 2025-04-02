@@ -11,6 +11,7 @@ from cedtrainscheduler.runtime.master.api_server import MasterAPIServer
 from cedtrainscheduler.runtime.master.service import MasterService
 from cedtrainscheduler.runtime.types.args import MasterArgs
 from cedtrainscheduler.runtime.types.cluster import Cluster
+from cedtrainscheduler.runtime.types.cluster import GPUType
 from cedtrainscheduler.runtime.types.cluster import Node
 from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.types.task import TaskInstStatus
@@ -78,7 +79,7 @@ class Master(BaseServer, MasterService):
             f"Response: {response}"
         )
 
-    async def handle_task_submit(self, task_info: TaskWrapRuntimeInfo):
+    async def handle_task_submit(self, task_info: TaskWrapRuntimeInfo, sim_data_transfer_time: float):
         task_id = task_info.task_meta.task_id
         self.logger.info(f"handle_task_submit: {task_id}")
         if not task_id:
@@ -86,6 +87,7 @@ class Master(BaseServer, MasterService):
 
         await self.task_manager.add_task(task_info)
         await self.task_manager.update_task_time(task_id, time.time())
+        await self.task_manager.add_task_sim_data_transfer_time(task_id, sim_data_transfer_time)
         schedule_infos = task_info.schedule_infos
         for inst_id, schedule_info in schedule_infos.items():
             gpu_id = schedule_info.gpu_id
@@ -144,7 +146,8 @@ class Master(BaseServer, MasterService):
         return {"status": "success", "message": "Worker registered"}
 
     async def _start_task(self, task: TaskWrapRuntimeInfo):
-        first_worker_ip: Optional[str] = None
+        master_worker_ip: Optional[str] = None
+        master_worker_port: Optional[int] = None
 
         schedule_infos = task.schedule_infos
         for inst_id, schedule_info in schedule_infos.items():
@@ -163,8 +166,9 @@ class Master(BaseServer, MasterService):
                 self.logger.error(f"Worker client not found for worker {worker_ip}")
                 continue
 
-            if first_worker_ip is None:
-                first_worker_ip = worker_ip
+            if master_worker_ip is None:
+                master_worker_ip = worker_ip
+                master_worker_port = IPUtil.get_available_port(master_worker_ip)
 
             # Prepare instance info for the worker
             inst_data = TaskInst(
@@ -173,16 +177,19 @@ class Master(BaseServer, MasterService):
                 inst_status=TaskInstStatus.Pending,
             )
 
-            master_inst_ip = first_worker_ip
-            master_inst_port = IPUtil.get_available_port(first_worker_ip)
+            data_transfer_time = await self.task_manager.get_task_data_transfer_time(task.task_meta.task_id)
+            gpu_type = await self.worker_manager.get_gpu_type_by_gpu_id(gpu_id)
+            plan_runtime = task.task_meta.task_runtime[gpu_type]
             await worker_client.start_task_inst(
                 task_inst=inst_data,
                 gpu_id=gpu_id,
                 task_name=task.task_meta.task_name,
                 world_size=len(schedule_infos),
                 inst_rank=inst_id,
-                master_addr=master_inst_ip,
-                master_port=master_inst_port,
+                master_addr=master_worker_ip,
+                master_port=master_worker_port,
+                plan_runtime=plan_runtime,
+                data_transfer_time=data_transfer_time,
             )
             self.logger.info(f"Task {task.task_meta.task_id}, instance {inst_id} sent to worker {worker_ip}")
 
@@ -247,10 +254,18 @@ class WorkerManager:
                     return node.ip
         return None
 
+    async def get_gpu_type_by_gpu_id(self, gpu_id: str) -> GPUType:
+        async with self.worker_lock:
+            for node in self.cluster.nodes.values():
+                if gpu_id in node.gpus.keys():
+                    return node.gpus[gpu_id]
+        return None
+
 
 class TaskManager:
     def __init__(self):
         self.task_record: dict[str, TaskWrapRuntimeInfo] = {}
+        self.task_data_transfer_time: dict[str, float] = {}
         # dict[gpu_id, list[TaskInst]]
         self.task_queue_map: dict[str, list[TaskInst]] = {}
         self.task_lock = Lock()
@@ -266,6 +281,14 @@ class TaskManager:
     async def get_task_record(self) -> dict[str, TaskWrapRuntimeInfo]:
         async with self.task_lock:
             return self.task_record
+
+    async def add_task_data_transfer_time(self, task_id: str, data_transfer_time: float):
+        async with self.task_lock:
+            self.task_data_transfer_time[task_id] = data_transfer_time
+
+    async def get_task_sim_data_transfer_time(self, task_id: str) -> float:
+        async with self.task_lock:
+            return self.task_data_transfer_time[task_id]
 
     async def update_task_status(self, task_id: str, task_status: TaskStatus):
         async with self.task_lock:

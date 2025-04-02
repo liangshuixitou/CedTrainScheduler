@@ -49,8 +49,18 @@ class WorkerAPIServer:
             inst_rank = request.inst_rank
             master_addr = request.master_addr
             master_port = request.master_port
+            plan_runtime = request.plan_runtime
+            data_transfer_time = request.data_transfer_time
             return await self.worker_service.handle_task_inst_start(
-                task_inst, gpu_id, task_name, world_size, inst_rank, master_addr, master_port
+                task_inst,
+                gpu_id,
+                task_name,
+                world_size,
+                inst_rank,
+                master_addr,
+                master_port,
+                plan_runtime,
+                data_transfer_time,
             )
 
     async def start(self, host="0.0.0.0", port=5002) -> asyncio.Task:

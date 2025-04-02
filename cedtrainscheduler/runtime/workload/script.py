@@ -16,6 +16,8 @@ class ScriptGenerator:
         inst_rank: int,
         master_addr: str,
         master_port: int,
+        plan_runtime: int,
+        data_transfer_time: float,
         python_path: str = "python",
     ) -> str:
         workload_info = WORKLOAD_INFOS.get(task_name)
@@ -36,6 +38,8 @@ class ScriptGenerator:
             f"--rank={inst_rank} "
             f"--model_file_path={workload_info.model_file_path} "
             f"--dataset_dir_path={workload_info.dataset_dir_path} "
+            f"--runtime={plan_runtime} "
+            f"--data_transfer_time={data_transfer_time} "
             f"2>&1 | tee -a {log_file}"
         )
 
@@ -62,6 +66,8 @@ print(
         inst_rank=0,
         master_addr="127.0.0.1",
         master_port=29501,
+        plan_runtime=200,
+        data_transfer_time=10,
         python_path=get_python_executable_path(),
     )
 )

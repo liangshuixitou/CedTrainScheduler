@@ -105,6 +105,8 @@ class Worker(BaseServer, WorkerService):
         inst_rank: int,
         master_addr: str,
         master_port: int,
+        plan_runtime: int,
+        data_transfer_time: float,
     ):
         executor = self.executors[gpu_id]
         current_task_inst = executor.task_queue[0]
@@ -121,4 +123,6 @@ class Worker(BaseServer, WorkerService):
             inst_rank=inst_rank,
             master_addr=master_addr,
             master_port=master_port,
+            plan_runtime=plan_runtime,
+            data_transfer_time=data_transfer_time,
         )
