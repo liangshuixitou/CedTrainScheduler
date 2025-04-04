@@ -76,8 +76,6 @@ def calculate_task_metrics(task_record_path: str) -> TaskMetrics:
 
     # Calculate averages
     total_tasks = len(task_records)
-    avg_task_completion_time = mean(task_completion_times) if task_completion_times else 0
-    avg_task_waiting_time = mean(task_waiting_times) if task_waiting_times else 0
     avg_instances_per_task = total_instances / total_tasks if total_tasks > 0 else 0
 
     # 计算已完成任务的平均值
@@ -88,8 +86,6 @@ def calculate_task_metrics(task_record_path: str) -> TaskMetrics:
 
     return TaskMetrics(
         total_runtime=total_runtime,
-        avg_task_completion_time=avg_task_completion_time,
-        avg_task_waiting_time=avg_task_waiting_time,
         total_tasks=total_tasks,
         total_instances=total_instances,
         avg_instances_per_task=avg_instances_per_task,
@@ -113,8 +109,6 @@ def print_task_metrics(metrics: dict):
     print(f"Total Tasks: {metrics['total_tasks']}")
     print(f"Total Instances: {metrics['total_instances']}")
     print(f"Average Instances per Task: {metrics['avg_instances_per_task']:.2f}")
-    print(f"Average Task Completion Time: {metrics['avg_task_completion_time']:.2f} seconds")
-    print(f"Average Task Waiting Time: {metrics['avg_task_waiting_time']:.2f} seconds")
 
     print("\n=== Task Status Distribution ===")
     for status, count in metrics["task_status_counts"].items():
