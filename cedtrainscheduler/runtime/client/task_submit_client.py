@@ -1,4 +1,5 @@
 import asyncio
+import time
 
 import pandas as pd
 
@@ -37,7 +38,7 @@ async def test_submit_tasks_from_csv(task_submit_client: TaskSubmitClient, csv_p
             task_plan_cpu=float(row["plan_cpu"]),
             task_plan_mem=float(row["plan_mem"]),
             task_plan_gpu=float(row["plan_gpu"]) / 100,
-            task_start_time=0,
+            task_start_time=time.time(),
             task_status=TaskStatus.Submitted,
             # 创建运行时间字典
             task_runtime={
@@ -55,11 +56,13 @@ async def test_submit_tasks_from_csv(task_submit_client: TaskSubmitClient, csv_p
         await task_submit_client.submit_task(task_meta)
         print(f"Submitted task_id: {task_meta.task_id}")
 
+
 async def print_task_metrics_daemon(task_submit_client: TaskSubmitClient):
     while True:
         metrics = await task_submit_client.task_manager_client.metrics()
         print_task_metrics(metrics)
         await asyncio.sleep(5)
+
 
 async def test_submit_one_task(task_submit_client: TaskSubmitClient):
     task_meta = TaskMeta(
@@ -111,6 +114,7 @@ async def main():
     # await test_submit_one_task(task_submit_client)
     await test_submit_tasks_from_csv(task_submit_client, args.csv_path)
     await print_task_metrics_daemon(task_submit_client)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

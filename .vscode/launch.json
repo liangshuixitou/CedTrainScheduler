@@ -38,7 +38,7 @@
       "justMyCode": false,
       "args": [
         "--id",
-        "master",
+        "master-cloud",
         "--ip",
         "127.0.0.1",
         "--port",
@@ -50,7 +50,7 @@
         "--manager-port",
         "5000",
         "--cluster-name",
-        "local-cluster",
+        "master-cloud",
         "--cluster-type",
         "cloud"
       ]
@@ -64,13 +64,13 @@
       "justMyCode": false,
       "args": [
         "--worker-id",
-        "worker1",
+        "cloud-worker-1",
         "--worker-ip",
         "127.0.0.1",
         "--worker-port",
         "5002",
         "--master-id",
-        "master",
+        "master-cloud",
         "--master-ip",
         "127.0.0.1",
         "--master-port",
@@ -90,7 +90,7 @@
         "--id",
         "manager",
         "--ip",
-        "36.103.199.240",
+        "127.0.0.1",
         "--port",
         "5000",
         "--csv-path",

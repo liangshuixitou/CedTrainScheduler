@@ -86,6 +86,7 @@ class Master(BaseServer, MasterService):
             return {"status": "error", "message": "Missing task_id"}
 
         await self.task_manager.add_task(task_info)
+        await self.task_manager.update_task_status(task_id, TaskStatus.Pending)
         await self.task_manager.update_task_time(task_id, time.time())
         await self.task_manager.add_task_data_transfer_time(task_id, sim_data_transfer_time)
         schedule_infos = task_info.schedule_infos

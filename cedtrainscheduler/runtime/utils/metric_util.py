@@ -5,9 +5,6 @@ from statistics import mean
 
 @dataclass
 class TaskMetrics:
-    total_runtime: float
-    avg_task_completion_time: float
-    avg_task_waiting_time: float
     total_tasks: int
     total_instances: int
     avg_instances_per_task: float
@@ -32,9 +29,6 @@ def calculate_task_metrics(task_record_path: str) -> TaskMetrics:
         task_records = json.load(f)
 
     # Initialize metrics
-    total_runtime = 0.0
-    task_completion_times = []
-    task_waiting_times = []
     total_instances = 0
     task_status_counts = {}
     completed_tasks_count = 0
@@ -53,22 +47,16 @@ def calculate_task_metrics(task_record_path: str) -> TaskMetrics:
         task_end_time = task_info["task_end_time"]
         task_submit_time = task_info["task_submit_time"]
 
-        # Add to total runtime
-        task_runtime = task_end_time - task_start_time
-        total_runtime += task_runtime
-
         # Calculate completion time and waiting time
         task_completion_time = task_end_time - task_start_time
         task_waiting_time = task_start_time - task_submit_time
-
-        task_completion_times.append(task_completion_time)
-        task_waiting_times.append(task_waiting_time)
 
         # Count instances
         total_instances += task_info["task_meta"]["task_inst_num"]
 
         # 统计已完成任务
         if task_status == "finished":
+            task_runtime = task_end_time - task_start_time
             completed_tasks_count += 1
             completed_tasks_runtime += task_runtime
             completed_tasks_completion_times.append(task_completion_time)
@@ -85,7 +73,6 @@ def calculate_task_metrics(task_record_path: str) -> TaskMetrics:
     completed_tasks_avg_waiting_time = mean(completed_tasks_waiting_times) if completed_tasks_waiting_times else 0
 
     return TaskMetrics(
-        total_runtime=total_runtime,
         total_tasks=total_tasks,
         total_instances=total_instances,
         avg_instances_per_task=avg_instances_per_task,
@@ -105,7 +92,6 @@ def print_task_metrics(metrics: dict):
         metrics: TaskMetrics object containing the calculated metrics
     """
     print("\n=== Task Execution Metrics ===")
-    print(f"Total Runtime: {metrics['total_runtime']:.2f} seconds")
     print(f"Total Tasks: {metrics['total_tasks']}")
     print(f"Total Instances: {metrics['total_instances']}")
     print(f"Average Instances per Task: {metrics['avg_instances_per_task']:.2f}")
