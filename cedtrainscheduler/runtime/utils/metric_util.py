@@ -35,6 +35,8 @@ def calculate_task_metrics(task_record_path: str) -> TaskMetrics:
     completed_tasks_runtime = 0.0
     completed_tasks_completion_times = []
     completed_tasks_waiting_times = []
+    earliest_start_time = float("inf")
+    latest_end_time = float("-inf")
 
     # Calculate metrics for each task
     for _, task_info in task_records.items():
@@ -56,11 +58,16 @@ def calculate_task_metrics(task_record_path: str) -> TaskMetrics:
 
         # 统计已完成任务
         if task_status == "finished":
-            task_runtime = task_end_time - task_start_time
             completed_tasks_count += 1
-            completed_tasks_runtime += task_runtime
             completed_tasks_completion_times.append(task_completion_time)
             completed_tasks_waiting_times.append(task_waiting_time)
+            # Update earliest start and latest end times
+            earliest_start_time = min(earliest_start_time, task_start_time)
+            latest_end_time = max(latest_end_time, task_end_time)
+
+    # Calculate completed tasks runtime as the time difference between earliest start and latest end
+    if completed_tasks_count > 0:
+        completed_tasks_runtime = latest_end_time - earliest_start_time
 
     # Calculate averages
     total_tasks = len(task_records)

@@ -150,7 +150,7 @@ runtime_config = ManagerConfig(
     component_info=ComponentInfo(
         component_type=ComponentType.MANAGER, component_id="manager", component_ip=node1_ip, component_port=5000
     ),
-    scheduler_name="fcfs_data",
+    scheduler_name="sjf",
     master_configs={
         "master-cloud": MasterConfig(
             component_info=ComponentInfo(
