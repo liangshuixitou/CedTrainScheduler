@@ -1,4 +1,5 @@
-from cedtrainscheduler.runtime.components import ComponentInfo, ComponentType
+from cedtrainscheduler.runtime.components import ComponentInfo
+from cedtrainscheduler.runtime.components import ComponentType
 
 PROJECT_PATH = "/home/ubuntu/CedTrainScheduler"
 
@@ -7,12 +8,12 @@ class ComponentGenerator:
     @staticmethod
     def generate_manager_command(component_info: ComponentInfo, scheduler_name: str) -> str:
         return (
-            f"cd {PROJECT_PATH} &&"
-            f"python cedtrainscheduler/runtime/manager/app.py"
-            f"--id {component_info.component_id}"
-            f"--ip {component_info.component_ip}"
-            f"--port {component_info.component_port}"
-            f"--scheduler-name {scheduler_name}"
+            f"cd {PROJECT_PATH} && "
+            f"python cedtrainscheduler/runtime/manager/app.py "
+            f"--id {component_info.component_id} "
+            f"--ip {component_info.component_ip} "
+            f"--port {component_info.component_port} "
+            f"--scheduler-name {scheduler_name} "
         )
 
     @staticmethod
@@ -23,16 +24,16 @@ class ComponentGenerator:
         cluster_type: str,
     ) -> str:
         return (
-            f"cd {PROJECT_PATH} &&"
-            f"python cedtrainscheduler/runtime/master/app.py"
-            f"--id {worker_component_info.component_id}"
-            f"--ip {worker_component_info.component_ip}"
-            f"--port {worker_component_info.component_port}"
-            f"--manager-id {manager_component_info.component_id}"
-            f"--manager-ip {manager_component_info.component_ip}"
-            f"--manager-port {manager_component_info.component_port}"
-            f"--cluster-name {cluster_name}"
-            f"--cluster-type {cluster_type}"
+            f"cd {PROJECT_PATH} && "
+            f"python cedtrainscheduler/runtime/master/app.py "
+            f"--id {worker_component_info.component_id} "
+            f"--ip {worker_component_info.component_ip} "
+            f"--port {worker_component_info.component_port} "
+            f"--manager-id {manager_component_info.component_id} "
+            f"--manager-ip {manager_component_info.component_ip} "
+            f"--manager-port {manager_component_info.component_port} "
+            f"--cluster-name {cluster_name} "
+            f"--cluster-type {cluster_type} "
         )
 
     @staticmethod
@@ -42,15 +43,15 @@ class ComponentGenerator:
         gpu_type: str,
     ) -> str:
         return (
-            f"cd {PROJECT_PATH} &&"
-            f"python cedtrainscheduler/runtime/worker/app.py"
-            f"--worker-id {worker_component_info.component_id}"
-            f"--worker-ip {worker_component_info.component_ip}"
-            f"--worker-port {worker_component_info.component_port}"
-            f"--master-id {master_component_info.component_id}"
-            f"--master-ip {master_component_info.component_ip}"
-            f"--master-port {master_component_info.component_port}"
-            f"--gpu-type {gpu_type}"
+            f"cd {PROJECT_PATH} && "
+            f"python cedtrainscheduler/runtime/worker/app.py "
+            f"--worker-id {worker_component_info.component_id} "
+            f"--worker-ip {worker_component_info.component_ip} "
+            f"--worker-port {worker_component_info.component_port} "
+            f"--master-id {master_component_info.component_id} "
+            f"--master-ip {master_component_info.component_ip} "
+            f"--master-port {master_component_info.component_port} "
+            f"--gpu-type {gpu_type} "
         )
 
 
@@ -194,7 +195,7 @@ runtime_config = ManagerConfig(
     },
 )
 
-node1_ip = "192.168.1.101"
+node1_ip = "36.103.199.240"
 
 micro_runtime_config = ManagerConfig(
     component_info=ComponentInfo(
@@ -216,7 +217,7 @@ micro_runtime_config = ManagerConfig(
                     component_info=ComponentInfo(
                         component_type=ComponentType.WORKER,
                         component_id="cloud-worker-1",
-                        component_ip=node2_ip,
+                        component_ip=node1_ip,
                         component_port=5002,
                     ),
                     gpu_type="V100",
