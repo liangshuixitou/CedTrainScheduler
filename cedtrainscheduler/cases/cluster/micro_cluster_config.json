@@ -2,12 +2,12 @@
   "clusters": {
     "cloud_clusters": [
       {
-        "cluster_id": "cloud_cluster_1",
+        "cluster_id": "cloud-cluster-1",
         "cluster_name": "CloudCluster-1",
         "cluster_type": "cloud",
         "nodes": [
           {
-            "node_id": "cloud_worker_1",
+            "node_id": "cloud-worker-1",
             "cpu_cores": 32,
             "memory": 128,
             "gpu_count": 4,
@@ -38,12 +38,12 @@
         "intra_domain_bandwidth": 200
       },
       {
-        "cluster_id": "edge_cluster_1",
+        "cluster_id": "edge-cluster-1",
         "cluster_name": "EdgeCluster-1",
         "cluster_type": "edge",
         "nodes": [
           {
-            "node_id": "edge_worker_1",
+            "node_id": "edge-worker-1",
             "cpu_cores": 32,
             "memory": 128,
             "gpu_count": 2,
@@ -66,12 +66,12 @@
         "intra_domain_bandwidth": 200
       },
       {
-        "cluster_id": "terminal_cluster_1",
+        "cluster_id": "terminal-cluster-1",
         "cluster_name": "TerminalCluster-1",
         "cluster_type": "terminal",
         "nodes": [
           {
-            "node_id": "terminal_worker_1",
+              "node_id": "terminal-worker-1",
             "cpu_cores": 32,
             "memory": 128,
             "gpu_count": 2,
