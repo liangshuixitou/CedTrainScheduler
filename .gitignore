@@ -161,3 +161,4 @@ cython_debug/
 
 
 cedtrainscheduler/cases/task/ali-cluster
+cedtrainscheduler/runtime/manager/task_record.json
