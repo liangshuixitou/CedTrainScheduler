@@ -18,7 +18,10 @@ async def main():
     parser.add_argument("--manager-port", type=int, default=5001, help="Manager port")
     parser.add_argument("--cluster-name", default="cluster", help="Cluster name")
     parser.add_argument(
-        "--cluster-type", default="cloud", choices=["cloud", "edge"], help="Cluster type (cloud or edge)"
+        "--cluster-type",
+        default="cloud",
+        choices=["cloud", "edge", "terminal"],
+        help="Cluster type (cloud or edge or terminal)",
     )
 
     args = parser.parse_args()
