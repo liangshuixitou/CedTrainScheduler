@@ -1,3 +1,4 @@
+import random
 import socket
 
 
@@ -27,9 +28,9 @@ class IPUtil:
             return False
 
     @staticmethod
-    def get_available_port(host: str, start_port: int = 30000) -> int:
+    def get_available_port(host: str, start_port: int = 30000, end_port: int = 40000) -> int:
         """获取一个可用的端口号"""
-        port = start_port
-        while IPUtil.check_port_in_use(host, port):
-            port += 1
-        return port
+        random_port = random.randint(start_port, end_port)
+        while IPUtil.check_port_in_use(host, random_port):
+            random_port = random.randint(start_port, end_port)
+        return random_port
