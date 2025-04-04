@@ -7,8 +7,6 @@ from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.runtime.utils.python_util import get_python_executable_path
 from cedtrainscheduler.runtime.workload.script import ScriptGenerator
 
-LOG_DIR = "/tmp/train_logs"
-
 
 class Executor:
     def __init__(self, gpu: GPU):

@@ -21,7 +21,7 @@ from cedtrainscheduler.runtime.utils.metric_util import calculate_task_metrics
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 
-MANAGER_SCHEDULER_INTERVAL = 3
+MANAGER_SCHEDULER_INTERVAL = 10
 MANAGER_TASK_RECORD_SAVE_INTERVAL = 5
 
 
@@ -40,6 +40,9 @@ class Manager(BaseServer, ManagerService):
 
         self.scheduler = SchedulerFactory.create_scheduler(manager_args.scheduler_name)
         self.api_server = ManagerAPIServer(self)
+
+        self.task_scheduler_buffer_lock = asyncio.Lock()
+        self.task_scheduler_buffer: list[TaskMeta] = []
 
         self.logger = setup_logger(__name__)
 
@@ -87,6 +90,12 @@ class Manager(BaseServer, ManagerService):
             raise
 
     async def _schedule(self):
+        async with self.task_scheduler_buffer_lock:
+            while not self.scheduler.is_queue_full() and len(self.task_scheduler_buffer) > 0:
+                scheduler_context = await self._build_scheduler_context()
+                task_meta = self.task_scheduler_buffer.pop(0)
+                self.scheduler.submit_task(scheduler_context, task_meta)
+
         if len(self.scheduler.task_queue) > 0:
             scheduler_context = await self._build_scheduler_context()
             task_wrap_runtime_info, _ = self.scheduler.schedule(scheduler_context)
@@ -103,8 +112,8 @@ class Manager(BaseServer, ManagerService):
             )
 
     async def handle_task_submit(self, task_meta: TaskMeta):
-        scheduler_context = await self._build_scheduler_context()
-        self.scheduler.submit_task(scheduler_context, task_meta)
+        async with self.task_scheduler_buffer_lock:
+            self.task_scheduler_buffer.append(task_meta)
 
     async def handle_master_register(
         self,

@@ -49,10 +49,9 @@ async def test_submit_tasks_from_csv(task_submit_client: TaskSubmitClient, csv_p
         )
         task_list.append(task_meta)
 
-    # 每5个任务停止10s
-    for i, task_meta in enumerate(task_list):
-        if i % 5 == 0 and i != 0:
-            await asyncio.sleep(10)
+    # 每个任务停止3s
+    for task_meta in task_list:
+        await asyncio.sleep(3)
         await task_submit_client.submit_task(task_meta)
         print(f"Submitted task_id: {task_meta.task_id}")
 
@@ -62,34 +61,6 @@ async def print_task_metrics_daemon(task_submit_client: TaskSubmitClient):
         metrics = await task_submit_client.task_manager_client.metrics()
         print_task_metrics(metrics)
         await asyncio.sleep(5)
-
-
-async def test_submit_one_task(task_submit_client: TaskSubmitClient):
-    task_meta = TaskMeta(
-        task_id="task-001",
-        task_name="resnet50",
-        task_inst_num=1,
-        task_plan_cpu=0,
-        task_plan_mem=0,
-        task_plan_gpu=1,
-        task_status=TaskStatus.Pending,
-        task_start_time=0,
-        task_runtime={GPUType.T4: 10000},
-    )
-    await task_submit_client.submit_task(task_meta)
-
-    task_meta = TaskMeta(
-        task_id="task-002",
-        task_name="resnet50",
-        task_inst_num=2,
-        task_plan_cpu=0,
-        task_plan_mem=0,
-        task_plan_gpu=1,
-        task_status=TaskStatus.Pending,
-        task_start_time=0,
-        task_runtime={GPUType.T4: 100},
-    )
-    await task_submit_client.submit_task(task_meta)
 
 
 async def main():
@@ -111,7 +82,6 @@ async def main():
         ),
     )
 
-    # await test_submit_one_task(task_submit_client)
     await test_submit_tasks_from_csv(task_submit_client, args.csv_path)
     await print_task_metrics_daemon(task_submit_client)
 

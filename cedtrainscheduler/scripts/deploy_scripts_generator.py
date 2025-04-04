@@ -54,6 +54,20 @@ class ComponentGenerator:
             f"--gpu-type {gpu_type} "
         )
 
+    @staticmethod
+    def generate_task_submit_client_command(
+        task_submit_client_component_info: ComponentInfo,
+        csv_path: str,
+    ) -> str:
+        return (
+            f"cd {PROJECT_PATH} && "
+            f"python cedtrainscheduler/runtime/client/task_submit_client.py "
+            f"--id {task_submit_client_component_info.component_id} "
+            f"--ip {task_submit_client_component_info.component_ip} "
+            f"--port {task_submit_client_component_info.component_port} "
+            f"--csv-path {csv_path} "
+        )
+
 
 class WorkerConfig:
     def __init__(self, component_info: ComponentInfo, gpu_type: str):
@@ -119,15 +133,24 @@ class DeploymentConfig:
                 print(f"\n*** worker {worker_id} command ***\n")
 
 
-node1_ip = "192.168.1.101"
-node2_ip = "192.168.1.102"
-node3_ip = "192.168.1.103"
+class TaskSubmitClientConfig:
+    def __init__(self, component_info: ComponentInfo, csv_path: str):
+        self.component_info = component_info
+        self.csv_path = csv_path
+
+    def generate_task_submit_client_command(self) -> str:
+        return ComponentGenerator.generate_task_submit_client_command(self.component_info, self.csv_path)
+
+
+node1_ip = "36.103.199.200"
+node2_ip = "36.103.199.193"
+node3_ip = "36.103.199.118"
 
 runtime_config = ManagerConfig(
     component_info=ComponentInfo(
         component_type=ComponentType.MANAGER, component_id="manager", component_ip=node1_ip, component_port=5000
     ),
-    scheduler_name="sjf",
+    scheduler_name="fcfs_data",
     master_configs={
         "master-cloud": MasterConfig(
             component_info=ComponentInfo(
@@ -143,7 +166,7 @@ runtime_config = ManagerConfig(
                     component_info=ComponentInfo(
                         component_type=ComponentType.WORKER,
                         component_id="cloud-worker-1",
-                        component_ip=node2_ip,
+                        component_ip=node1_ip,
                         component_port=5002,
                     ),
                     gpu_type="V100",
@@ -195,7 +218,6 @@ runtime_config = ManagerConfig(
     },
 )
 
-node1_ip = "36.103.199.240"
 
 micro_runtime_config = ManagerConfig(
     component_info=ComponentInfo(
@@ -227,13 +249,26 @@ micro_runtime_config = ManagerConfig(
     },
 )
 
+task_submit_client_config = TaskSubmitClientConfig(
+    component_info=ComponentInfo(
+        component_type=ComponentType.MANAGER,
+        component_id="manager",
+        component_ip=node1_ip,
+        component_port=5000,
+    ),
+    csv_path=f"{PROJECT_PATH}/cedtrainscheduler/cases/task/case_micro_10_tasks.csv",
+)
+
 
 def main():
-    # deployment_config = DeploymentConfig(runtime_config)
-    # deployment_config.print_deployment_command()
+    deployment_config = DeploymentConfig(runtime_config)
+    deployment_config.print_deployment_command()
 
-    micro_deployment_config = DeploymentConfig(micro_runtime_config)
-    micro_deployment_config.print_deployment_command()
+    # micro_deployment_config = DeploymentConfig(micro_runtime_config)
+    # micro_deployment_config.print_deployment_command()
+
+    task_submit_client_command = task_submit_client_config.generate_task_submit_client_command()
+    print(task_submit_client_command)
 
 
 if __name__ == "__main__":

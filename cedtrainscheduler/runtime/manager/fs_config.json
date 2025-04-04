@@ -11,13 +11,14 @@
       "dataset": {
         "size_mb": 1500,
         "storage_nodes": [
-          "cloud-worker-1"
+          "terminal_worker_1",
+          "cloud_worker_1"
         ]
       },
       "model": {
         "size_mb": 98,
         "storage_nodes": [
-          "cloud-worker-1"
+          "terminal_worker_1"
         ]
       }
     },
@@ -32,13 +33,13 @@
       "dataset": {
         "size_mb": 1700,
         "storage_nodes": [
-          "cloud-worker-1"
+          "edge_worker_1"
         ]
       },
       "model": {
         "size_mb": 45,
         "storage_nodes": [
-          "cloud-worker-1"
+          "edge_worker_1"
         ]
       }
     }
