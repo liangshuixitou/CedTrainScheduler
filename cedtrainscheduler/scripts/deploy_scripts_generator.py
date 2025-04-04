@@ -1,4 +1,4 @@
-from cedtrainscheduler.runtime.components import ComponentInfo
+from cedtrainscheduler.runtime.components import ComponentInfo, ComponentType
 
 PROJECT_PATH = "/home/ubuntu/CedTrainScheduler"
 
@@ -123,43 +123,69 @@ node2_ip = "192.168.1.102"
 node3_ip = "192.168.1.103"
 
 runtime_config = ManagerConfig(
-    component_info=ComponentInfo(component_id="manager", component_ip=node1_ip, component_port=5000),
+    component_info=ComponentInfo(
+        component_type=ComponentType.MANAGER, component_id="manager", component_ip=node1_ip, component_port=5000
+    ),
     scheduler_name="sjf",
     master_configs={
         "master-cloud": MasterConfig(
-            component_info=ComponentInfo(component_id="master-cloud", component_ip=node1_ip, component_port=5001),
+            component_info=ComponentInfo(
+                component_type=ComponentType.MASTER,
+                component_id="master-cloud",
+                component_ip=node1_ip,
+                component_port=5001,
+            ),
             cluster_name="master-cloud",
             cluster_type="cloud",
             worker_configs={
                 "cloud-worker-1": WorkerConfig(
                     component_info=ComponentInfo(
-                        component_id="cloud-worker-1", component_ip=node2_ip, component_port=5002
+                        component_type=ComponentType.WORKER,
+                        component_id="cloud-worker-1",
+                        component_ip=node2_ip,
+                        component_port=5002,
                     ),
                     gpu_type="V100",
                 ),
             },
         ),
         "master-edge": MasterConfig(
-            component_info=ComponentInfo(component_id="master-edge", component_ip=node2_ip, component_port=5001),
+            component_info=ComponentInfo(
+                component_type=ComponentType.MASTER,
+                component_id="master-edge",
+                component_ip=node2_ip,
+                component_port=5001,
+            ),
             cluster_name="master-edge",
             cluster_type="edge",
             worker_configs={
                 "edge-worker-1": WorkerConfig(
                     component_info=ComponentInfo(
-                        component_id="edge-worker-1", component_ip=node2_ip, component_port=5002
+                        component_type=ComponentType.WORKER,
+                        component_id="edge-worker-1",
+                        component_ip=node2_ip,
+                        component_port=5002,
                     ),
                     gpu_type="P100",
                 ),
             },
         ),
         "master-terminal": MasterConfig(
-            component_info=ComponentInfo(component_id="master-terminal", component_ip=node3_ip, component_port=5001),
+            component_info=ComponentInfo(
+                component_type=ComponentType.MASTER,
+                component_id="master-terminal",
+                component_ip=node3_ip,
+                component_port=5001,
+            ),
             cluster_name="master-terminal",
             cluster_type="terminal",
             worker_configs={
                 "terminal-worker-1": WorkerConfig(
                     component_info=ComponentInfo(
-                        component_id="terminal-worker-1", component_ip=node3_ip, component_port=5002
+                        component_type=ComponentType.WORKER,
+                        component_id="terminal-worker-1",
+                        component_ip=node3_ip,
+                        component_port=5002,
                     ),
                     gpu_type="T4",
                 ),
@@ -171,17 +197,27 @@ runtime_config = ManagerConfig(
 node1_ip = "192.168.1.101"
 
 micro_runtime_config = ManagerConfig(
-    component_info=ComponentInfo(component_id="manager", component_ip=node1_ip, component_port=5000),
+    component_info=ComponentInfo(
+        component_type=ComponentType.MANAGER, component_id="manager", component_ip=node1_ip, component_port=5000
+    ),
     scheduler_name="sjf",
     master_configs={
         "master-cloud": MasterConfig(
-            component_info=ComponentInfo(component_id="master-cloud", component_ip=node1_ip, component_port=5001),
+            component_info=ComponentInfo(
+                component_type=ComponentType.MASTER,
+                component_id="master-cloud",
+                component_ip=node1_ip,
+                component_port=5001,
+            ),
             cluster_name="master-cloud",
             cluster_type="cloud",
             worker_configs={
                 "cloud-worker-1": WorkerConfig(
                     component_info=ComponentInfo(
-                        component_id="cloud-worker-1", component_ip=node2_ip, component_port=5002
+                        component_type=ComponentType.WORKER,
+                        component_id="cloud-worker-1",
+                        component_ip=node2_ip,
+                        component_port=5002,
                     ),
                     gpu_type="V100",
                 ),
