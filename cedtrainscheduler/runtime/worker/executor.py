@@ -23,6 +23,7 @@ class Executor:
                 task.inst_status = TaskInstStatus.Ready
             self.task_record.append(task)
             self.task_queue.append(task)
+            self.logger.info(f"append task {task.task_id} to gpu {self.gpu.gpu_id}")
 
     async def get_task_record(self) -> list[TaskInst]:
         async with self.task_record_lock:
@@ -31,9 +32,10 @@ class Executor:
     async def task_finished(self, current_task_inst: TaskInst):
         current_task_inst.inst_status = TaskInstStatus.Finished
         async with self.task_record_lock:
-            self.task_queue.pop(0)
+            self.logger.info(f"task {current_task_inst.task_id} finished")
             if len(self.task_queue) > 0:
                 self.task_queue[0].inst_status = TaskInstStatus.Ready
+                self.logger.info(f"task {self.task_queue[0].task_id} is ready")
 
     async def simulate_data_transfer(self, task_inst: TaskInst):
         pass
