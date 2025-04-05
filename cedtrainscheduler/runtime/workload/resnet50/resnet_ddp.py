@@ -168,6 +168,8 @@ def train():
                 current_runtime = time.time() - train_start_time
                 if current_runtime >= args.runtime:
                     log_print("Model converged, training completed")
+                    # 确保所有进程都完成当前批次
+                    dist.barrier()
                     break
 
                 images = images.to(device)
@@ -190,11 +192,17 @@ def train():
 
             epoch_time = time.time() - epoch_start_time
             log_print(f"Epoch {epoch+1} time: {format_time(epoch_time)}")
+    except Exception as e:
+        log_print(f"Training error: {str(e)}")
     finally:
-        # 确保在任何情况下都会清理分布式环境
-        total_time = time.time() - train_start_time
-        log_print(f"Total training time: {format_time(total_time)}")
-        cleanup()
+        try:
+            # 等待所有进程完成
+            dist.barrier()
+            total_time = time.time() - train_start_time
+            log_print(f"Total training time: {format_time(total_time)}")
+        finally:
+            # 确保清理操作被执行
+            cleanup()
 
 
 # ==================== 参数解析 ====================
