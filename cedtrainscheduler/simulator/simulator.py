@@ -1,3 +1,6 @@
+import json
+import os
+
 import pandas as pd
 
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
@@ -21,7 +24,6 @@ from cedtrainscheduler.simulator.fs import FileSystem
 from cedtrainscheduler.simulator.manager import ClusterManager
 from cedtrainscheduler.simulator.record import Record
 from cedtrainscheduler.simulator.types import Metrics
-from cedtrainscheduler.simulator.utils import generate_poisson_timestamps
 
 
 class Simulator:
@@ -41,12 +43,7 @@ class Simulator:
         df = pd.read_csv(task_config_path)
         task_list = []
 
-        # 生成泊松分布的提交时间
-        submission_times = generate_poisson_timestamps(
-            n_tasks=len(df),
-            time_range=(0, 10000),
-        )
-        for submission_time, (_, row) in zip(submission_times, df.iterrows()):
+        for _, row in df.iterrows():
             task_meta = TaskMeta(
                 task_id=row["job_name"],
                 task_name=row["task_name"],
@@ -64,7 +61,6 @@ class Simulator:
                 },
             )
             task_list.append(task_meta)
-
         for task in task_list:
             self.event_loop_manager.add_event(EventTaskParse(task.task_start_time, task))
 
@@ -229,4 +225,41 @@ class Simulator:
             edge_count=edge_count,
             terminal_count=terminal_count,
         )
+        # self.save_task_record(task_record)
         return metrics
+
+    def save_task_record(self, task_record: dict[str, TaskWrapRuntimeInfo]):
+        json_data = self.convert_task_record_to_json(task_record)
+        self.task_record_path = (
+            f"cedtrainscheduler/simulator/statistics/task_record_{self.scheduler.scheduler_name}.json"
+        )
+        os.makedirs(os.path.dirname(self.task_record_path), exist_ok=True)
+        with open(self.task_record_path, "w") as f:
+            json.dump(json_data, f, indent=2)
+
+    def convert_task_record_to_json(self, task_record: dict[str, TaskWrapRuntimeInfo]) -> dict:
+        """将任务记录转换为可JSON化的格式"""
+        json_record = {}
+        for task_id, task in task_record.items():
+            json_record[task_id] = {
+                "task_meta": {
+                    "task_id": task.task_meta.task_id,
+                    "task_name": task.task_meta.task_name,
+                    "task_inst_num": task.task_meta.task_inst_num,
+                    "task_plan_cpu": task.task_meta.task_plan_cpu,
+                    "task_plan_mem": task.task_meta.task_plan_mem,
+                    "task_plan_gpu": task.task_meta.task_plan_gpu,
+                    "task_start_time": task.task_meta.task_start_time,
+                    "task_status": task.task_meta.task_status.value,
+                    "task_runtime": {
+                        gpu_type.value: runtime for gpu_type, runtime in task.task_meta.task_runtime.items()
+                    },
+                },
+                "schedule_infos": {
+                    str(inst_id): {"gpu_id": info.gpu_id} for inst_id, info in task.schedule_infos.items()
+                },
+                "task_submit_time": task.task_submit_time,
+                "task_start_time": task.task_start_time,
+                "task_end_time": task.task_end_time,
+            }
+        return json_record
