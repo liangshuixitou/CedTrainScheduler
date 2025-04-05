@@ -50,7 +50,7 @@ def calculate_task_metrics(task_record_path: str) -> TaskMetrics:
         task_submit_time = task_info["task_submit_time"]
 
         # Calculate completion time and waiting time
-        task_completion_time = task_end_time - task_start_time
+        task_completion_time = task_end_time - task_submit_time
         task_waiting_time = task_start_time - task_submit_time
 
         # Count instances
