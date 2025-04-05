@@ -33,6 +33,7 @@ class Executor:
         current_task_inst.inst_status = TaskInstStatus.Finished
         async with self.task_record_lock:
             self.logger.info(f"task {current_task_inst.task_id} finished")
+            self.task_queue.pop(0)
             if len(self.task_queue) > 0:
                 self.task_queue[0].inst_status = TaskInstStatus.Ready
                 self.logger.info(f"task {self.task_queue[0].task_id} is ready")
@@ -64,13 +65,13 @@ class Executor:
             python_path=get_python_executable_path(),
         )
 
-        self.logger.info(f"Start task {task_name} with script: {script}")
+        self.logger.info(f"Start task {task_inst.task_id} with script: {script}")
 
         async with self.task_record_lock:
             current_task_inst = self.task_queue[0]
 
         if current_task_inst.inst_id != task_inst.inst_id or current_task_inst.inst_status != TaskInstStatus.Ready:
-            self.logger.error(f"Task {task_name} instance {task_inst.inst_id} is not ready")
+            self.logger.error(f"Task {task_inst.task_id} instance {task_inst.inst_id} is not ready")
             return
 
         current_task_inst.inst_status = TaskInstStatus.Running
@@ -85,10 +86,10 @@ class Executor:
 
             # 简化监控任务
             asyncio.create_task(self._monitor_task_completion(process, current_task_inst, task_name))
-            self.logger.info(f"Task {task_name} started with PID {process.pid}")
+            self.logger.info(f"Task {task_inst.task_id} started with PID {process.pid}")
 
         except Exception as e:
-            self.logger.error(f"Error starting task {task_name}: {str(e)}")
+            self.logger.error(f"Error starting task {task_inst.task_id}: {str(e)}")
             await self.task_finished(current_task_inst)
 
     async def _monitor_task_completion(self, process: asyncio.subprocess.Process, task_inst: TaskInst, task_name: str):
@@ -98,12 +99,12 @@ class Executor:
             return_code = await process.wait()
 
             if return_code == 0:
-                self.logger.info(f"Task {task_name} completed successfully")
+                self.logger.info(f"Task {task_inst.task_id} completed successfully")
             else:
-                self.logger.error(f"Task {task_name} failed with exit code {return_code}")
+                self.logger.error(f"Task {task_inst.task_id} failed with exit code {return_code}")
 
             await self.task_finished(task_inst)
 
         except Exception as e:
-            self.logger.error(f"Error monitoring task {task_name}: {str(e)}")
+            self.logger.error(f"Error monitoring task {task_inst.task_id}: {str(e)}")
             await self.task_finished(task_inst)
