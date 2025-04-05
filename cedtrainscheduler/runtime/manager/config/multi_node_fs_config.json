@@ -9,7 +9,7 @@
         128
       ],
       "dataset": {
-        "size_mb": 150,
+        "size_mb": 3500,
         "storage_nodes": [
           "cloud-worker-1"
         ]
