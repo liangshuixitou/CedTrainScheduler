@@ -90,11 +90,11 @@
         "--id",
         "manager",
         "--ip",
-        "36.103.199.240",
+        "127.0.0.1",
         "--port",
         "5000",
         "--csv-path",
-        "${workspaceFolder}/cedtrainscheduler/cases/task/case_micro_10_tasks.csv"
+        "${workspaceFolder}/cedtrainscheduler/cases/task/case_micro_100_tasks.csv"
       ]
     },
   ],

@@ -1,6 +1,5 @@
 import os
 
-from cedtrainscheduler.runtime.utils.python_util import get_python_executable_path
 from cedtrainscheduler.runtime.workload.workload import WORKLOAD_INFOS
 
 LOG_BASE_DIR = "~/logs/train_logs"
@@ -55,19 +54,3 @@ class ScriptGenerator:
             os.makedirs(log_dir)
         log_file = os.path.join(log_dir, f"gpu{gpu_rank}_rank{inst_rank}.log")
         return log_file
-
-
-print(
-    ScriptGenerator.generate_script(
-        gpu_rank=0,
-        task_id="resnet_01",
-        task_name="resnet50",
-        world_size=1,
-        inst_rank=0,
-        master_addr="127.0.0.1",
-        master_port=29501,
-        plan_runtime=200,
-        data_transfer_time=10,
-        python_path=get_python_executable_path(),
-    )
-)

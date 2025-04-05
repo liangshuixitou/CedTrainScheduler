@@ -9,6 +9,7 @@ from cedtrainscheduler.runtime.types.cluster import Node as RuntimeNode
 from cedtrainscheduler.runtime.types.task import ScheduleInfo as RuntimeScheduleInfo
 from cedtrainscheduler.runtime.types.task import TaskInst as RuntimeTaskInst
 from cedtrainscheduler.runtime.types.task import TaskMeta as RuntimeTaskMeta
+from cedtrainscheduler.runtime.types.task import TaskStatus
 from cedtrainscheduler.runtime.types.task import TaskStatus as RuntimeTaskStatus
 from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo as RuntimeTaskWrapRuntimeInfo
 from cedtrainscheduler.scheduler.types.cluster import Cluster as SchedulerCluster
@@ -156,9 +157,11 @@ class SchedulerUtils:
         gpu_executor = SchedulerGPUExecutor(
             gpu_id, TypeConverter.convert_runtime_gpu_type_to_scheduler_gpu_type(gpu_type)
         )
+
         for task_inst in task_insts:
             gpu_executor.put(TypeConverter.convert_runtime_task_inst_to_scheduler_task_inst(task_inst))
-        gpu_executor.run_next_task_inst()
+        if task_insts and len(task_insts) > 0 and task_insts[0].inst_status == TaskStatus.Running:
+            gpu_executor.run_next_task_inst()
         return gpu_executor
 
     @staticmethod
