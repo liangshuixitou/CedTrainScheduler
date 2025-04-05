@@ -84,8 +84,10 @@ class Worker(BaseServer, WorkerService):
         for executor in self.executors.values():
             gpu_task_record = await executor.get_task_record()
             task_record.extend(gpu_task_record)
+            self.logger.info(f"GPU {executor.gpu.gpu_id} task queue size: {len(executor.task_queue)}")
 
         task_queue_map = {gpu_id: executor.task_queue for gpu_id, executor in self.executors.items()}
+
         response = await self.worker_client.register_worker(self.node, task_record, task_queue_map)
         self.logger.info(
             f"Worker registered to Master {self.master_info.component_ip}:{self.master_info.component_port}:"
