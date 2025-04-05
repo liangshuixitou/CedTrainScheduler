@@ -112,7 +112,7 @@ class Master(BaseServer, MasterService):
             )
 
             await worker_client.submit_task(inst_data, gpu_id)
-            self.logger.info(f"Task {task_id}, instance {inst_id} sent to worker {worker_ip}")
+            self.logger.info(f"Task {task_id}, instance {inst_id} submitted to worker {worker_ip}")
 
         return {"status": "success", "task_id": task_id}
 
@@ -121,6 +121,7 @@ class Master(BaseServer, MasterService):
     ):
         # register worker
         await self.worker_manager.register_worker(node)
+        self.logger.info(f"Worker {node.node_id} registered")
 
         await self.task_manager.extend_task_queue_map(task_queue_map)
 
@@ -192,7 +193,9 @@ class Master(BaseServer, MasterService):
                 plan_runtime=plan_runtime,
                 data_transfer_time=data_transfer_time,
             )
-            self.logger.info(f"Task {task.task_meta.task_id}, instance {inst_id} sent to worker {worker_ip}")
+            self.logger.info(
+                f"Task {task.task_meta.task_id}, start instance {inst_id} on worker {worker_ip} gpu {gpu_id}"
+            )
 
 
 class WorkerManager:

@@ -97,6 +97,7 @@ class Worker(BaseServer, WorkerService):
     async def handle_task_inst_submit(self, task_inst: TaskInst, gpu_id: str):
         executor = self.executors[gpu_id]
         await executor.append_task(task_inst)
+        self.logger.info(f"Task {task_inst.task_id} instance {task_inst.inst_id} submitted to GPU {gpu_id}")
 
     async def handle_task_inst_start(
         self,
@@ -118,6 +119,7 @@ class Worker(BaseServer, WorkerService):
             self.logger.info(f"Task inst {task_inst.task_id} is not ready, skip start")
             return
 
+        self.logger.info(f"Task {task_inst.task_id} instance {task_inst.inst_id} start on GPU {gpu_id} ")
         await executor.start_task(
             task_name=task_name,
             task_inst=task_inst,

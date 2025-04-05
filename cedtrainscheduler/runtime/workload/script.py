@@ -39,7 +39,7 @@ class ScriptGenerator:
             f"--dataset_dir_path={workload_info.dataset_dir_path} "
             f"--runtime={plan_runtime} "
             f"--data_transfer_time={data_transfer_time} "
-            f"2>&1 | tee -a {log_file}"
+            f">> {log_file} 2>&1"
         )
 
         return cmd

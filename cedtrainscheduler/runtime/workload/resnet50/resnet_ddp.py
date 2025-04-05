@@ -72,7 +72,7 @@ def format_time(seconds):
 
 def log_print(message, flush=True):
     """统一的日志打印函数"""
-    device_id = torch.cuda.current_device()
+    device_id = os.environ.get("CUDA_VISIBLE_DEVICES", "")
     print(f"[GPU {device_id}] [Rank {args.rank}] {message}", flush=flush)
 
 
