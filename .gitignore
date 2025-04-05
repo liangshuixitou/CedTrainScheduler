@@ -161,4 +161,3 @@ cython_debug/
 
 
 cedtrainscheduler/cases/task/ali-cluster
-cedtrainscheduler/runtime/manager/metrics/*
