@@ -156,7 +156,6 @@ def train():
     optimizer = optim.SGD(ddp_model.parameters(), lr=0.001, momentum=0.9)
 
     try:
-        # 训练循环
         epoch = 0
         while True:
             epoch_start_time = time.time()
@@ -164,13 +163,17 @@ def train():
             log_print(f"Starting epoch {epoch+1}")
 
             for i, (images, labels) in enumerate(train_loader):
-                # 检查是否达到指定的运行时间
-                current_runtime = time.time() - train_start_time
-                if current_runtime >= args.runtime:
-                    log_print("Model converged, training completed")
-                    # 确保所有进程都完成当前批次
-                    dist.barrier()
-                    break
+                # 在每个epoch的第一个批次同步时间
+                if i == 0:
+                    current_runtime = time.time() - train_start_time
+                    runtime_tensor = torch.tensor([current_runtime], device=device)
+                    dist.all_reduce(runtime_tensor, op=dist.ReduceOp.MAX)
+                    max_runtime = runtime_tensor.item()
+
+                    if max_runtime >= args.runtime:
+                        log_print("Model converged, training completed")
+                        dist.barrier()
+                        break
 
                 images = images.to(device)
                 labels = labels.to(device)
@@ -186,22 +189,21 @@ def train():
                 if i % 10 == 0:
                     log_print(f"Epoch [{epoch+1}], Step [{i}/{len(train_loader)}], Loss: {loss.item():.4f}")
 
-            # 检查是否达到指定的运行时间
-            if time.time() - train_start_time >= args.runtime:
+            if max_runtime >= args.runtime:
                 break
 
             epoch_time = time.time() - epoch_start_time
             log_print(f"Epoch {epoch+1} time: {format_time(epoch_time)}")
+            epoch += 1
+
     except Exception as e:
         log_print(f"Training error: {str(e)}")
     finally:
         try:
-            # 等待所有进程完成
             dist.barrier()
             total_time = time.time() - train_start_time
             log_print(f"Total training time: {format_time(total_time)}")
         finally:
-            # 确保清理操作被执行
             cleanup()
 
 
