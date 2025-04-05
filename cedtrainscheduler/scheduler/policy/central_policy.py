@@ -84,7 +84,7 @@ class ResourceAffinityPolicy(CentralPolicy):
 
         # 按平均队列等待时间排序
         sorted_clusters = sorted(avg_queue_times.items(), key=lambda x: x[1])
-        self.logger.info(f"sorted_clusters: {sorted_clusters}")
+        # self.logger.info(f"sorted_clusters: {sorted_clusters}")
 
         # 选择平均队列等待时间最少的前1个集群
         selected_cluster = sorted_clusters[0][0]
