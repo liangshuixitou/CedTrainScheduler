@@ -1,0 +1,37 @@
+{
+  "0f767999de1c4e5ee40a4153": {
+    "task_meta": {
+      "task_id": "0f767999de1c4e5ee40a4153",
+      "task_name": "ResNet18",
+      "task_inst_num": 2,
+      "task_plan_cpu": 1500.0,
+      "task_plan_mem": 48.84765625,
+      "task_plan_gpu": 1,
+      "task_status": "running",
+      "task_start_time": 1743829060.9229717,
+      "task_runtime": {
+        "T4": 298.0,
+        "P100": 260.0,
+        "V100": 154.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "cloud-worker-1-gpu-0"
+      },
+      "1": {
+        "inst_id": 1,
+        "gpu_id": "cloud-worker-1-gpu-1"
+      }
+    },
+    "inst_status": {
+      "0": "running",
+      "1": "running"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 1743829070.1659992,
+    "task_start_time": 1743829078.7350771,
+    "task_end_time": 0.0
+  }
+}

@@ -33,7 +33,11 @@ class GPUExecutor:
 
     def queue_time(self, current_time: float, task_record: dict[str, TaskWrapRuntimeInfo]) -> float:
         if self.running_task:
-            execute_time = current_time - task_record[self.running_task.task_id].task_start_time
+            execute_time = task_record[self.running_task.task_id].task_meta.task_runtime[self.gpu_type] - (
+                current_time - task_record[self.running_task.task_id].task_start_time
+            )
+            # if task_record[self.running_task.task_id].task_start_time == 0:
+            #     print(f"task {self.running_task.task_id} start time is 0")
         else:
             execute_time = 0
         pending_time = 0
