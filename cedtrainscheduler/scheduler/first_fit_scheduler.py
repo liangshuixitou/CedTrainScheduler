@@ -1,5 +1,5 @@
 from cedtrainscheduler.scheduler.factory import SchedulerType
-from cedtrainscheduler.scheduler.policy.central_policy import ResourceAffinityPolicy
+from cedtrainscheduler.scheduler.policy.central_policy import LoadBalancePolicy
 from cedtrainscheduler.scheduler.policy.cluster_policy import FirstFitPolicy
 from cedtrainscheduler.scheduler.policy.queue_policy import SFJQueuePolicy
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
@@ -14,7 +14,7 @@ class FirstFitScheduler(SchedulerBase):
         super().__init__()
         self.scheduler_name = SchedulerType.FIRST_FIT
         self.queue_policy = SFJQueuePolicy()
-        self.central_policy = ResourceAffinityPolicy()
+        self.central_policy = LoadBalancePolicy()
         self.cluster_policy = FirstFitPolicy()
 
     def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):

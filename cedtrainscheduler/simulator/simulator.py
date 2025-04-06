@@ -91,11 +91,6 @@ class Simulator:
         if not is_finished:
             self.event_loop_manager.add_event(EventTaskSchedule(self.current_time + self.task_schedule_interval))
 
-    def handle_task_schedule(self, event: EventTaskSchedule):
-        if len(self.task_buffer) > 0:
-            task = self.task_buffer.pop(0)
-            self.event_loop_manager.add_event(EventTaskSubmit(self.current_time, task))
-
     def handle_task_submit(self, event: EventTaskSubmit):
         self.task_record.log_task_submit(event.task, self.current_time)
         task = event.task
@@ -150,6 +145,8 @@ class Simulator:
             )
 
     def handle_task_finish(self, event: EventTaskFinish):
+        if event.task.task_meta.task_id == "2c793717cf0b32a4e0490460":
+            print("task")
         self.task_record.log_task_finish(event.task, self.current_time)
         for inst_id in range(event.task.task_meta.task_inst_num):
             next_task_inst = self.cluster_manager.gpu_task_queue[

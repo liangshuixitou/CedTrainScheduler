@@ -86,3 +86,38 @@ class ResourceAffinityPolicy(CentralPolicy):
         # 选择平均队列等待时间最少的前1个集群
         selected_cluster = sorted_clusters[0][0]
         return selected_cluster
+
+
+class LoadBalancePolicy(CentralPolicy):
+    def __init__(self):
+        super().__init__()
+
+    def schedule(self, scheduler_context: SchedulerContext, task: TaskMeta) -> str:
+        self.set_scheduler_context(scheduler_context)
+
+        cluster_queue_size: dict[str, int] = defaultdict(lambda: 0)
+        for cluster_id in self.clusters.keys():
+            for node in self.clusters[cluster_id].nodes:
+                for gpu in node.gpus:
+                    cluster_queue_size[cluster_id] += self.gpu_task_queue[gpu.gpu_id].pending_queue.qsize()
+        avg_queue_times: dict[str, float] = {}
+
+        for cluster_id, queue_size in cluster_queue_size.items():
+            avg_queue_times[cluster_id] = queue_size
+
+        # 按平均队列等待时间排序
+        sorted_clusters = sorted(avg_queue_times.items(), key=lambda x: x[1])
+        # print(f"sorted_clusters: {sorted_clusters}")
+        # 选择平均队列等待时间最少的前1个集群
+        selected_cluster = sorted_clusters[0][0]
+        return selected_cluster
+
+
+class DummyPolicy(CentralPolicy):
+    def __init__(self):
+        super().__init__()
+
+    def schedule(self, scheduler_context: SchedulerContext, task: TaskMeta) -> str:
+        self.set_scheduler_context(scheduler_context)
+
+        return random.choice(list(self.clusters.keys()))

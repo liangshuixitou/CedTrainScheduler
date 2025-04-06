@@ -1,5 +1,7 @@
 from cedtrainscheduler.scheduler.factory import SchedulerType
+from cedtrainscheduler.scheduler.policy.ced_policy import CedCentralPolicy
 from cedtrainscheduler.scheduler.policy.ced_policy import CedClusterPolicy
+from cedtrainscheduler.scheduler.policy.ced_policy import CedQueuePolicy
 from cedtrainscheduler.scheduler.policy.central_policy import ResourceAffinityPolicy
 from cedtrainscheduler.scheduler.policy.queue_policy import SFJQueuePolicy
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase

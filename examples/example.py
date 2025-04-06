@@ -59,12 +59,12 @@ micro_central_config: BenchConfig = BenchConfig(
 micro_cluster_config: BenchConfig = BenchConfig(
     cluster_file_name="micro_cluster_config.json",
     fs_file_name="micro_fs_config.json",
-    scheduler_list=["fcfs", "sjf", "dtsm", "greedy", "chronus", "allox", "sc_rm", "io_tcp"],
+    scheduler_list=["sjf", "io_tcp", "fcfs", "dtsm", "chronus", "allox", "sc_rm"],
     task_sample_type="micro",
     jobs_count_list=[20, 40, 60, 80, 100],
 )
 
-active_bench_config = cluster_config
+active_bench_config = micro_cluster_config
 
 
 def run_simulation(bench_config: BenchConfig) -> dict[int, dict[str, Metrics]]:
