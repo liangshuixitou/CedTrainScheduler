@@ -1,6 +1,3 @@
-import json
-import os
-
 import pandas as pd
 
 from cedtrainscheduler.scheduler.factory import SchedulerFactory
@@ -17,7 +14,7 @@ from cedtrainscheduler.simulator.config import SimulatorConfig
 from cedtrainscheduler.simulator.event import EventDataArrival
 from cedtrainscheduler.simulator.event import EventLoopManager
 from cedtrainscheduler.simulator.event import EventTaskFinish
-from cedtrainscheduler.simulator.event import EventTaskParse
+from cedtrainscheduler.simulator.event import EventTaskSchedule
 from cedtrainscheduler.simulator.event import EventTaskSubmit
 from cedtrainscheduler.simulator.event import EventType
 from cedtrainscheduler.simulator.fs import FileSystem
@@ -37,12 +34,16 @@ class Simulator:
             config.scheduler_name,
         )
         self.current_time = 0
+        self.task_schedule_interval = 10
+        self.task_buffer: list[TaskMeta] = []
         self.load_task_config(config.task_config_path)
+
+        self.event_loop_manager.add_event(EventTaskSchedule(self.current_time))
 
     def load_task_config(self, task_config_path: str):
         df = pd.read_csv(task_config_path)
-        task_list = []
 
+        task_submit_time = 0
         for _, row in df.iterrows():
             task_meta = TaskMeta(
                 task_id=row["job_name"],
@@ -51,7 +52,7 @@ class Simulator:
                 task_plan_cpu=float(row["plan_cpu"]),
                 task_plan_mem=float(row["plan_mem"]),
                 task_plan_gpu=float(row["plan_gpu"]) / 100,
-                task_start_time=0,
+                task_start_time=task_submit_time,
                 task_status=TaskStatus.Submitted,
                 # 创建运行时间字典
                 task_runtime={
@@ -60,12 +61,23 @@ class Simulator:
                     GPUType.V100: float(row["runtime_V100"]),
                 },
             )
-            task_list.append(task_meta)
-        for task in task_list:
-            self.event_loop_manager.add_event(EventTaskParse(task.task_start_time, task))
+            self.task_buffer.append(task_meta)
 
-    def handle_task_parse(self, event: EventTaskParse):
-        self.scheduler.submit_task(
+    def handle_schedule(self, event: EventTaskSchedule):
+        while not self.scheduler.is_queue_full() and len(self.task_buffer) > 0:
+            task = self.task_buffer.pop(0)
+            task.task_start_time = self.current_time
+            self.scheduler.submit_task(
+                SchedulerContext(
+                    current_time=self.current_time,
+                    cluster_manager=self.cluster_manager,
+                    task_record=self.task_record.task_record,
+                    file_system=self.file_system,
+                    task_queue=self.scheduler.task_queue,
+                ),
+                task,
+            )
+        task, is_finished = self.scheduler.schedule(
             SchedulerContext(
                 current_time=self.current_time,
                 cluster_manager=self.cluster_manager,
@@ -73,8 +85,16 @@ class Simulator:
                 file_system=self.file_system,
                 task_queue=self.scheduler.task_queue,
             ),
-            event.task,
         )
+        if task:
+            self.event_loop_manager.add_event(EventTaskSubmit(self.current_time, task))
+        if not is_finished:
+            self.event_loop_manager.add_event(EventTaskSchedule(self.current_time + self.task_schedule_interval))
+
+    def handle_task_schedule(self, event: EventTaskSchedule):
+        if len(self.task_buffer) > 0:
+            task = self.task_buffer.pop(0)
+            self.event_loop_manager.add_event(EventTaskSubmit(self.current_time, task))
 
     def handle_task_submit(self, event: EventTaskSubmit):
         self.task_record.log_task_submit(event.task, self.current_time)
@@ -118,6 +138,7 @@ class Simulator:
             self.task_record.log_task_start(self.current_time, event.task)
             for inst_id in range(event.task.task_meta.task_inst_num):
                 self.cluster_manager.gpu_task_queue[event.task.schedule_infos[inst_id].gpu_id].run_next_task_inst()
+
             self.event_loop_manager.add_event(
                 EventTaskFinish(
                     self.current_time
@@ -141,18 +162,11 @@ class Simulator:
 
     def simulation(self) -> Metrics:
         while True:
-            # 事件处理循环
-            is_finished = True
             while self.event_loop_manager.has_events():
                 event = self.event_loop_manager.get_next_event()
                 self.current_time = event.time
-                if event is None:
-                    break
-                if event.event_type == EventType.TaskParse:
-                    self.handle_task_parse(event)
-                    # 如果还有事件，则不进行调度
-                    if self.event_loop_manager.has_events() and not self.scheduler.is_queue_full():
-                        continue
+                if event.event_type == EventType.Schedule:
+                    self.handle_schedule(event)
                 elif event.event_type == EventType.TaskSubmit:
                     self.handle_task_submit(event)
                 elif event.event_type == EventType.DataArrival:
@@ -160,26 +174,13 @@ class Simulator:
                 elif event.event_type == EventType.TaskFinish:
                     self.handle_task_finish(event)
 
-                # 在每次事件处理后立即尝试调度
-                task, is_finished = self.scheduler.schedule(
-                    SchedulerContext(
-                        current_time=self.current_time,
-                        cluster_manager=self.cluster_manager,
-                        task_record=self.task_record.task_record,
-                        file_system=self.file_system,
-                        task_queue=self.scheduler.task_queue,
-                    ),
-                )
-                if task:
-                    self.event_loop_manager.add_event(EventTaskSubmit(self.current_time, task))
-
-            # 结束条件：没有事件且调度器返回已完成状态
-            if not self.event_loop_manager.has_events() and is_finished:
+            # 结束条件：没有事件
+            if not self.event_loop_manager.has_events():
                 metrics = self.count_metrics(self.task_record.task_record)
                 return metrics
 
     def count_metrics(self, task_record: dict[str, TaskWrapRuntimeInfo]) -> Metrics:
-        start_time = min(task.task_start_time for task in task_record.values())
+        start_time = min(task.task_submit_time for task in task_record.values())
         end_time = max(task.task_end_time for task in task_record.values())
         total_runtime = end_time - start_time
 
@@ -214,6 +215,14 @@ class Simulator:
             else:
                 terminal_count += 1
 
+        complete_count = 0
+        pending_count = 0
+        for task in task_record.values():
+            if task.task_meta.task_status == TaskStatus.Finished:
+                complete_count += 1
+            else:
+                pending_count += 1
+
         metrics: Metrics = Metrics(
             scheduler_name=self.scheduler.scheduler_name,
             task_count=len(task_record),
@@ -224,42 +233,44 @@ class Simulator:
             cloud_count=cloud_count,
             edge_count=edge_count,
             terminal_count=terminal_count,
+            complete_count=complete_count,
+            pending_count=pending_count,
         )
         # self.save_task_record(task_record)
         return metrics
 
-    def save_task_record(self, task_record: dict[str, TaskWrapRuntimeInfo]):
-        json_data = self.convert_task_record_to_json(task_record)
-        self.task_record_path = (
-            f"cedtrainscheduler/simulator/statistics/task_record_{self.scheduler.scheduler_name}.json"
-        )
-        os.makedirs(os.path.dirname(self.task_record_path), exist_ok=True)
-        with open(self.task_record_path, "w") as f:
-            json.dump(json_data, f, indent=2)
+    # def save_task_record(self, task_record: dict[str, TaskWrapRuntimeInfo]):
+    #     json_data = self.convert_task_record_to_json(task_record)
+    #     self.task_record_path = (
+    #         f"cedtrainscheduler/simulator/statistics/task_record_{self.scheduler.scheduler_name}.json"
+    #     )
+    #     os.makedirs(os.path.dirname(self.task_record_path), exist_ok=True)
+    #     with open(self.task_record_path, "w") as f:
+    #         json.dump(json_data, f, indent=2)
 
-    def convert_task_record_to_json(self, task_record: dict[str, TaskWrapRuntimeInfo]) -> dict:
-        """将任务记录转换为可JSON化的格式"""
-        json_record = {}
-        for task_id, task in task_record.items():
-            json_record[task_id] = {
-                "task_meta": {
-                    "task_id": task.task_meta.task_id,
-                    "task_name": task.task_meta.task_name,
-                    "task_inst_num": task.task_meta.task_inst_num,
-                    "task_plan_cpu": task.task_meta.task_plan_cpu,
-                    "task_plan_mem": task.task_meta.task_plan_mem,
-                    "task_plan_gpu": task.task_meta.task_plan_gpu,
-                    "task_start_time": task.task_meta.task_start_time,
-                    "task_status": task.task_meta.task_status.value,
-                    "task_runtime": {
-                        gpu_type.value: runtime for gpu_type, runtime in task.task_meta.task_runtime.items()
-                    },
-                },
-                "schedule_infos": {
-                    str(inst_id): {"gpu_id": info.gpu_id} for inst_id, info in task.schedule_infos.items()
-                },
-                "task_submit_time": task.task_submit_time,
-                "task_start_time": task.task_start_time,
-                "task_end_time": task.task_end_time,
-            }
-        return json_record
+    # def convert_task_record_to_json(self, task_record: dict[str, TaskWrapRuntimeInfo]) -> dict:
+    #     """将任务记录转换为可JSON化的格式"""
+    #     json_record = {}
+    #     for task_id, task in task_record.items():
+    #         json_record[task_id] = {
+    #             "task_meta": {
+    #                 "task_id": task.task_meta.task_id,
+    #                 "task_name": task.task_meta.task_name,
+    #                 "task_inst_num": task.task_meta.task_inst_num,
+    #                 "task_plan_cpu": task.task_meta.task_plan_cpu,
+    #                 "task_plan_mem": task.task_meta.task_plan_mem,
+    #                 "task_plan_gpu": task.task_meta.task_plan_gpu,
+    #                 "task_start_time": task.task_meta.task_start_time,
+    #                 "task_status": task.task_meta.task_status.value,
+    #                 "task_runtime": {
+    #                     gpu_type.value: runtime for gpu_type, runtime in task.task_meta.task_runtime.items()
+    #                 },
+    #             },
+    #             "schedule_infos": {
+    #                 str(inst_id): {"gpu_id": info.gpu_id} for inst_id, info in task.schedule_infos.items()
+    #             },
+    #             "task_submit_time": task.task_submit_time,
+    #             "task_start_time": task.task_start_time,
+    #             "task_end_time": task.task_end_time,
+    #         }
+    #     return json_record

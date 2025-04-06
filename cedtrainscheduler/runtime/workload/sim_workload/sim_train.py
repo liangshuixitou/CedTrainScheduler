@@ -38,17 +38,17 @@ def train():
         epoch_start_time = time.time()
         log_print(f"Starting epoch {epoch+1}")
 
-        data_len = 1200
+        data_len = 1200 / args.world_size
         for i in range(data_len):
-            # 在每个epoch的第一个批次同步时间
-            if i == 0:
+            # 每10个迭代同步一次时间
+            if i % 20 == 0:
                 current_runtime = time.time() - train_start_time
 
                 if current_runtime >= args.runtime:
                     log_print("Model converged, training completed")
                     break
 
-            time.sleep(0.2)
+            time.sleep(0.1)
 
             # 每个进程都打印日志
             if i % 10 == 0:

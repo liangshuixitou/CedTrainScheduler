@@ -34,8 +34,8 @@
             "ip_address": "192.168.253.113"
           }
         ],
-        "inter_domain_bandwidth": 1000,
-        "intra_domain_bandwidth": 200
+        "inter_domain_bandwidth": 200,
+        "intra_domain_bandwidth": 1200
       },
       {
         "cluster_id": "edge-cluster-1",
@@ -50,20 +50,20 @@
             "gpu_model": "P100",
             "gpus": [
               {
-                "gpu_id": "78ab3d61-b68b-4188-a721-ffe4ab430aae",
+                "gpu_id": "bad6757a-b50e-461c-afe3-09be7b549822",
                 "gpu_type": "P100"
               },
               {
-                "gpu_id": "ade614de-454b-4567-8779-973b303ddbc4",
+                "gpu_id": "399b77f5-89ec-4c5d-9365-cff6c8e258db",
                 "gpu_type": "P100"
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.253.113"
+            "ip_address": "192.168.253.114"
           }
         ],
-        "inter_domain_bandwidth": 1000,
-        "intra_domain_bandwidth": 200
+        "inter_domain_bandwidth": 200,
+        "intra_domain_bandwidth": 1200
       },
       {
         "cluster_id": "terminal-cluster-1",
@@ -71,7 +71,7 @@
         "cluster_type": "terminal",
         "nodes": [
           {
-              "node_id": "terminal-worker-1",
+            "node_id": "terminal-worker-1",
             "cpu_cores": 32,
             "memory": 128,
             "gpu_count": 2,
@@ -87,11 +87,11 @@
               }
             ],
             "gpu_memory": 16,
-            "ip_address": "192.168.228.218"
+            "ip_address": "192.168.253.115"
           }
         ],
-        "inter_domain_bandwidth": 1000,
-        "intra_domain_bandwidth": 200
+        "inter_domain_bandwidth": 200,
+        "intra_domain_bandwidth": 1200
       }
     ]
   }

@@ -1,4 +1,3 @@
-import math
 from collections import defaultdict
 
 from cedtrainscheduler.scheduler.policy.central_policy import CentralPolicy
@@ -35,10 +34,7 @@ class DTSMQueuePolicy(QueuePolicy):
                 comprehensive_affinity[cluster_id] = resource_affinity[cluster_id]
             comprehensive_affinity_dict[task.task_id] = comprehensive_affinity
 
-            max_cluster_id = max(comprehensive_affinity, key=comprehensive_affinity.get)
-            comprehensive_affinity.pop(max_cluster_id)
-
-            task_priority_dict[task.task_id] = (1 / task.task_runtime[GPUType.T4])
+            task_priority_dict[task.task_id] = 1 / task.task_runtime[GPUType.T4]
 
         max_task_id = max(task_priority_dict, key=task_priority_dict.get)
         for task in self.task_queue:
@@ -91,37 +87,6 @@ class DTSMQueuePolicy(QueuePolicy):
 
         return cluster_resource_affinity
 
-    def get_data_affinity(
-        self, task: TaskMeta, cluster_data_arrival_time_dict: dict[str, dict[str, float]]
-    ) -> dict[str, float]:
-        # return the data affinity of the task to each cluster
-        avg_data_arrival_time = self.file_system.avg_data_arrival_time
-
-        # 首先计算所有集群的原始数据亲和度
-        raw_data_affinity = {}
-        for cluster_id in self.clusters.keys():
-            raw_data_affinity[cluster_id] = math.exp(
-                cluster_data_arrival_time_dict[task.task_name][cluster_id] * -math.log(2) / avg_data_arrival_time
-            )
-
-        # 找出最大和最小亲和度值用于归一化
-        max_affinity = max(raw_data_affinity.values()) if raw_data_affinity else 1.0
-        min_affinity = min(raw_data_affinity.values()) if raw_data_affinity else 0.0
-
-        # 计算归一化后的数据亲和度
-        cluster_data_affinity: dict[str, float] = defaultdict(float)
-        for cluster_id in self.clusters.keys():
-            if max_affinity > min_affinity:
-                # 标准归一化公式
-                cluster_data_affinity[cluster_id] = (raw_data_affinity[cluster_id] - min_affinity) / (
-                    max_affinity - min_affinity
-                )
-            else:
-                # 如果所有值相同，则均设为1.0
-                cluster_data_affinity[cluster_id] = 1.0
-
-        return cluster_data_affinity
-
     def get_all_queue_time(self) -> dict[str, tuple[int, float]]:
         # return the gpu num and gpu queue time of the task to each cluster
         # dict[cluster_id, (gpu_num, gpu_time)]
@@ -137,23 +102,6 @@ class DTSMQueuePolicy(QueuePolicy):
                     )
         return cluster_queue_time
 
-    def get_all_data_arrival_time(self) -> dict[str, dict[str, float]]:
-        # return the data arrival time of the task to each cluster
-        # dict[task_name, dict[cluster_id, data_arrival_time]]
-        cluster_data_arrival_time: dict[str, dict[str, float]] = defaultdict(lambda: defaultdict(float))
-
-        task_name_set = set()
-        for task in self.task_queue:
-            task_name_set.add(task.task_name)
-
-        for task_name in task_name_set:
-            task_data_info = self.file_system.get_task_data_info(task_name)
-            for cluster_id in self.clusters.keys():
-                cluster_data_arrival_time[task_name][cluster_id] = self.file_system.get_data_arrival_time(
-                    task_data_info, cluster_id, self.cluster_manager
-                )
-        return cluster_data_arrival_time
-
 
 class DTSMCentralPolicy(CentralPolicy):
     def schedule(self, scheduler_context: SchedulerContext, task: TaskMeta) -> str:
@@ -164,7 +112,7 @@ class DTSMCentralPolicy(CentralPolicy):
 
         # 按亲和度降序排序集群
         sorted_clusters = sorted(affinities.items(), key=lambda x: x[1], reverse=True)
-
+        # print(f"sorted_clusters: {sorted_clusters}")
         # 选择前1名集群（或者所有集群，如果集群数量少于5）
         top_cluster = sorted_clusters[0][0]
 

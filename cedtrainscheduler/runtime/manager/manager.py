@@ -93,6 +93,7 @@ class Manager(BaseServer, ManagerService):
         async with self.task_scheduler_buffer_lock:
             while not self.scheduler.is_queue_full() and len(self.task_scheduler_buffer) > 0:
                 scheduler_context = await self._build_scheduler_context()
+                self.logger.info(scheduler_context.cluster_manager)
                 task_meta = self.task_scheduler_buffer.pop(0)
                 self.scheduler.submit_task(scheduler_context, task_meta)
 

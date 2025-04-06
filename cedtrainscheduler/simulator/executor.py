@@ -1,7 +1,7 @@
 from queue import Queue
 
 from cedtrainscheduler.scheduler.types.cluster import GPUType
-from cedtrainscheduler.scheduler.types.task import TaskInst
+from cedtrainscheduler.scheduler.types.task import TaskInst, TaskInstStatus
 from cedtrainscheduler.scheduler.types.task import TaskWrapRuntimeInfo
 
 
@@ -24,6 +24,11 @@ class GPUExecutor:
         else:
             task = self.pending_queue.get()
             self.running_task = task
+
+        if self.running_task and self.running_task.inst_status == TaskInstStatus.Pending:
+            print(
+                f"task {self.running_task.task_id} inst {self.running_task.inst_id} start time: {self.running_task.task_start_time}"
+            )
 
     def get_next_task_inst(self) -> TaskInst:
         if self.pending_queue.empty():

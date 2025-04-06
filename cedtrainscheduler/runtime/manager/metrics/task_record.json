@@ -1,0 +1,69 @@
+{
+  "192648814d3a359b371ce337": {
+    "task_meta": {
+      "task_id": "192648814d3a359b371ce337",
+      "task_name": "ResNet50",
+      "task_inst_num": 2,
+      "task_plan_cpu": 1600.0,
+      "task_plan_mem": 58.59375,
+      "task_plan_gpu": 1,
+      "task_status": "running",
+      "task_start_time": 1743915043.88177,
+      "task_runtime": {
+        "T4": 312.0,
+        "P100": 271.0,
+        "V100": 160.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "cloud-worker-1-gpu-0"
+      },
+      "1": {
+        "inst_id": 1,
+        "gpu_id": "cloud-worker-1-gpu-1"
+      }
+    },
+    "inst_status": {
+      "0": "running",
+      "1": "running"
+    },
+    "inst_data_status": {},
+    "task_submit_time": 1743915056.163512,
+    "task_start_time": 1743915064.99936,
+    "task_end_time": 0.0
+  },
+  "617b18eb40ff92f65236fcae": {
+    "task_meta": {
+      "task_id": "617b18eb40ff92f65236fcae",
+      "task_name": "ResNet18",
+      "task_inst_num": 2,
+      "task_plan_cpu": 1800.0,
+      "task_plan_mem": 58.59375,
+      "task_plan_gpu": 1,
+      "task_status": "pending",
+      "task_start_time": 1743915043.8809059,
+      "task_runtime": {
+        "T4": 370.0,
+        "P100": 322.0,
+        "V100": 190.0
+      }
+    },
+    "schedule_infos": {
+      "0": {
+        "inst_id": 0,
+        "gpu_id": "cloud-worker-1-gpu-0"
+      },
+      "1": {
+        "inst_id": 1,
+        "gpu_id": "cloud-worker-1-gpu-1"
+      }
+    },
+    "inst_status": {},
+    "inst_data_status": {},
+    "task_submit_time": 1743915066.202125,
+    "task_start_time": 0.0,
+    "task_end_time": 0.0
+  }
+}

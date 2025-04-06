@@ -1,7 +1,6 @@
 import random
 from collections import defaultdict
 
-from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.scheduler.types.cluster import Cluster
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 from cedtrainscheduler.scheduler.types.task import TaskMeta
@@ -61,7 +60,6 @@ class DataAffinityPolicy(CentralPolicy):
 class ResourceAffinityPolicy(CentralPolicy):
     def __init__(self):
         super().__init__()
-        self.logger = setup_logger(__name__)
 
     def schedule(self, scheduler_context: SchedulerContext, task: TaskMeta) -> str:
         self.set_scheduler_context(scheduler_context)
@@ -84,7 +82,7 @@ class ResourceAffinityPolicy(CentralPolicy):
 
         # 按平均队列等待时间排序
         sorted_clusters = sorted(avg_queue_times.items(), key=lambda x: x[1])
-        self.logger.info(f"sorted_clusters: {sorted_clusters}")
+        # print(f"sorted_clusters: {sorted_clusters}")
         # 选择平均队列等待时间最少的前1个集群
         selected_cluster = sorted_clusters[0][0]
         return selected_cluster

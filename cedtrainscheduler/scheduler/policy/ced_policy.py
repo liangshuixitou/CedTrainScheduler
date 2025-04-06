@@ -22,7 +22,7 @@ class CedQueuePolicy(QueuePolicy):
     def __init__(self):
         super().__init__()
         self.weight_resource = 0.9
-        self.weight_max_affinity = 0.1
+        self.weight_max_affinity = 0.15
 
     def pop_one_task(self, scheduler_context: SchedulerContext) -> TaskMeta:
         self.set_scheduler_context(scheduler_context)
@@ -49,6 +49,7 @@ class CedQueuePolicy(QueuePolicy):
             max_cluster_id = max(comprehensive_affinity, key=comprehensive_affinity.get)
             comprehensive_affinity.pop(max_cluster_id)
             second_max_affinity = max(comprehensive_affinity.values())
+            comprehensive_affinity[max_cluster_id] = max_affinity
 
             task_priority_dict[task.task_id] = (1 / task.task_runtime[GPUType.T4]) * (
                 self.weight_max_affinity * max_affinity + (1 - self.weight_max_affinity) * second_max_affinity
@@ -179,6 +180,7 @@ class CedCentralPolicy(CentralPolicy):
         # 按亲和度降序排序集群
         sorted_clusters = sorted(affinities.items(), key=lambda x: x[1], reverse=True)
 
+        # print(f"sorted_clusters: {sorted_clusters}")
         # 选择前1名集群（或者所有集群，如果集群数量少于5）
         top_cluster = sorted_clusters[0][0]
 
@@ -187,7 +189,7 @@ class CedCentralPolicy(CentralPolicy):
 
 class CedClusterPolicy(ClusterPolicy):
     def _is_large_task(self, task: TaskMeta) -> bool:
-        return task.task_inst_num >= 2
+        return task.task_inst_num >= 4
 
     def _calculate_group_score(self, group: list[str], current_time: float, task: TaskMeta, cluster_type: str) -> float:
         """多维度评估GPU组得分（执行时间 + 负载均衡 + 数据亲和性）"""

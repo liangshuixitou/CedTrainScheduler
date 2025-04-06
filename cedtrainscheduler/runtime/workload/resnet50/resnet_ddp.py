@@ -163,8 +163,8 @@ def train():
             log_print(f"Starting epoch {epoch+1}")
 
             for i, (images, labels) in enumerate(train_loader):
-                # 在每个epoch的第一个批次同步时间
-                if i == 0:
+                # 每10个迭代同步一次时间
+                if i % 20 == 0:
                     current_runtime = time.time() - train_start_time
                     runtime_tensor = torch.tensor([current_runtime], device=device)
                     dist.all_reduce(runtime_tensor, op=dist.ReduceOp.MAX)

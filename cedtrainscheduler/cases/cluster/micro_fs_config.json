@@ -30,7 +30,7 @@
         128
       ],
       "dataset": {
-        "size_mb": 170,
+        "size_mb": 750,
         "storage_nodes": [
           "edge-worker-1"
         ]

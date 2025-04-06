@@ -12,3 +12,5 @@ class Metrics:
     cloud_count: int
     edge_count: int
     terminal_count: int
+    complete_count: int
+    pending_count: int
