@@ -39,7 +39,7 @@ def train():
         log_print(f"Starting epoch {epoch+1}")
 
         data_len = 1200 / args.world_size
-        for i in range(data_len):
+        for i in range(int(data_len)):
             # 每10个迭代同步一次时间
             if i % 20 == 0:
                 current_runtime = time.time() - train_start_time

@@ -142,9 +142,9 @@ class TaskSubmitClientConfig:
         return ComponentGenerator.generate_task_submit_client_command(self.component_info, self.csv_path)
 
 
-node1_ip = "10.212.67.19"
-node2_ip = "10.212.67.20"
-node3_ip = "10.212.67.21"
+node1_ip = "36.103.199.97"
+node2_ip = "36.103.199.216"
+node3_ip = "36.103.199.200"
 
 runtime_config = ManagerConfig(
     component_info=ComponentInfo(
