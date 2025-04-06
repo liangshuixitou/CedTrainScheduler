@@ -76,7 +76,9 @@
         "--master-port",
         "5001",
         "--gpu-type",
-        "T4"
+        "T4",
+        "--sim-gpu-num",
+        "1"
       ]
     },
     {

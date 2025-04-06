@@ -7,7 +7,7 @@ INTRA_DOMAIN_BANDWIDTH = 1200
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 CONFIG_DIR = os.path.join(BASE_DIR, "config")
-FS_CONFIG_PATH = os.path.join(CONFIG_DIR, "single_node_fs_config.json")
+FS_CONFIG_PATH = os.path.join(CONFIG_DIR, "multi_node_fs_config.json")
 
 
 RESULT_DIR = os.path.join(BASE_DIR, "metrics")

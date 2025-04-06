@@ -31,7 +31,7 @@ central_config: BenchConfig = BenchConfig(
     fs_file_name="fs_config.json",
     scheduler_list=["sc_rm", "fcfs_data", "fcfs", "sjf_data", "sjf", "dtsm"],
     task_sample_type="random",
-    jobs_count_list=[1000, 1300, 1600],
+    jobs_count_list=[1000, 1300, 1600, 1900, 2200, 2500],
 )
 
 cluster_config: BenchConfig = BenchConfig(
