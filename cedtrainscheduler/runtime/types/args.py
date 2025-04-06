@@ -18,6 +18,7 @@ class WorkerArgs:
     worker_info: ComponentInfo
     master_info: ComponentInfo
     gpu_type: GPUType
+    sim_gpu_num: int
 
 
 @dataclass

@@ -13,6 +13,7 @@ from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.runtime.worker.api_server import WorkerAPIServer
 from cedtrainscheduler.runtime.worker.executor import Executor
 from cedtrainscheduler.runtime.worker.service import WorkerService
+from cedtrainscheduler.runtime.workload.workload import WorkloadType
 
 WORKER_HEARTBEAT_INTERVAL = 5
 
@@ -31,6 +32,7 @@ class Worker(BaseServer, WorkerService):
 
         self.worker_client = WorkerMasterClient(self.master_info.component_ip, self.master_info.component_port)
 
+        self.sim_mode: bool = worker_args.sim_gpu_num != 0
         self._init_node(worker_args)
         self._init_executor()
 
@@ -47,7 +49,11 @@ class Worker(BaseServer, WorkerService):
 
         # init_gpu
         self.node.gpus = {}
-        gpu_ids = GPUUtil.get_gpus(self.node.node_id)
+        if self.sim_mode:
+            gpu_num = worker_args.sim_gpu_num
+        else:
+            gpu_num = GPUUtil.get_gpu_count()
+        gpu_ids = GPUUtil.get_gpus(self.node.node_id, gpu_num)
         for id, gpu_id in enumerate(gpu_ids):
             self.node.gpus[gpu_id] = GPU(
                 gpu_id=gpu_id, gpu_type=worker_args.gpu_type, gpu_rank=id, node_id=self.node.node_id
@@ -120,6 +126,10 @@ class Worker(BaseServer, WorkerService):
             return
 
         self.logger.info(f"Task {task_inst.task_id} instance {task_inst.inst_id} start on GPU {gpu_id} ")
+
+        if self.sim_mode:
+            task_name = WorkloadType.SIM_WORKLOAD
+
         await executor.start_task(
             task_name=task_name,
             task_inst=task_inst,

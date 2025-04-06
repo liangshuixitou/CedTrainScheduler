@@ -21,6 +21,7 @@ class WorkloadType(str, Enum):
     BERT = "bert"
     LSTM = "lstm"
     TRANSFORMER = "transformer"
+    SIM_WORKLOAD = "sim_workload"
 
 
 class WorkloadInfo:
@@ -37,23 +38,31 @@ class WorkloadInfo:
         self.script_file_path = os.path.expanduser(f"{SCRIPT_DIR}/{script_file_path}")
 
 
-BASE_WORKLOAD_INFO = WorkloadInfo(
+RESNET50_WORKLOAD_INFO = WorkloadInfo(
     workload_type=WorkloadType.RESNET50,
     model_file_name=f"{WorkloadType.RESNET50.value}.pth",
     dataset_dir_name=f"{WorkloadType.RESNET50.value}",
     script_file_path=f"{WorkloadType.RESNET50.value}/resnet_ddp.py",
 )
 
+SIM_WORKLOAD_INFO = WorkloadInfo(
+    workload_type=WorkloadType.SIM_WORKLOAD,
+    model_file_name=f"{WorkloadType.SIM_WORKLOAD.value}.pth",
+    dataset_dir_name=f"{WorkloadType.SIM_WORKLOAD.value}",
+    script_file_path=f"{WorkloadType.SIM_WORKLOAD.value}/sim_train.py",
+)
+
 WORKLOAD_INFOS: dict[WorkloadType, WorkloadInfo] = {
-    WorkloadType.RESNET50: BASE_WORKLOAD_INFO,
-    WorkloadType.RESNET18: BASE_WORKLOAD_INFO,
-    WorkloadType.MOBILENETV3: BASE_WORKLOAD_INFO,
-    WorkloadType.MOBILENETV2: BASE_WORKLOAD_INFO,
-    WorkloadType.EFFICIENTNET: BASE_WORKLOAD_INFO,
-    WorkloadType.VGG11: BASE_WORKLOAD_INFO,
-    WorkloadType.DCGAN: BASE_WORKLOAD_INFO,
-    WorkloadType.POINTNET: BASE_WORKLOAD_INFO,
-    WorkloadType.BERT: BASE_WORKLOAD_INFO,
-    WorkloadType.LSTM: BASE_WORKLOAD_INFO,
-    WorkloadType.TRANSFORMER: BASE_WORKLOAD_INFO,
+    WorkloadType.RESNET50: RESNET50_WORKLOAD_INFO,
+    WorkloadType.RESNET18: RESNET50_WORKLOAD_INFO,
+    WorkloadType.MOBILENETV3: RESNET50_WORKLOAD_INFO,
+    WorkloadType.MOBILENETV2: RESNET50_WORKLOAD_INFO,
+    WorkloadType.EFFICIENTNET: RESNET50_WORKLOAD_INFO,
+    WorkloadType.VGG11: RESNET50_WORKLOAD_INFO,
+    WorkloadType.DCGAN: RESNET50_WORKLOAD_INFO,
+    WorkloadType.POINTNET: RESNET50_WORKLOAD_INFO,
+    WorkloadType.BERT: RESNET50_WORKLOAD_INFO,
+    WorkloadType.LSTM: RESNET50_WORKLOAD_INFO,
+    WorkloadType.TRANSFORMER: RESNET50_WORKLOAD_INFO,
+    WorkloadType.SIM_WORKLOAD: SIM_WORKLOAD_INFO,
 }

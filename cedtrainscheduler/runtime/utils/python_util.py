@@ -9,3 +9,6 @@ def get_python_executable_path() -> str:
         str: Python执行器的完整路径
     """
     return sys.executable
+
+
+PYTHON_PATH = get_python_executable_path()
