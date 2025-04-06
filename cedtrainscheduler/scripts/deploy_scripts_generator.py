@@ -1,7 +1,7 @@
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.components import ComponentType
 
-PROJECT_PATH = "/home/ubuntu/CedTrainScheduler"
+PROJECT_PATH = "/home/l1hy/project/CedTrainScheduler"
 
 
 class ComponentGenerator:
@@ -142,15 +142,15 @@ class TaskSubmitClientConfig:
         return ComponentGenerator.generate_task_submit_client_command(self.component_info, self.csv_path)
 
 
-node1_ip = "36.103.199.200"
-node2_ip = "36.103.199.193"
-node3_ip = "36.103.199.118"
+node1_ip = "10.212.67.19"
+node2_ip = "10.212.67.20"
+node3_ip = "10.212.67.21"
 
 runtime_config = ManagerConfig(
     component_info=ComponentInfo(
         component_type=ComponentType.MANAGER, component_id="manager", component_ip=node1_ip, component_port=5000
     ),
-    scheduler_name="sjf",
+    scheduler_name="fcfs",
     master_configs={
         "master-cloud": MasterConfig(
             component_info=ComponentInfo(
@@ -256,7 +256,7 @@ task_submit_client_config = TaskSubmitClientConfig(
         component_ip=node1_ip,
         component_port=5000,
     ),
-    csv_path=f"{PROJECT_PATH}/cedtrainscheduler/cases/task/case_micro_10_tasks.csv",
+    csv_path=f"{PROJECT_PATH}/cedtrainscheduler/cases/task/case_micro_20_tasks.csv",
 )
 
 
