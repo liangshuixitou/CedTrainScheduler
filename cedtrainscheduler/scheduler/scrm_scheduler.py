@@ -2,6 +2,8 @@ from cedtrainscheduler.scheduler.factory import SchedulerType
 from cedtrainscheduler.scheduler.policy.ced_policy import CedCentralPolicy
 from cedtrainscheduler.scheduler.policy.ced_policy import CedClusterPolicy
 from cedtrainscheduler.scheduler.policy.ced_policy import CedQueuePolicy
+from cedtrainscheduler.scheduler.policy.central_policy import ResourceAffinityPolicy
+from cedtrainscheduler.scheduler.policy.queue_policy import FCFSQueuePolicy, SFJQueuePolicy
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 from cedtrainscheduler.scheduler.types.task import TaskMeta
@@ -13,8 +15,8 @@ class SCRMScheduler(SchedulerBase):
     def __init__(self):
         super().__init__()
         self.scheduler_name = SchedulerType.SCRM
-        self.queue_policy = CedQueuePolicy()
-        self.central_policy = CedCentralPolicy()
+        self.queue_policy = FCFSQueuePolicy()
+        self.central_policy = ResourceAffinityPolicy()
         self.cluster_policy = CedClusterPolicy()
 
     def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):

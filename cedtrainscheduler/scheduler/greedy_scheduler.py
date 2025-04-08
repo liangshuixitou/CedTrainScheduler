@@ -1,7 +1,7 @@
 from cedtrainscheduler.scheduler.factory import SchedulerType
-from cedtrainscheduler.scheduler.policy.central_policy import LoadBalancePolicy
+from cedtrainscheduler.scheduler.policy.central_policy import LoadBalancePolicy, ResourceAffinityPolicy
 from cedtrainscheduler.scheduler.policy.cluster_policy import WorstFitPolicy
-from cedtrainscheduler.scheduler.policy.queue_policy import SFJQueuePolicy
+from cedtrainscheduler.scheduler.policy.queue_policy import FCFSQueuePolicy, SFJQueuePolicy
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext
 from cedtrainscheduler.scheduler.types.task import TaskMeta
@@ -13,8 +13,8 @@ class GreedyScheduler(SchedulerBase):
     def __init__(self):
         super().__init__()
         self.scheduler_name = SchedulerType.GREEDY
-        self.queue_policy = SFJQueuePolicy()
-        self.central_policy = LoadBalancePolicy()
+        self.queue_policy = FCFSQueuePolicy()
+        self.central_policy = ResourceAffinityPolicy()
         self.cluster_policy = WorstFitPolicy()
 
     def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):
