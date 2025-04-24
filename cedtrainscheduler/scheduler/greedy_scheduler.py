@@ -14,7 +14,7 @@ class GreedyScheduler(SchedulerBase):
         super().__init__()
         self.scheduler_name = SchedulerType.GREEDY
         self.queue_policy = FCFSQueuePolicy()
-        self.central_policy = ResourceAffinityPolicy()
+        self.central_policy = LoadBalancePolicy()
         self.cluster_policy = WorstFitPolicy()
 
     def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):

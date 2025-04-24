@@ -14,7 +14,7 @@ class ChronusScheduler(SchedulerBase):
         super().__init__()
         self.scheduler_name = SchedulerType.CHRONUS
         self.queue_policy = SFJQueuePolicy()
-        self.central_policy = ResourceAffinityPolicy()
+        self.central_policy = LoadBalancePolicy()
         self.cluster_policy = ChronusPolicy()
 
     def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):

@@ -145,8 +145,6 @@ class Simulator:
             )
 
     def handle_task_finish(self, event: EventTaskFinish):
-        if event.task.task_meta.task_id == "2c793717cf0b32a4e0490460":
-            print("task")
         self.task_record.log_task_finish(event.task, self.current_time)
         for inst_id in range(event.task.task_meta.task_inst_num):
             next_task_inst = self.cluster_manager.gpu_task_queue[

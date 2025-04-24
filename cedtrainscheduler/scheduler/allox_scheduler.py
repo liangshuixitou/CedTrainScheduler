@@ -14,7 +14,7 @@ class AlloxScheduler(SchedulerBase):
     def __init__(self):
         super().__init__()
         self.scheduler_name = SchedulerType.ALLOX
-        self.queue_policy = SFJQueuePolicy()
+        self.queue_policy = FCFSQueuePolicy()
         self.central_policy = ResourceAffinityPolicy()
         self.cluster_policy = MinCostMatchingPolicy()
 

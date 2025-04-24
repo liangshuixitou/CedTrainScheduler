@@ -7,7 +7,6 @@ from cedtrainscheduler.runtime.manager.api_server import ManagerAPIServer
 from cedtrainscheduler.runtime.manager.components import ClusterManager
 from cedtrainscheduler.runtime.manager.components import FileSystemManager
 from cedtrainscheduler.runtime.manager.components import TaskManager
-from cedtrainscheduler.runtime.manager.constant import FS_CONFIG_PATH
 from cedtrainscheduler.runtime.manager.constant import TASK_RECORD_SAVE_PATH
 from cedtrainscheduler.runtime.manager.service import ManagerService
 from cedtrainscheduler.runtime.manager.utils import SchedulerUtils
@@ -43,6 +42,8 @@ class Manager(BaseServer, ManagerService):
 
         self.task_scheduler_buffer_lock = asyncio.Lock()
         self.task_scheduler_buffer: list[TaskMeta] = []
+
+        self.fs_config_path = manager_args.fs_config_path
 
         self.logger = setup_logger(__name__)
 
@@ -138,7 +139,7 @@ class Manager(BaseServer, ManagerService):
         self, task_wrap_runtime_info: TaskWrapRuntimeInfo, cluster_id: str
     ) -> float:
         cluster_manager = await SchedulerUtils.build_scheduler_cluster_manager(self.cluster_manager, self.task_manager)
-        self.file_system_manager.set_file_system(FS_CONFIG_PATH, cluster_manager)
+        self.file_system_manager.set_file_system(self.fs_config_path, cluster_manager)
         file_system = self.file_system_manager.get_file_system()
         task_data_info = file_system.get_task_data_info(task_wrap_runtime_info.task_meta.task_name)
         data_transfer_time = file_system.get_data_arrival_time(
@@ -152,7 +153,7 @@ class Manager(BaseServer, ManagerService):
         cluster_manager = await SchedulerUtils.build_scheduler_cluster_manager(self.cluster_manager, self.task_manager)
         task_record = await SchedulerUtils.build_scheduler_task_record(self.task_manager)
         task_queue = self.scheduler.task_queue
-        self.file_system_manager.set_file_system(FS_CONFIG_PATH, cluster_manager)
+        self.file_system_manager.set_file_system(self.fs_config_path, cluster_manager)
         file_system = self.file_system_manager.get_file_system()
         return SchedulerContext(
             current_time=time.time(),

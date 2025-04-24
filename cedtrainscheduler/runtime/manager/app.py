@@ -13,9 +13,9 @@ async def main():
     parser.add_argument("--id", default="manager", help="Manager component ID")
     parser.add_argument("--ip", default="127.0.0.1", help="Manager IP address")
     parser.add_argument("--port", type=int, default=5001, help="Manager port")
-    parser.add_argument("--scheduler-name", default="scheduler", help="Scheduler name")
     parser.add_argument("--cluster-name", default="cluster", help="Cluster name")
-
+    parser.add_argument("--scheduler-name", default="scheduler", help="Scheduler name")
+    parser.add_argument("--fs-config-path", default="fs_config.json", help="File system config path")
     args = parser.parse_args()
 
     manager = Manager(
@@ -27,6 +27,7 @@ async def main():
                 component_type=ComponentType.MANAGER,
             ),
             scheduler_name=args.scheduler_name,
+            fs_config_path=args.fs_config_path,
         )
     )
 

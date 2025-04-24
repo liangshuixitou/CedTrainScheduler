@@ -25,3 +25,4 @@ class WorkerArgs:
 class ManagerArgs:
     manager_info: ComponentInfo
     scheduler_name: str
+    fs_config_path: str

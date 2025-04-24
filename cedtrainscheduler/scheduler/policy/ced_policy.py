@@ -21,8 +21,8 @@ cluster_data_arrival_time_dict: dict[str, dict[str, float]] = {}
 class CedQueuePolicy(QueuePolicy):
     def __init__(self):
         super().__init__()
-        self.weight_resource = 0.95
-        self.weight_max_affinity = 0.1
+        self.weight_resource = 0.85
+        self.weight_max_affinity = 0.2
 
     def pop_one_task(self, scheduler_context: SchedulerContext) -> TaskMeta:
         self.set_scheduler_context(scheduler_context)
@@ -189,7 +189,7 @@ class CedCentralPolicy(CentralPolicy):
 
 class CedClusterPolicy(ClusterPolicy):
     def _is_large_task(self, task: TaskMeta) -> bool:
-        return task.task_inst_num >= 4
+        return task.task_inst_num >= 2
 
     def _calculate_group_score(self, group: list[str], current_time: float, task: TaskMeta, cluster_type: str) -> float:
         """多维度评估GPU组得分（执行时间 + 负载均衡 + 数据亲和性）"""
