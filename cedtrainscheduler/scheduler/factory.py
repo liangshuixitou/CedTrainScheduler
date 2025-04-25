@@ -48,6 +48,8 @@ class SchedulerFactory:
             "allox": AlloxScheduler,
             "greedy": GreedyScheduler,
             "io_tcp": IOTCPScheduler,
+            "ced_scheduler": SCRMScheduler,
+            "k8s_scheduler": FCFSScheduler,
         }
 
         if scheduler_name.lower() not in scheduler_map:

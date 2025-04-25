@@ -15,8 +15,8 @@ class SCRMScheduler(SchedulerBase):
     def __init__(self):
         super().__init__()
         self.scheduler_name = SchedulerType.SCRM
-        self.queue_policy = FCFSQueuePolicy()
-        self.central_policy = ResourceAffinityPolicy()
+        self.queue_policy = CedQueuePolicy()
+        self.central_policy = CedCentralPolicy()
         self.cluster_policy = CedClusterPolicy()
 
     def submit_task(self, scheduler_context: SchedulerContext, task: TaskMeta):

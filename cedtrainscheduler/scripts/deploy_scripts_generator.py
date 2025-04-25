@@ -6,7 +6,7 @@ PROJECT_PATH = "/home/l1hy/project/CedTrainScheduler"
 
 class ComponentGenerator:
     @staticmethod
-    def generate_manager_command(component_info: ComponentInfo, scheduler_name: str) -> str:
+    def generate_manager_command(component_info: ComponentInfo, scheduler_name: str, fs_config_path: str) -> str:
         return (
             f"cd {PROJECT_PATH} && "
             f"python cedtrainscheduler/runtime/manager/app.py "
@@ -14,6 +14,7 @@ class ComponentGenerator:
             f"--ip {component_info.component_ip} "
             f"--port {component_info.component_port} "
             f"--scheduler-name {scheduler_name} "
+            f"--fs-config-path {fs_config_path} "
         )
 
     @staticmethod
@@ -98,13 +99,20 @@ class MasterConfig:
 
 
 class ManagerConfig:
-    def __init__(self, component_info: ComponentInfo, scheduler_name: str, master_configs: dict[str, MasterConfig]):
+    def __init__(
+        self,
+        component_info: ComponentInfo,
+        scheduler_name: str,
+        fs_config_path: str,
+        master_configs: dict[str, MasterConfig],
+    ):
         self.component_info = component_info
         self.scheduler_name = scheduler_name
+        self.fs_config_path = fs_config_path
         self.master_configs = master_configs
 
     def generate_manager_command(self) -> str:
-        return ComponentGenerator.generate_manager_command(self.component_info, self.scheduler_name)
+        return ComponentGenerator.generate_manager_command(self.component_info, self.scheduler_name, self.fs_config_path)
 
 
 class DeploymentConfig:
@@ -151,6 +159,7 @@ runtime_config = ManagerConfig(
         component_type=ComponentType.MANAGER, component_id="manager", component_ip=node1_ip, component_port=5000
     ),
     scheduler_name="fcfs",
+    fs_config_path=f"{PROJECT_PATH}/cedtrainscheduler/runtime/manager/config/single_node_fs_config.json",
     master_configs={
         "master-cloud": MasterConfig(
             component_info=ComponentInfo(
@@ -256,7 +265,7 @@ task_submit_client_config = TaskSubmitClientConfig(
         component_ip=node1_ip,
         component_port=5000,
     ),
-    csv_path=f"{PROJECT_PATH}/cedtrainscheduler/cases/task/case_micro_20_tasks.csv",
+    csv_path=f"{PROJECT_PATH}/cedtrainscheduler/cases/task/case_micro_40_tasks.csv",
 )
 
 

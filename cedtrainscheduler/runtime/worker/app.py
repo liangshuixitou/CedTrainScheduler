@@ -17,9 +17,14 @@ async def main():
     parser.add_argument("--master-ip", default="127.0.0.1", help="Master IP address")
     parser.add_argument("--master-port", type=int, default=5000, help="Master port")
     parser.add_argument("--gpu-type", default="NVIDIA", help="GPU type")
-    parser.add_argument("--sim-gpu-num", type=int, default=0, help="Simulated GPU number")
+    parser.add_argument("--executor-python-path", default="", help="Executor python path")
+    parser.add_argument("--gpu-ids", default="", help="GPU ids")
+    parser.add_argument("--sim-gpu-num", default="", help="Simulator GPU number")
 
     args = parser.parse_args()
+
+    gpu_ids = args.gpu_ids.split(",")
+    sim_gpu_num = int(args.sim_gpu_num)
 
     worker = Worker(
         WorkerArgs(
@@ -36,7 +41,8 @@ async def main():
                 component_type=ComponentType.MASTER,
             ),
             gpu_type=args.gpu_type,
-            sim_gpu_num=args.sim_gpu_num,
+            gpu_ids=gpu_ids,
+            sim_gpu_num=sim_gpu_num,
         )
     )
     await worker.run()

@@ -14,13 +14,25 @@ class GPUUtil:
         return torch.cuda.device_count()
 
     @staticmethod
-    def get_gpus(node_id: str, gpu_num) -> list[str]:
+    def get_gpus_with_ids(node_id: str, gpu_ids: list[int]) -> dict[int, str]:
         """
-        获取当前节点上所有GPU-ID
+        获取当前节点上指定GPU-ID
         Returns:
-            List[str]: GPU-ID列表
+            dict[int, str]: GPU-ID列表
         """
-        gpus = []
+        gpus = {}
+        for gpu_id in gpu_ids:
+            gpus[gpu_id] = f"{node_id}-gpu-{gpu_id}"
+        return gpus
+
+    @staticmethod
+    def get_gpus_with_num(node_id: str, gpu_num: int) -> dict[int, str]:
+        """
+        获取当前节点上指定数量的GPU-ID
+        Returns:
+            dict[int, str]: GPU-ID列表
+        """
+        gpus = {}
         for i in range(gpu_num):
-            gpus.append(f"{node_id}-gpu-{i}")
+            gpus[i] = f"{node_id}-gpu-{i}"
         return gpus

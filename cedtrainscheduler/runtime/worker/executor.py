@@ -9,11 +9,12 @@ from cedtrainscheduler.runtime.workload.script import ScriptGenerator
 
 
 class Executor:
-    def __init__(self, gpu: GPU):
+    def __init__(self, gpu: GPU, executor_python_path: str):
         self.gpu = gpu
         self.task_record: list[TaskInst] = []
         self.task_queue: list[TaskInst] = []
         self.task_record_lock = asyncio.Lock()
+        self.executor_python_path = executor_python_path
 
         self.logger = setup_logger(__name__)
 
@@ -54,6 +55,12 @@ class Executor:
         plan_runtime: int,
         data_transfer_time: float,
     ):
+
+        python_path = (
+            self.executor_python_path
+            if self.executor_python_path and self.executor_python_path != ""
+            else get_python_executable_path()
+        )
         script = ScriptGenerator.generate_script(
             gpu_rank=self.gpu.gpu_rank,
             task_id=task_inst.task_id,
@@ -64,7 +71,7 @@ class Executor:
             master_port=master_port,
             plan_runtime=plan_runtime,
             data_transfer_time=int(data_transfer_time),
-            python_path=get_python_executable_path(),
+            python_path=python_path,
         )
 
         self.logger.info(f"[GPU {self.gpu.gpu_id}] Start task {task_inst.task_id} with script: {script}")

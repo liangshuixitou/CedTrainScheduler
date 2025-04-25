@@ -18,6 +18,7 @@ class WorkerArgs:
     worker_info: ComponentInfo
     master_info: ComponentInfo
     gpu_type: GPUType
+    gpu_ids: list[int]
     sim_gpu_num: int
 
 

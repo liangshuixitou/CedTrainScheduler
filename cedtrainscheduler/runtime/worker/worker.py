@@ -51,12 +51,15 @@ class Worker(BaseServer, WorkerService):
         self.node.gpus = {}
         if self.sim_mode:
             gpu_num = worker_args.sim_gpu_num
+            gpus = GPUUtil.get_gpus_with_num(self.node.node_id, gpu_num)
+        elif worker_args.gpu_ids:
+            gpus = GPUUtil.get_gpus_with_ids(self.node.node_id, worker_args.gpu_ids)
         else:
             gpu_num = GPUUtil.get_gpu_count()
-        gpu_ids = GPUUtil.get_gpus(self.node.node_id, gpu_num)
-        for id, gpu_id in enumerate(gpu_ids):
+            gpus = GPUUtil.get_gpus_with_num(self.node.node_id, gpu_num)
+        for gpu_id, gpu_rank in gpus.items():
             self.node.gpus[gpu_id] = GPU(
-                gpu_id=gpu_id, gpu_type=worker_args.gpu_type, gpu_rank=id, node_id=self.node.node_id
+                gpu_id=gpu_id, gpu_type=worker_args.gpu_type, gpu_rank=gpu_rank, node_id=self.node.node_id
             )
 
     def _init_executor(self):
