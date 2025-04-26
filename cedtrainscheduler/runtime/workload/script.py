@@ -54,3 +54,17 @@ class ScriptGenerator:
             os.makedirs(log_dir)
         log_file = os.path.join(log_dir, f"gpu{gpu_rank}_rank{inst_rank}.log")
         return log_file
+
+
+print(ScriptGenerator.generate_script(
+    gpu_rank=4,
+    task_id="test",
+    task_name="resnet50",
+    world_size=1,
+    inst_rank=0,
+    master_addr="127.0.0.1",
+    master_port=12345,
+    plan_runtime=100,
+    data_transfer_time=10,
+    python_path="python",
+))

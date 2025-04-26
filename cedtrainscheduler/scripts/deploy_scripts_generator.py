@@ -1,8 +1,8 @@
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.components import ComponentType
 
-PROJECT_PATH = "/home/l1hy/project/CedTrainScheduler"
-
+PROJECT_PATH = "/root/project/CedTrainScheduler"
+PYTHON_PATH = "/root/anaconda3/envs/BI100/bin/python"
 
 class ComponentGenerator:
     @staticmethod
@@ -42,8 +42,11 @@ class ComponentGenerator:
         worker_component_info: ComponentInfo,
         master_component_info: ComponentInfo,
         gpu_type: str,
+        executor_python_path: str | None = None,
+        gpu_ids: list[int] | None = None,
+        sim_gpu_num: int | None = None,
     ) -> str:
-        return (
+        cmd = (
             f"cd {PROJECT_PATH} && "
             f"python cedtrainscheduler/runtime/worker/app.py "
             f"--worker-id {worker_component_info.component_id} "
@@ -54,6 +57,15 @@ class ComponentGenerator:
             f"--master-port {master_component_info.component_port} "
             f"--gpu-type {gpu_type} "
         )
+
+        if executor_python_path is not None:
+            cmd += f"--executor-python-path {executor_python_path} "
+        if gpu_ids is not None:
+            cmd += f"--gpu-ids {gpu_ids} "
+        if sim_gpu_num is not None:
+            cmd += f"--sim-gpu-num {sim_gpu_num} "
+
+        return cmd
 
     @staticmethod
     def generate_task_submit_client_command(
@@ -71,13 +83,29 @@ class ComponentGenerator:
 
 
 class WorkerConfig:
-    def __init__(self, component_info: ComponentInfo, gpu_type: str):
+    def __init__(
+        self,
+        component_info: ComponentInfo,
+        gpu_type: str,
+        executor_python_path: str | None = None,
+        gpu_ids: list[int] | None = None,
+        sim_gpu_num: int | None = None,
+    ):
         self.component_info = component_info
         self.gpu_type = gpu_type
+        self.executor_python_path = executor_python_path
+        self.gpu_ids = gpu_ids
+        self.sim_gpu_num = sim_gpu_num
 
     def generate_worker_command(self, master_component_info: ComponentInfo) -> str:
-        return ComponentGenerator.generate_worker_command(self.component_info, master_component_info, self.gpu_type)
-
+        return ComponentGenerator.generate_worker_command(
+            self.component_info,
+            master_component_info,
+            self.gpu_type,
+            self.executor_python_path,
+            self.gpu_ids,
+            self.sim_gpu_num,
+        )
 
 class MasterConfig:
     def __init__(
@@ -150,16 +178,20 @@ class TaskSubmitClientConfig:
         return ComponentGenerator.generate_task_submit_client_command(self.component_info, self.csv_path)
 
 
-node1_ip = "36.103.199.97"
-node2_ip = "36.103.199.216"
-node3_ip = "36.103.199.200"
+# node1_ip = "36.103.199.97"
+# node2_ip = "36.103.199.216"
+# node3_ip = "36.103.199.200"
+
+node1_ip = "10.31.12.19"
+node2_ip = "10.31.12.20"
+node3_ip = "10.31.12.33"
 
 runtime_config = ManagerConfig(
     component_info=ComponentInfo(
         component_type=ComponentType.MANAGER, component_id="manager", component_ip=node1_ip, component_port=5000
     ),
     scheduler_name="fcfs",
-    fs_config_path=f"{PROJECT_PATH}/cedtrainscheduler/runtime/manager/config/single_node_fs_config.json",
+    fs_config_path=f"{PROJECT_PATH}/cedtrainscheduler/runtime/manager/config/multi_node_fs_config.json",
     master_configs={
         "master-cloud": MasterConfig(
             component_info=ComponentInfo(
@@ -179,6 +211,8 @@ runtime_config = ManagerConfig(
                         component_port=5002,
                     ),
                     gpu_type="V100",
+                    executor_python_path=PYTHON_PATH,
+                    gpu_ids="4,5,6,7",
                 ),
             },
         ),
@@ -200,6 +234,8 @@ runtime_config = ManagerConfig(
                         component_port=5002,
                     ),
                     gpu_type="P100",
+                    executor_python_path=PYTHON_PATH,
+                    gpu_ids="6,7",
                 ),
             },
         ),
@@ -220,38 +256,9 @@ runtime_config = ManagerConfig(
                         component_ip=node3_ip,
                         component_port=5002,
                     ),
+                    executor_python_path=PYTHON_PATH,
+                    gpu_ids="6,7",
                     gpu_type="T4",
-                ),
-            },
-        ),
-    },
-)
-
-
-micro_runtime_config = ManagerConfig(
-    component_info=ComponentInfo(
-        component_type=ComponentType.MANAGER, component_id="manager", component_ip=node1_ip, component_port=5000
-    ),
-    scheduler_name="sjf",
-    master_configs={
-        "master-cloud": MasterConfig(
-            component_info=ComponentInfo(
-                component_type=ComponentType.MASTER,
-                component_id="master-cloud",
-                component_ip=node1_ip,
-                component_port=5001,
-            ),
-            cluster_name="master-cloud",
-            cluster_type="cloud",
-            worker_configs={
-                "cloud-worker-1": WorkerConfig(
-                    component_info=ComponentInfo(
-                        component_type=ComponentType.WORKER,
-                        component_id="cloud-worker-1",
-                        component_ip=node1_ip,
-                        component_port=5002,
-                    ),
-                    gpu_type="V100",
                 ),
             },
         ),

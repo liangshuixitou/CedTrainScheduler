@@ -18,8 +18,9 @@ class WorkerArgs:
     worker_info: ComponentInfo
     master_info: ComponentInfo
     gpu_type: GPUType
-    gpu_ids: list[int]
-    sim_gpu_num: int
+    python_path: str | None = None
+    gpu_ids: list[int] | None = None
+    sim_gpu_num: int | None = None
 
 
 @dataclass
