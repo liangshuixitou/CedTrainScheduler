@@ -21,8 +21,8 @@ cluster_data_arrival_time_dict: dict[str, dict[str, float]] = {}
 class CedQueuePolicy(QueuePolicy):
     def __init__(self):
         super().__init__()
-        self.weight_resource = 0.95
-        self.weight_max_affinity = 0.15
+        self.weight_resource = 0.90
+        self.weight_max_affinity = 0.05
 
     def pop_one_task(self, scheduler_context: SchedulerContext) -> TaskMeta:
         self.set_scheduler_context(scheduler_context)
@@ -87,20 +87,19 @@ class CedQueuePolicy(QueuePolicy):
         deviations = {}
         for cluster_id, (cluster_gpu_num, cluster_gpu_time) in cluster_queue_time_dict.items():
             cluster_gpu_type = CLUSTER_TYPE_GPU_MAP[self.clusters[cluster_id].cluster_type]
-            deviations[cluster_id] = abs(
-                (cluster_gpu_time + task.task_runtime[cluster_gpu_type]) / cluster_gpu_num - all_avg_gpu_time
-            )
+            deviations[cluster_id] = (cluster_gpu_time + task.task_runtime[cluster_gpu_type]) / cluster_gpu_num - all_avg_gpu_time
         print(deviations)
 
         # 找出最大偏离度用于归一化
-        max_deviation = max(deviations.values()) if deviations else 1.0
+        max_deviation = max(deviations.values())
+        min_deviation = min(deviations.values())
 
         # 计算归一化后的资源亲和度
         for cluster_id in self.clusters.keys():
             if cluster_id in deviations:
                 if max_deviation > 0:
                     # 归一化偏离度到0-1区间
-                    normalized_deviation = deviations[cluster_id] / max_deviation
+                    normalized_deviation = (deviations[cluster_id] - min_deviation) / (max_deviation - min_deviation)
                     # 将偏离度转换为亲和度（反向关系）
                     cluster_resource_affinity[cluster_id] = 1 - normalized_deviation
                 else:

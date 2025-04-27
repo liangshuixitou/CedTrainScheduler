@@ -3,6 +3,7 @@ from cedtrainscheduler.scheduler.policy.ced_policy import CedCentralPolicy
 from cedtrainscheduler.scheduler.policy.ced_policy import CedClusterPolicy
 from cedtrainscheduler.scheduler.policy.ced_policy import CedQueuePolicy
 from cedtrainscheduler.scheduler.policy.central_policy import ResourceAffinityPolicy
+from cedtrainscheduler.scheduler.policy.cluster_policy import WorstFitPolicy
 from cedtrainscheduler.scheduler.policy.queue_policy import FCFSQueuePolicy, SFJQueuePolicy
 from cedtrainscheduler.scheduler.scheduler import SchedulerBase
 from cedtrainscheduler.scheduler.types.scheduler_context import SchedulerContext

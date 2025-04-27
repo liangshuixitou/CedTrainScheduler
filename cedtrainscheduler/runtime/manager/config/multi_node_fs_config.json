@@ -11,7 +11,7 @@
       "dataset": {
         "size_mb": 350,
         "storage_nodes": [
-          "cloud-worker-1"
+          "terminal-worker-1"
         ]
       },
       "model": {
@@ -32,7 +32,7 @@
       "dataset": {
         "size_mb": 750,
         "storage_nodes": [
-          "cloud-worker-1"
+          "terminal-worker-1"
         ]
       },
       "model": {
