@@ -4,6 +4,7 @@ from cedtrainscheduler.runtime.components import ComponentType
 PROJECT_PATH = "/root/project/CedTrainScheduler"
 CONDA_ENV_NAME = "cedtrainscheduler"
 EXECUTOR_PYTHON_PATH = "/root/anaconda3/envs/BI100/bin/python"
+MINICONDA_EXECUTOR_PYTHON_PATH = "/root/miniconda3/envs/BI100/bin/python"
 
 class ComponentGenerator:
     @staticmethod
@@ -261,8 +262,8 @@ runtime_config = ManagerConfig(
                         component_ip=node3_ip,
                         component_port=5002,
                     ),
-                    executor_python_path=EXECUTOR_PYTHON_PATH,
-                    gpu_ids="6,7",
+                    executor_python_path=MINICONDA_EXECUTOR_PYTHON_PATH,
+                    gpu_ids="4,5",
                     gpu_type="T4",
                 ),
             },
