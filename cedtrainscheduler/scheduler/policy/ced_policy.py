@@ -176,6 +176,7 @@ class CedCentralPolicy(CentralPolicy):
 
         # 获取任务对各集群的亲和度
         affinities = comprehensive_affinity_dict[task.task_id]
+        print(f"task id: {task.task_id}, affinity: {affinities}")
 
         # 按亲和度降序排序集群
         sorted_clusters = sorted(affinities.items(), key=lambda x: x[1], reverse=True)
