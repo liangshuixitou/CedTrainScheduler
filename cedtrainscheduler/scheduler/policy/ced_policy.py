@@ -43,6 +43,11 @@ class CedQueuePolicy(QueuePolicy):
                     self.weight_resource * resource_affinity[cluster_id]
                     + (1 - self.weight_resource) * data_affinity[cluster_id]
                 )
+                print(f"task_id: {task.task_id}, "
+                      f"cluster_id: {cluster_id}, "
+                      f"resource:{resource_affinity[cluster_id]}, "
+                      f"data:{data_affinity[cluster_id]}, "
+                      f"com:{comprehensive_affinity[cluster_id]}")
             comprehensive_affinity_dict[task.task_id] = comprehensive_affinity
 
             max_affinity = max(comprehensive_affinity.values())
