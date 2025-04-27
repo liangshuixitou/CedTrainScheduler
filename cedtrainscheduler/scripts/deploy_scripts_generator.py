@@ -2,12 +2,14 @@ from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.components import ComponentType
 
 PROJECT_PATH = "/root/project/CedTrainScheduler"
-PYTHON_PATH = "/root/anaconda3/envs/BI100/bin/python"
+CONDA_ENV_NAME = "cedtrainscheduler"
+EXECUTOR_PYTHON_PATH = "/root/anaconda3/envs/BI100/bin/python"
 
 class ComponentGenerator:
     @staticmethod
     def generate_manager_command(component_info: ComponentInfo, scheduler_name: str, fs_config_path: str) -> str:
         return (
+            f"conda activate {CONDA_ENV_NAME} && "
             f"cd {PROJECT_PATH} && "
             f"python cedtrainscheduler/runtime/manager/app.py "
             f"--id {component_info.component_id} "
@@ -25,6 +27,7 @@ class ComponentGenerator:
         cluster_type: str,
     ) -> str:
         return (
+            f"conda activate {CONDA_ENV_NAME} && "
             f"cd {PROJECT_PATH} && "
             f"python cedtrainscheduler/runtime/master/app.py "
             f"--id {worker_component_info.component_id} "
@@ -47,6 +50,7 @@ class ComponentGenerator:
         sim_gpu_num: int | None = None,
     ) -> str:
         cmd = (
+            f"conda activate {CONDA_ENV_NAME} && "
             f"cd {PROJECT_PATH} && "
             f"python cedtrainscheduler/runtime/worker/app.py "
             f"--worker-id {worker_component_info.component_id} "
@@ -73,6 +77,7 @@ class ComponentGenerator:
         csv_path: str,
     ) -> str:
         return (
+            f"conda activate {CONDA_ENV_NAME} && "
             f"cd {PROJECT_PATH} && "
             f"python cedtrainscheduler/runtime/client/task_submit_client.py "
             f"--id {task_submit_client_component_info.component_id} "
