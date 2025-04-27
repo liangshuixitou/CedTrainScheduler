@@ -21,8 +21,8 @@ cluster_data_arrival_time_dict: dict[str, dict[str, float]] = {}
 class CedQueuePolicy(QueuePolicy):
     def __init__(self):
         super().__init__()
-        self.weight_resource = 0.85
-        self.weight_max_affinity = 0.2
+        self.weight_resource = 0.95
+        self.weight_max_affinity = 0.15
 
     def pop_one_task(self, scheduler_context: SchedulerContext) -> TaskMeta:
         self.set_scheduler_context(scheduler_context)
