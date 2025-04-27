@@ -33,6 +33,7 @@ class Worker(BaseServer, WorkerService):
         self.worker_client = WorkerMasterClient(self.master_info.component_ip, self.master_info.component_port)
 
         self.sim_mode: bool = worker_args.sim_gpu_num != 0
+        self.executor_python_path = worker_args.python_path
         self._init_node(worker_args)
         self._init_executor()
 
@@ -52,7 +53,7 @@ class Worker(BaseServer, WorkerService):
         if self.sim_mode:
             gpu_num = worker_args.sim_gpu_num
             gpus = GPUUtil.get_gpus_with_num(self.node.node_id, gpu_num)
-        elif worker_args.gpu_ids:
+        elif len(worker_args.gpu_ids) != 0:
             gpus = GPUUtil.get_gpus_with_ids(self.node.node_id, worker_args.gpu_ids)
         else:
             gpu_num = GPUUtil.get_gpu_count()
@@ -64,7 +65,7 @@ class Worker(BaseServer, WorkerService):
 
     def _init_executor(self):
         for gpu_id, gpu in self.node.gpus.items():
-            self.executors[gpu_id] = Executor(gpu)
+            self.executors[gpu_id] = Executor(gpu, self.executor_python_path)
 
     async def _start(self):
         api_server_task = await self.api_server.start(port=self.worker_info.component_port)

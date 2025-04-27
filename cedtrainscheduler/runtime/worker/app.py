@@ -23,8 +23,15 @@ async def main():
 
     args = parser.parse_args()
 
-    gpu_ids = args.gpu_ids.split(",")
-    sim_gpu_num = int(args.sim_gpu_num)
+    if args.gpu_ids == "":
+        gpu_ids = []
+    else:
+        gpu_ids = args.gpu_ids.split(",")
+
+    if args.sim_gpu_num == "":
+        sim_gpu_num = 0
+    else:
+        sim_gpu_num = int(args.sim_gpu_num)
 
     worker = Worker(
         WorkerArgs(
@@ -41,6 +48,7 @@ async def main():
                 component_type=ComponentType.MASTER,
             ),
             gpu_type=args.gpu_type,
+            python_path=args.executor_python_path,
             gpu_ids=gpu_ids,
             sim_gpu_num=sim_gpu_num,
         )
