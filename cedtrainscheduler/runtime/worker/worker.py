@@ -58,7 +58,7 @@ class Worker(BaseServer, WorkerService):
         else:
             gpu_num = GPUUtil.get_gpu_count()
             gpus = GPUUtil.get_gpus_with_num(self.node.node_id, gpu_num)
-        for gpu_id, gpu_rank in gpus.items():
+        for gpu_rank, gpu_id in gpus.items():
             self.node.gpus[gpu_id] = GPU(
                 gpu_id=gpu_id, gpu_type=worker_args.gpu_type, gpu_rank=gpu_rank, node_id=self.node.node_id
             )
