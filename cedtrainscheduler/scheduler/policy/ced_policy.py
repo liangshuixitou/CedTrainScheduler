@@ -90,6 +90,7 @@ class CedQueuePolicy(QueuePolicy):
             deviations[cluster_id] = abs(
                 (cluster_gpu_time + task.task_runtime[cluster_gpu_type]) / cluster_gpu_num - all_avg_gpu_time
             )
+        print(deviations)
 
         # 找出最大偏离度用于归一化
         max_deviation = max(deviations.values()) if deviations else 1.0

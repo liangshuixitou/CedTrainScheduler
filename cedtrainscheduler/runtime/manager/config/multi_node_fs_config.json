@@ -17,7 +17,7 @@
       "model": {
         "size_mb": 98,
         "storage_nodes": [
-          "edge-worker-1"
+          "terminal-worker-1"
         ]
       }
     },
@@ -38,7 +38,7 @@
       "model": {
         "size_mb": 45,
         "storage_nodes": [
-          "edge-worker-1"
+          "terminal-worker-1"
         ]
       }
     }
