@@ -14,6 +14,10 @@ class ManagerService(ABC):
         pass
 
     @abstractmethod
+    async def handle_task_list(self) -> list[TaskMeta]:
+        pass
+
+    @abstractmethod
     async def handle_master_register(
         self,
         cluster: Cluster,

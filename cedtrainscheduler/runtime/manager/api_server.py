@@ -34,10 +34,15 @@ class ManagerAPIServer:
 
         @self.app.post("/api/task/submit")
         async def handle_task_submit(request: ManagerTaskSubmitModel):
-            """处理来自Worker的任务提交"""
+            """处理来自Client的任务提交"""
             # 使用 Pydantic 模型的转换方法生成自定义类对象
             task_meta = request.task.to_task_meta()
             return await self.manager_service.handle_task_submit(task_meta)
+
+        @self.app.post("/api/task/list")
+        async def handle_task_list():
+            """处理来自Client的获取任务列表请求"""
+            return await self.manager_service.handle_task_list()
 
         @self.app.post("/api/master/register")
         async def handle_master_register(request: ManagerMasterRegisterModel):
