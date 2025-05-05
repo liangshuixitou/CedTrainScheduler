@@ -14,7 +14,7 @@ class ManagerService(ABC):
         pass
 
     @abstractmethod
-    async def handle_task_list(self) -> list[TaskMeta]:
+    async def handle_task_list(self) -> list[TaskWrapRuntimeInfo]:
         pass
 
     @abstractmethod

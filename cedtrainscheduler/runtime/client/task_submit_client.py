@@ -3,6 +3,7 @@ import time
 
 import pandas as pd
 
+from cedtrainscheduler.runtime.client.utils import print_task_list
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.components import ComponentType
 from cedtrainscheduler.runtime.manager.api_client import TaskManagerClient
@@ -20,7 +21,7 @@ class TaskSubmitClient:
         await self.task_manager_client.submit_task(task_meta)
 
 
-async def test_submit_tasks_from_csv(task_submit_client: TaskSubmitClient, csv_path: str):
+async def benchmark(task_submit_client: TaskSubmitClient, csv_path: str):
     """Parse CSV file and submit tasks
 
     Args:
@@ -56,21 +57,21 @@ async def test_submit_tasks_from_csv(task_submit_client: TaskSubmitClient, csv_p
         print(f"Submitted task_id: {task_meta.task_id}")
 
 
-async def print_task_metrics_daemon(task_submit_client: TaskSubmitClient):
+async def collect_metrics(task_submit_client: TaskSubmitClient):
     while True:
         metrics = await task_submit_client.task_manager_client.metrics()
         print_task_metrics(metrics)
         await asyncio.sleep(5)
 
-
 async def main():
     import argparse
 
-    parser = argparse.ArgumentParser(description="Start the Master service")
+    parser = argparse.ArgumentParser(description="Task Manager Client")
     parser.add_argument("--id", default="manager", help="Manager component ID")
     parser.add_argument("--ip", default="127.0.0.1", help="Manager IP address")
     parser.add_argument("--port", type=int, default=5001, help="Manager port")
     parser.add_argument("--csv-path", type=str, default="task_bench.csv", help="CSV file path")
+    parser.add_argument("command", choices=["submit", "list"], help="Command to execute")
     args = parser.parse_args()
 
     task_submit_client = TaskSubmitClient(
@@ -82,8 +83,13 @@ async def main():
         ),
     )
 
-    await test_submit_tasks_from_csv(task_submit_client, args.csv_path)
-    await print_task_metrics_daemon(task_submit_client)
+    if args.command == "submit":
+        await benchmark(task_submit_client, args.csv_path)
+        await collect_metrics(task_submit_client)
+    elif args.command == "list":
+        task_list = await task_submit_client.task_manager_client.task_list()
+        print_task_list(task_list)
+
 
 
 if __name__ == "__main__":

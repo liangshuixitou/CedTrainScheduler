@@ -10,7 +10,7 @@
             "node_id": "cloud-worker-1",
             "cpu_cores": 32,
             "memory": 128,
-            "gpu_count": 4,
+            "gpu_count": 2,
             "gpu_model": "V100",
             "gpus": [
               {
@@ -19,14 +19,6 @@
               },
               {
                 "gpu_id": "ade614de-454b-4567-8779-973b303ddbc4",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "07b114ed-bcb5-456d-82b8-89c811b4929e",
-                "gpu_type": "V100"
-              },
-              {
-                "gpu_id": "1f66c90e-fb41-4b64-8c98-3021253f9ff7",
                 "gpu_type": "V100"
               }
             ],

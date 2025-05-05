@@ -131,6 +131,10 @@ class Manager(BaseServer, ManagerService):
         await self.task_manager.extend_task_queue_map(task_queue_map)
         await self.task_manager.save()
 
+    async def handle_task_list(self) -> list[TaskWrapRuntimeInfo]:
+        task_infos = await self.task_manager.snapshot()
+        return list(task_infos.values())
+
     async def handle_metrics(self) -> dict:
         task_metrics = calculate_task_metrics(TASK_RECORD_SAVE_PATH)
         return task_metrics

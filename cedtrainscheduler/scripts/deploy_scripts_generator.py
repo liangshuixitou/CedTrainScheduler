@@ -1,11 +1,11 @@
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.components import ComponentType
 
-PROJECT_PATH = "/root/project/CedTrainScheduler"
+PROJECT_PATH = "/home/ubuntu/CedTrainScheduler"
 CONDA_ENV_NAME = "cedtrainscheduler"
-EXECUTOR_PYTHON_PATH = "/root/anaconda3/envs/BI100/bin/python"
-MINICONDA_EXECUTOR_PYTHON_PATH = "/root/miniconda3/envs/BI100/bin/python"
-
+ANACONDA_EXECUTOR_PYTHON_PATH = "/home/ubuntu/anaconda3/envs/cedtrainscheduler/bin/python"
+MINICONDA_EXECUTOR_PYTHON_PATH = "/home/ubuntu/miniconda3/envs/cedtrainscheduler/bin/python"
+TASK_CSV_PATH = f"{PROJECT_PATH}/cedtrainscheduler/cases/task/case_micro_40_tasks.csv"
 class ComponentGenerator:
     @staticmethod
     def generate_manager_command(component_info: ComponentInfo, scheduler_name: str, fs_config_path: str) -> str:
@@ -188,15 +188,15 @@ class TaskSubmitClientConfig:
 # node2_ip = "36.103.199.216"
 # node3_ip = "36.103.199.200"
 
-node1_ip = "10.31.12.19"
-node2_ip = "10.31.12.20"
-node3_ip = "10.31.12.33"
+node1_ip = "10.206.33.108"
+node2_ip = "10.206.32.14"
+node3_ip = "10.206.33.63"
 
 runtime_config = ManagerConfig(
     component_info=ComponentInfo(
         component_type=ComponentType.MANAGER, component_id="manager", component_ip=node1_ip, component_port=5000
     ),
-    scheduler_name="fcfs",
+    scheduler_name="k8s_scheduler",
     fs_config_path=f"{PROJECT_PATH}/cedtrainscheduler/runtime/manager/config/multi_node_fs_config.json",
     master_configs={
         "master-cloud": MasterConfig(
@@ -217,8 +217,8 @@ runtime_config = ManagerConfig(
                         component_port=5002,
                     ),
                     gpu_type="V100",
-                    executor_python_path=EXECUTOR_PYTHON_PATH,
-                    gpu_ids="4,5,6,7",
+                    executor_python_path=ANACONDA_EXECUTOR_PYTHON_PATH,
+                    gpu_ids="0,1",
                 ),
             },
         ),
@@ -240,8 +240,8 @@ runtime_config = ManagerConfig(
                         component_port=5002,
                     ),
                     gpu_type="P100",
-                    executor_python_path=EXECUTOR_PYTHON_PATH,
-                    gpu_ids="6,7",
+                    executor_python_path=ANACONDA_EXECUTOR_PYTHON_PATH,
+                    gpu_ids="0,1",
                 ),
             },
         ),
@@ -263,7 +263,7 @@ runtime_config = ManagerConfig(
                         component_port=5002,
                     ),
                     executor_python_path=MINICONDA_EXECUTOR_PYTHON_PATH,
-                    gpu_ids="4,5",
+                    gpu_ids="0,1",
                     gpu_type="T4",
                 ),
             },
@@ -278,7 +278,7 @@ task_submit_client_config = TaskSubmitClientConfig(
         component_ip=node1_ip,
         component_port=5000,
     ),
-    csv_path=f"{PROJECT_PATH}/cedtrainscheduler/cases/task/case_micro_40_tasks.csv",
+    csv_path=TASK_CSV_PATH,
 )
 
 
