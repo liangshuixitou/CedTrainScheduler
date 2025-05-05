@@ -1,17 +1,17 @@
-import torch
+# import torch
 
 
 class GPUUtil:
-    @staticmethod
-    def get_gpu_count() -> int:
-        """
-        获取当前节点可用的GPU数量
-        Returns:
-            int: GPU数量
-        """
-        if not torch.cuda.is_available():
-            return 0
-        return torch.cuda.device_count()
+    # @staticmethod
+    # def get_gpu_count() -> int:
+    #     """
+    #     获取当前节点可用的GPU数量
+    #     Returns:
+    #         int: GPU数量
+    #     """
+    #     if not torch.cuda.is_available():
+    #         return 0
+    #     return torch.cuda.device_count()
 
     @staticmethod
     def get_gpus_with_ids(node_id: str, gpu_ids: list[int]) -> dict[int, str]:

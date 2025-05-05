@@ -34,7 +34,7 @@
             "ip_address": "192.168.253.113"
           }
         ],
-        "inter_domain_bandwidth": 200,
+        "inter_domain_bandwidth": 100,
         "intra_domain_bandwidth": 1200
       },
       {
@@ -62,7 +62,7 @@
             "ip_address": "192.168.253.114"
           }
         ],
-        "inter_domain_bandwidth": 200,
+        "inter_domain_bandwidth": 100,
         "intra_domain_bandwidth": 1200
       },
       {
@@ -90,7 +90,7 @@
             "ip_address": "192.168.253.115"
           }
         ],
-        "inter_domain_bandwidth": 200,
+        "inter_domain_bandwidth": 100,
         "intra_domain_bandwidth": 1200
       }
     ]
