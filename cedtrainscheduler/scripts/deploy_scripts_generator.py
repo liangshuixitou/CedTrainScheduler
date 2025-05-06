@@ -215,9 +215,9 @@ class TaskSubmitClientConfig:
 # node2_ip = "10.206.32.14"
 # node3_ip = "10.206.33.63"
 
-node1_ip = "10.31.10.19"
-node2_ip = "10.31.10.20"
-node3_ip = "10.31.10.33"
+node1_ip = "10.31.10.20"
+node2_ip = "10.31.10.33"
+node3_ip = "10.31.10.36"
 
 runtime_config = ManagerConfig(
     component_info=ComponentInfo(
