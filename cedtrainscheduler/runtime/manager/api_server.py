@@ -39,10 +39,10 @@ class ManagerAPIServer:
             task_meta = request.task.to_task_meta()
             return await self.manager_service.handle_task_submit(task_meta)
 
-        @self.app.post("/api/task/list")
-        async def handle_task_list():
+        @self.app.post("/api/task/infos")
+        async def handle_task_infos():
             """处理来自Client的获取任务列表请求"""
-            return await self.manager_service.handle_task_list()
+            return await self.manager_service.handle_task_infos()
 
         @self.app.post("/api/master/register")
         async def handle_master_register(request: ManagerMasterRegisterModel):

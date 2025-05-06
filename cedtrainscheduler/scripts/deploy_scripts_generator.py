@@ -1,10 +1,10 @@
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.components import ComponentType
 
-PROJECT_PATH = "/home/ubuntu/CedTrainScheduler"
+PROJECT_PATH = "/root/project/CedTrainScheduler"
 CONDA_ENV_NAME = "cedtrainscheduler"
-ANACONDA_EXECUTOR_PYTHON_PATH = "/home/ubuntu/anaconda3/envs/cedtrainscheduler/bin/python"
-MINICONDA_EXECUTOR_PYTHON_PATH = "/home/ubuntu/miniconda3/envs/cedtrainscheduler/bin/python"
+ANACONDA_EXECUTOR_PYTHON_PATH = "/root/anaconda3/envs/BI100/bin/python"
+MINICONDA_EXECUTOR_PYTHON_PATH = "/root/miniconda3/envs/BI100/bin/python"
 TASK_CSV_PATH = f"{PROJECT_PATH}/cedtrainscheduler/cases/task/case_micro_40_tasks.csv"
 class ComponentGenerator:
     @staticmethod
@@ -81,12 +81,26 @@ class ComponentGenerator:
             f"conda activate {CONDA_ENV_NAME} && "
             f"cd {PROJECT_PATH} && "
             f"python cedtrainscheduler/runtime/client/task_submit_client.py "
+            f"submit "
             f"--id {task_submit_client_component_info.component_id} "
             f"--ip {task_submit_client_component_info.component_ip} "
             f"--port {task_submit_client_component_info.component_port} "
             f"--csv-path {csv_path} "
         )
 
+    @staticmethod
+    def generate_task_list_client_command(
+        task_list_client_component_info: ComponentInfo,
+    ) -> str:
+        return (
+            f"conda activate {CONDA_ENV_NAME} && "
+            f"cd {PROJECT_PATH} && "
+            f"python cedtrainscheduler/runtime/client/task_submit_client.py "
+            f"list "
+            f"--id {task_list_client_component_info.component_id} "
+            f"--ip {task_list_client_component_info.component_ip} "
+            f"--port {task_list_client_component_info.component_port} "
+        )
 
 class WorkerConfig:
     def __init__(
@@ -180,17 +194,30 @@ class TaskSubmitClientConfig:
         self.component_info = component_info
         self.csv_path = csv_path
 
-    def generate_task_submit_client_command(self) -> str:
-        return ComponentGenerator.generate_task_submit_client_command(self.component_info, self.csv_path)
+    def print_task_submit_client_command(self) -> None:
+        task_submit_client_command = ComponentGenerator.generate_task_submit_client_command(self.component_info, self.csv_path)
+        print("\n*** task submit client command ***\n")
+        print(task_submit_client_command)
+        print("\n*** task submit client command ***\n")
+
+    def print_task_list_client_command(self) -> None:
+        task_list_client_command = ComponentGenerator.generate_task_list_client_command(self.component_info)
+        print("\n*** task list client command ***\n")
+        print(task_list_client_command)
+        print("\n*** task list client command ***\n")
 
 
 # node1_ip = "36.103.199.97"
 # node2_ip = "36.103.199.216"
 # node3_ip = "36.103.199.200"
 
-node1_ip = "10.206.33.108"
-node2_ip = "10.206.32.14"
-node3_ip = "10.206.33.63"
+# node1_ip = "10.206.33.108"
+# node2_ip = "10.206.32.14"
+# node3_ip = "10.206.33.63"
+
+node1_ip = "10.31.10.19"
+node2_ip = "10.31.10.20"
+node3_ip = "10.31.10.33"
 
 runtime_config = ManagerConfig(
     component_info=ComponentInfo(
@@ -218,7 +245,7 @@ runtime_config = ManagerConfig(
                     ),
                     gpu_type="V100",
                     executor_python_path=ANACONDA_EXECUTOR_PYTHON_PATH,
-                    gpu_ids="0,1",
+                    gpu_ids="4,5,6,7",
                 ),
             },
         ),
@@ -241,7 +268,7 @@ runtime_config = ManagerConfig(
                     ),
                     gpu_type="P100",
                     executor_python_path=ANACONDA_EXECUTOR_PYTHON_PATH,
-                    gpu_ids="0,1",
+                    gpu_ids="6,7",
                 ),
             },
         ),
@@ -263,7 +290,7 @@ runtime_config = ManagerConfig(
                         component_port=5002,
                     ),
                     executor_python_path=MINICONDA_EXECUTOR_PYTHON_PATH,
-                    gpu_ids="0,1",
+                    gpu_ids="4,5",
                     gpu_type="T4",
                 ),
             },
@@ -271,7 +298,7 @@ runtime_config = ManagerConfig(
     },
 )
 
-task_submit_client_config = TaskSubmitClientConfig(
+client_config = TaskSubmitClientConfig(
     component_info=ComponentInfo(
         component_type=ComponentType.MANAGER,
         component_id="manager",
@@ -286,11 +313,8 @@ def main():
     deployment_config = DeploymentConfig(runtime_config)
     deployment_config.print_deployment_command()
 
-    # micro_deployment_config = DeploymentConfig(micro_runtime_config)
-    # micro_deployment_config.print_deployment_command()
-
-    task_submit_client_command = task_submit_client_config.generate_task_submit_client_command()
-    print(task_submit_client_command)
+    client_config.print_task_submit_client_command()
+    client_config.print_task_list_client_command()
 
 
 if __name__ == "__main__":

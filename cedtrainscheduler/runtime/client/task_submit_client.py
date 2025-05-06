@@ -67,11 +67,11 @@ async def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Task Manager Client")
+    parser.add_argument("command", choices=["submit", "list"], help="Command to execute")
     parser.add_argument("--id", default="manager", help="Manager component ID")
     parser.add_argument("--ip", default="127.0.0.1", help="Manager IP address")
     parser.add_argument("--port", type=int, default=5001, help="Manager port")
     parser.add_argument("--csv-path", type=str, default="task_bench.csv", help="CSV file path")
-    parser.add_argument("command", choices=["submit", "list"], help="Command to execute")
     args = parser.parse_args()
 
     task_submit_client = TaskSubmitClient(
@@ -87,7 +87,7 @@ async def main():
         await benchmark(task_submit_client, args.csv_path)
         await collect_metrics(task_submit_client)
     elif args.command == "list":
-        task_list = await task_submit_client.task_manager_client.task_list()
+        task_list = await task_submit_client.task_manager_client.list_task()
         print_task_list(task_list)
 
 
