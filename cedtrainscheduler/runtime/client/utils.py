@@ -1,4 +1,15 @@
+from datetime import datetime
+
 from tabulate import tabulate
+
+
+def format_time(ts):
+    if ts is None or ts == 0:
+        return "-"
+    try:
+        return datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S")
+    except Exception:
+        return str(ts)
 
 
 def print_task_list(task_list: list):
@@ -18,9 +29,9 @@ def print_task_list(task_list: list):
             task["task_meta"]["task_inst_num"],
             task["task_meta"]["task_plan_gpu"],
             task["task_meta"]["task_status"],
-            task["task_submit_time"],
-            task["task_start_time"],
-            task["task_end_time"]
+            format_time(task["task_submit_time"]),
+            format_time(task["task_start_time"]),
+            format_time(task["task_end_time"])
         ]
         table_data.append(row)
 
