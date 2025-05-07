@@ -121,7 +121,7 @@ class ScriptGenerator:
 # ))
 
 
-print(ScriptGenerator.generate_docker_script(
+print(ScriptGenerator.generate_ix_docker_script(
     gpu_rank=4,
     task_id="test",
     task_name="resnet50",
