@@ -45,7 +45,7 @@ class ScriptGenerator:
         return cmd
 
     @staticmethod
-    def generate_docker_script(
+    def generate_ix_docker_script(
         gpu_rank: int,
         task_id: str,
         task_name: str,
@@ -55,7 +55,7 @@ class ScriptGenerator:
         master_port: int,
         plan_runtime: int,
         data_transfer_time: int,
-        python_path: str = "python",
+        python_path: str = "/usr/local/bin/python3.10",
     ) -> str:
         workload_info = WORKLOAD_INFOS.get(task_name.lower())
         if not workload_info:
@@ -81,7 +81,7 @@ class ScriptGenerator:
             f"-e MASTER_PORT={master_port} "
             f"-e WORLD_SIZE={world_size} "
             f"-e CUDA_VISIBLE_DEVICES={gpu_rank} "
-            f"--name={task_id}_{gpu_rank}_{inst_rank} "
+            f"--name=task_{task_id}_gpu{gpu_rank}_inst{inst_rank} "
             f"corex:3.2.1 "
             f"bash -c '"
             f"{python_path} {workload_info.script_file_path} "
