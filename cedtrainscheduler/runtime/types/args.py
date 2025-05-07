@@ -1,8 +1,14 @@
 from dataclasses import dataclass
+from enum import Enum
 
 from cedtrainscheduler.runtime.components import ComponentInfo
 from cedtrainscheduler.runtime.types.cluster import ClusterType
 from cedtrainscheduler.runtime.types.cluster import GPUType
+
+
+class ExecutorType(str, Enum):
+    PYTHON = "python"
+    DOCKER = "docker"
 
 
 @dataclass
@@ -18,6 +24,7 @@ class WorkerArgs:
     worker_info: ComponentInfo
     master_info: ComponentInfo
     gpu_type: GPUType
+    executor_type: ExecutorType
     python_path: str
     gpu_ids: list[int]
     sim_gpu_num: int

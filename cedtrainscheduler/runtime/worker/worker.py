@@ -3,7 +3,7 @@ from asyncio import Lock
 
 from cedtrainscheduler.runtime.components import BaseServer
 from cedtrainscheduler.runtime.master.api_client import WorkerMasterClient
-from cedtrainscheduler.runtime.types.args import WorkerArgs
+from cedtrainscheduler.runtime.types.args import ExecutorType, WorkerArgs
 from cedtrainscheduler.runtime.types.cluster import GPU
 from cedtrainscheduler.runtime.types.cluster import Node
 from cedtrainscheduler.runtime.types.task import TaskInst
@@ -11,6 +11,8 @@ from cedtrainscheduler.runtime.types.task import TaskInstStatus
 from cedtrainscheduler.runtime.utils.gpu_util import GPUUtil
 from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.runtime.worker.api_server import WorkerAPIServer
+from cedtrainscheduler.runtime.worker.backend.docker_backend import DockerBackend
+from cedtrainscheduler.runtime.worker.backend.python_backend import PythonBackend
 from cedtrainscheduler.runtime.worker.executor import Executor
 from cedtrainscheduler.runtime.worker.service import WorkerService
 from cedtrainscheduler.runtime.workload.workload import WorkloadType
@@ -65,7 +67,13 @@ class Worker(BaseServer, WorkerService):
 
     def _init_executor(self):
         for gpu_id, gpu in self.node.gpus.items():
-            self.executors[gpu_id] = Executor(gpu, self.executor_python_path)
+            if self.executor_type == ExecutorType.PYTHON:
+                backend = PythonBackend(gpu, self.executor_python_path)
+            elif self.executor_type == ExecutorType.DOCKER:
+                backend = DockerBackend(gpu, self.executor_docker_path)
+            else:
+                raise ValueError(f"Invalid executor type: {self.executor_type}")
+            self.executors[gpu_id] = Executor(gpu, backend)
 
     async def _start(self):
         api_server_task = await self.api_server.start(port=self.worker_info.component_port)

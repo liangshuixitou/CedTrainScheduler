@@ -7,7 +7,7 @@ LOG_BASE_DIR = "~/logs/train_logs"
 
 class ScriptGenerator:
     @staticmethod
-    def generate_script(
+    def generate_python_script(
         gpu_rank: int,
         task_id: str,
         task_name: str,
@@ -45,6 +45,58 @@ class ScriptGenerator:
         return cmd
 
     @staticmethod
+    def generate_docker_script(
+        gpu_rank: int,
+        task_id: str,
+        task_name: str,
+        world_size: int,
+        inst_rank: int,
+        master_addr: str,
+        master_port: int,
+        plan_runtime: int,
+        data_transfer_time: int,
+        python_path: str = "python",
+    ) -> str:
+        workload_info = WORKLOAD_INFOS.get(task_name.lower())
+        if not workload_info:
+            raise ValueError(f"Workload info not found for task name: {task_name}")
+
+        log_file = ScriptGenerator.build_log_file_path(task_id, gpu_rank, inst_rank)
+        log_dir = os.path.dirname(log_file)
+        script_dir = os.path.dirname(workload_info.script_file_path)
+        model_dir = os.path.dirname(workload_info.model_file_path)
+        dataset_dir = os.path.dirname(workload_info.dataset_dir_path)
+
+        # Build the Docker run command
+        docker_cmd = (
+            f"docker run --rm --shm-size=\"32g\" -it "
+            f"-v /dev:/dev -v /usr/src/:/usr/src -v /data1:/data1 "
+            f"-v /lib/modules/:/lib/modules "
+            f"-v {script_dir}:{script_dir} "
+            f"-v {model_dir}:{model_dir} "
+            f"-v {dataset_dir}:{dataset_dir} "
+            f"-v {log_dir}:{log_dir} "
+            f"--privileged=true --cap-add=ALL --pid=host --net=host "
+            f"-e MASTER_ADDR={master_addr} "
+            f"-e MASTER_PORT={master_port} "
+            f"-e WORLD_SIZE={world_size} "
+            f"-e CUDA_VISIBLE_DEVICES={gpu_rank} "
+            f"--name={task_id}_{gpu_rank}_{inst_rank} "
+            f"corex:3.2.1 "
+            f"bash -c '"
+            f"mkdir -p {log_dir} && "
+            f"{python_path} {workload_info.script_file_path} "
+            f"--rank={inst_rank} "
+            f"--model_file_path={workload_info.model_file_path} "
+            f"--dataset_dir_path={workload_info.dataset_dir_path} "
+            f"--runtime={plan_runtime} "
+            f"--data_transfer_time={data_transfer_time} "
+            f">> {log_file} 2>&1'"
+        )
+
+        return docker_cmd
+
+    @staticmethod
     def build_log_file_path(task_id: str, gpu_rank: int, inst_rank: int) -> str:
         base_dir = os.path.expanduser(LOG_BASE_DIR)
         if not os.path.exists(base_dir):
@@ -56,7 +108,21 @@ class ScriptGenerator:
         return log_file
 
 
-print(ScriptGenerator.generate_script(
+# print(ScriptGenerator.generate_python_script(
+#     gpu_rank=4,
+#     task_id="test",
+#     task_name="resnet50",
+#     world_size=1,
+#     inst_rank=0,
+#     master_addr="127.0.0.1",
+#     master_port=12345,
+#     plan_runtime=100,
+#     data_transfer_time=10,
+#     python_path="python",
+# ))
+
+
+print(ScriptGenerator.generate_docker_script(
     gpu_rank=4,
     task_id="test",
     task_name="resnet50",
