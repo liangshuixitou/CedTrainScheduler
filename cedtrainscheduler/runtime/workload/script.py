@@ -84,7 +84,6 @@ class ScriptGenerator:
             f"--name={task_id}_{gpu_rank}_{inst_rank} "
             f"corex:3.2.1 "
             f"bash -c '"
-            f"mkdir -p {log_dir} && "
             f"{python_path} {workload_info.script_file_path} "
             f"--rank={inst_rank} "
             f"--model_file_path={workload_info.model_file_path} "
