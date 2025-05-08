@@ -4,11 +4,11 @@ from cedtrainscheduler.runtime.types.cluster import GPU
 from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.utils.logger import setup_logger
 from cedtrainscheduler.runtime.utils.python_util import get_python_executable_path
-from cedtrainscheduler.runtime.worker.backend.backend import Backend
+from cedtrainscheduler.runtime.worker.backend.backend import ExecutorBackend
 from cedtrainscheduler.runtime.workload.script import ScriptGenerator
 
 
-class PythonBackend(Backend):
+class PythonBackend(ExecutorBackend):
     def __init__(self, gpu: GPU, executor_python_path: str):
         self.executor_python_path = executor_python_path
         self.logger = setup_logger(__name__)
