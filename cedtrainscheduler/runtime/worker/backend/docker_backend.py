@@ -25,15 +25,15 @@ class DockerBackend(ExecutorBackend):
     ) -> asyncio.subprocess.Process:
         # Generate docker command using ScriptGenerator
         docker_cmd = ScriptGenerator.generate_ix_docker_script(
-            gpu_rank=task_inst.gpu_rank,
-            task_id=task_inst.id,
+            gpu_rank=self.gpu.gpu_rank,
+            task_id=task_inst.task_id,
             task_name=task_name,
             world_size=world_size,
             inst_rank=inst_rank,
             master_addr=master_addr,
             master_port=master_port,
             plan_runtime=plan_runtime,
-            data_transfer_time=data_transfer_time,
+            data_transfer_time=int(data_transfer_time),
         )
 
         try:

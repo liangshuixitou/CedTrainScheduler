@@ -3,7 +3,7 @@ from cedtrainscheduler.runtime.components import ComponentType
 
 PROJECT_PATH = "/root/project/CedTrainScheduler"
 CONDA_ENV_NAME = "cedtrainscheduler"
-EXECUTER_TYPE = "python"
+EXECUTER_TYPE = "docker"
 ANACONDA_EXECUTOR_PYTHON_PATH = "/root/anaconda3/envs/BI100/bin/python"
 MINICONDA_EXECUTOR_PYTHON_PATH = "/root/miniconda3/envs/BI100/bin/python"
 TASK_CSV_PATH = f"{PROJECT_PATH}/cedtrainscheduler/cases/task/case_micro_40_tasks.csv"
@@ -274,7 +274,7 @@ runtime_config = ManagerConfig(
                         component_port=5002,
                     ),
                     gpu_type="P100",
-                    executor_python_path=ANACONDA_EXECUTOR_PYTHON_PATH,
+                    executor_python_path=MINICONDA_EXECUTOR_PYTHON_PATH,
                     gpu_ids="6,7",
                     executor_type=EXECUTER_TYPE,
                 ),
