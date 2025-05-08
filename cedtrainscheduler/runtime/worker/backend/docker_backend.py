@@ -35,7 +35,7 @@ class DockerBackend(ExecutorBackend):
             plan_runtime=plan_runtime,
             data_transfer_time=int(data_transfer_time),
         )
-
+        self.logger.info(f"[GPU {self.gpu.gpu_id}] Start task {task_inst.task_id} with script: {docker_cmd}")
         try:
             process = await asyncio.create_subprocess_shell(
                 docker_cmd,
