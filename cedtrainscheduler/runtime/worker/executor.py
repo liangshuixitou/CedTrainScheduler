@@ -4,11 +4,11 @@ from cedtrainscheduler.runtime.types.cluster import GPU
 from cedtrainscheduler.runtime.types.task import TaskInst
 from cedtrainscheduler.runtime.types.task import TaskInstStatus
 from cedtrainscheduler.runtime.utils.logger import setup_logger
-from cedtrainscheduler.runtime.worker.backend.backend import Backend
+from cedtrainscheduler.runtime.worker.backend.backend import ExecutorBackend
 
 
 class Executor:
-    def __init__(self, gpu: GPU, backend: Backend):
+    def __init__(self, gpu: GPU, backend: ExecutorBackend):
         self.gpu = gpu
         self.backend = backend
         self.task_record: list[TaskInst] = []
