@@ -10,7 +10,6 @@ from cedtrainscheduler.runtime.workload.script import ScriptGenerator
 
 class PythonBackend(Backend):
     def __init__(self, gpu: GPU, executor_python_path: str):
-        self.gpu = gpu
         self.executor_python_path = executor_python_path
         self.logger = setup_logger(__name__)
 

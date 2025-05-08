@@ -69,7 +69,7 @@ class ScriptGenerator:
 
         # Build the Docker run command
         docker_cmd = (
-            f"docker run --rm --shm-size=\"32g\" -it "
+            f"docker run --rm --shm-size=\"32g\" "
             f"-v /dev:/dev -v /usr/src/:/usr/src -v /data1:/data1 "
             f"-v /lib/modules/:/lib/modules "
             f"-v {script_dir}:{script_dir} "
@@ -121,15 +121,15 @@ class ScriptGenerator:
 # ))
 
 
-print(ScriptGenerator.generate_ix_docker_script(
-    gpu_rank=4,
-    task_id="test",
-    task_name="resnet50",
-    world_size=1,
-    inst_rank=0,
-    master_addr="127.0.0.1",
-    master_port=12345,
-    plan_runtime=100,
-    data_transfer_time=10,
-    python_path="python",
-))
+# print(ScriptGenerator.generate_ix_docker_script(
+#     gpu_rank=4,
+#     task_id="test",
+#     task_name="resnet50",
+#     world_size=1,
+#     inst_rank=0,
+#     master_addr="127.0.0.1",
+#     master_port=12345,
+#     plan_runtime=100,
+#     data_transfer_time=10,
+#     python_path="python",
+# ))

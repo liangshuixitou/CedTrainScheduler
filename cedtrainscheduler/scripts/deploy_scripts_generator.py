@@ -3,6 +3,7 @@ from cedtrainscheduler.runtime.components import ComponentType
 
 PROJECT_PATH = "/root/project/CedTrainScheduler"
 CONDA_ENV_NAME = "cedtrainscheduler"
+EXECUTER_TYPE = "python"
 ANACONDA_EXECUTOR_PYTHON_PATH = "/root/anaconda3/envs/BI100/bin/python"
 MINICONDA_EXECUTOR_PYTHON_PATH = "/root/miniconda3/envs/BI100/bin/python"
 TASK_CSV_PATH = f"{PROJECT_PATH}/cedtrainscheduler/cases/task/case_micro_40_tasks.csv"
@@ -46,6 +47,7 @@ class ComponentGenerator:
         worker_component_info: ComponentInfo,
         master_component_info: ComponentInfo,
         gpu_type: str,
+        executor_type: str,
         executor_python_path: str | None = None,
         gpu_ids: list[int] | None = None,
         sim_gpu_num: int | None = None,
@@ -61,6 +63,7 @@ class ComponentGenerator:
             f"--master-ip {master_component_info.component_ip} "
             f"--master-port {master_component_info.component_port} "
             f"--gpu-type {gpu_type} "
+            f"--executor-type {executor_type} "
         )
 
         if executor_python_path is not None:
@@ -107,12 +110,14 @@ class WorkerConfig:
         self,
         component_info: ComponentInfo,
         gpu_type: str,
+        executor_type: str,
         executor_python_path: str | None = None,
         gpu_ids: list[int] | None = None,
         sim_gpu_num: int | None = None,
     ):
         self.component_info = component_info
         self.gpu_type = gpu_type
+        self.executor_type = executor_type
         self.executor_python_path = executor_python_path
         self.gpu_ids = gpu_ids
         self.sim_gpu_num = sim_gpu_num
@@ -122,6 +127,7 @@ class WorkerConfig:
             self.component_info,
             master_component_info,
             self.gpu_type,
+            self.executor_type,
             self.executor_python_path,
             self.gpu_ids,
             self.sim_gpu_num,
@@ -244,6 +250,7 @@ runtime_config = ManagerConfig(
                         component_port=5002,
                     ),
                     gpu_type="V100",
+                    executor_type=EXECUTER_TYPE,
                     executor_python_path=ANACONDA_EXECUTOR_PYTHON_PATH,
                     gpu_ids="4,5,6,7",
                 ),
@@ -269,6 +276,7 @@ runtime_config = ManagerConfig(
                     gpu_type="P100",
                     executor_python_path=ANACONDA_EXECUTOR_PYTHON_PATH,
                     gpu_ids="6,7",
+                    executor_type=EXECUTER_TYPE,
                 ),
             },
         ),
@@ -292,6 +300,7 @@ runtime_config = ManagerConfig(
                     executor_python_path=MINICONDA_EXECUTOR_PYTHON_PATH,
                     gpu_ids="4,5",
                     gpu_type="T4",
+                    executor_type=EXECUTER_TYPE,
                 ),
             },
         ),

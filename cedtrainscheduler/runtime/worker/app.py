@@ -17,6 +17,7 @@ async def main():
     parser.add_argument("--master-ip", default="127.0.0.1", help="Master IP address")
     parser.add_argument("--master-port", type=int, default=5000, help="Master port")
     parser.add_argument("--gpu-type", default="NVIDIA", help="GPU type")
+    parser.add_argument("--executor-type", default="python", help="Executor type")
     parser.add_argument("--executor-python-path", default="", help="Executor python path")
     parser.add_argument("--gpu-ids", default="", help="GPU ids")
     parser.add_argument("--sim-gpu-num", default="", help="Simulator GPU number")
@@ -48,6 +49,7 @@ async def main():
                 component_type=ComponentType.MASTER,
             ),
             gpu_type=args.gpu_type,
+            executor_type=args.executor_type,
             python_path=args.executor_python_path,
             gpu_ids=gpu_ids,
             sim_gpu_num=sim_gpu_num,

@@ -3,7 +3,8 @@ from asyncio import Lock
 
 from cedtrainscheduler.runtime.components import BaseServer
 from cedtrainscheduler.runtime.master.api_client import WorkerMasterClient
-from cedtrainscheduler.runtime.types.args import ExecutorType, WorkerArgs
+from cedtrainscheduler.runtime.types.args import ExecutorType
+from cedtrainscheduler.runtime.types.args import WorkerArgs
 from cedtrainscheduler.runtime.types.cluster import GPU
 from cedtrainscheduler.runtime.types.cluster import Node
 from cedtrainscheduler.runtime.types.task import TaskInst
@@ -36,6 +37,7 @@ class Worker(BaseServer, WorkerService):
 
         self.sim_mode: bool = worker_args.sim_gpu_num != 0
         self.executor_python_path = worker_args.python_path
+        self.executor_type = worker_args.executor_type
         self._init_node(worker_args)
         self._init_executor()
 
@@ -70,7 +72,7 @@ class Worker(BaseServer, WorkerService):
             if self.executor_type == ExecutorType.PYTHON:
                 backend = PythonBackend(gpu, self.executor_python_path)
             elif self.executor_type == ExecutorType.DOCKER:
-                backend = DockerBackend(gpu, self.executor_docker_path)
+                backend = DockerBackend(gpu)
             else:
                 raise ValueError(f"Invalid executor type: {self.executor_type}")
             self.executors[gpu_id] = Executor(gpu, backend)
