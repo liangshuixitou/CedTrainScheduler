@@ -23,3 +23,7 @@ class WorkerService(ABC):
         data_transfer_time: float,
     ):
         pass
+
+    @abstractmethod
+    async def handle_task_log(self, task_id: str, inst_id: int, gpu_id: str) -> str:
+        pass

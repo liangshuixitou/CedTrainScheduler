@@ -118,3 +118,10 @@ class TaskManagerClient(BaseClient):
         获取Manager的Metrics
         """
         return await self._make_request("/api/metrics", {})
+
+
+    async def get_task_log(self, task_id: str) -> Optional[dict]:
+        """
+        获取任务的日志
+        """
+        return await self._make_request(f"/api/task/log/{task_id}", {})

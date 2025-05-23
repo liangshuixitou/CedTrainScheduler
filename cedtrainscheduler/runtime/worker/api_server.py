@@ -63,6 +63,11 @@ class WorkerAPIServer:
                 data_transfer_time,
             )
 
+        @self.app.post("/api/task/log/{task_id}/{inst_id}/{gpu_id}")
+        async def handle_task_log(task_id: str, inst_id: int, gpu_id: str):
+            """处理获取任务日志请求"""
+            return await self.worker_service.handle_task_log(task_id, inst_id, gpu_id)
+
     async def start(self, host="0.0.0.0", port=5002) -> asyncio.Task:
         """启动API服务器"""
         config = Config(app=self.app, host=host, port=port, log_level="info")

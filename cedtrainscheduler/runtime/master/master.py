@@ -147,6 +147,27 @@ class Master(BaseServer, MasterService):
                     await self.task_manager.update_task_time(task_inst.task_id, time.time())
         return {"status": "success", "message": "Worker registered"}
 
+    async def handle_task_log(self, task_id: str) -> dict[int, str]:
+        task_info = await self.task_manager.get_task(task_id)
+        scheduler_infos = task_info.schedule_infos
+
+        task_log_files = {}
+        for inst_id, schedule_info in scheduler_infos.items():
+            gpu_id = schedule_info.gpu_id
+            worker_ip = await self.worker_manager.get_worker_ip_by_gpu_id(gpu_id)
+            if not worker_ip:
+                self.logger.error(f"No worker found with GPU {gpu_id} for task {task_id}, inst {inst_id}")
+                continue
+
+            worker_client = await self.worker_manager.get_worker_client_by_ip(worker_ip)
+            if not worker_client:
+                self.logger.error(f"Worker client not found for worker {worker_ip}")
+                continue
+
+            task_log_files[inst_id] = await worker_client.get_task_log(task_id, inst_id, gpu_id)
+
+        return task_log_files
+
     async def _start_task(self, task: TaskWrapRuntimeInfo):
         master_worker_ip: Optional[str] = None
         master_worker_port: Optional[int] = None

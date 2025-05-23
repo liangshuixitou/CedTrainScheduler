@@ -69,7 +69,7 @@ class ScriptGenerator:
 
         # Build the Docker run command
         docker_cmd = (
-            f"docker run --rm --shm-size=\"32g\" "
+            f'docker run --rm --shm-size="32g" '
             f"-v /dev:/dev -v /usr/src/:/usr/src -v /data1:/data1 "
             f"-v /lib/modules/:/lib/modules "
             f"-v {script_dir}:{script_dir} "
@@ -103,6 +103,13 @@ class ScriptGenerator:
         log_dir = os.path.join(base_dir, task_id)
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
+        log_file = os.path.join(log_dir, f"gpu{gpu_rank}_rank{inst_rank}.log")
+        return log_file
+
+    @staticmethod
+    def get_task_log_file(task_id: str, gpu_rank: int, inst_rank: int) -> str:
+        base_dir = os.path.expanduser(LOG_BASE_DIR)
+        log_dir = os.path.join(base_dir, task_id)
         log_file = os.path.join(log_dir, f"gpu{gpu_rank}_rank{inst_rank}.log")
         return log_file
 

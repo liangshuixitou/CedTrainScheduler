@@ -16,3 +16,7 @@ class MasterService(ABC):
     @abstractmethod
     async def handle_task_submit(self, task_info: TaskWrapRuntimeInfo, sim_data_transfer_time: float):
         pass
+
+    @abstractmethod
+    async def handle_task_log(self, task_id: str) -> dict[int, str]:
+        pass

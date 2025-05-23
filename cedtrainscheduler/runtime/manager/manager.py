@@ -139,6 +139,10 @@ class Manager(BaseServer, ManagerService):
         task_metrics = calculate_task_metrics(TASK_RECORD_SAVE_PATH)
         return task_metrics
 
+    async def handle_task_log(self, task_id: str) -> dict:
+        task_log = await self.task_manager.get_task_log(task_id)
+        return task_log
+
     async def _calculate_data_transfer_time(
         self, task_wrap_runtime_info: TaskWrapRuntimeInfo, cluster_id: str
     ) -> float:

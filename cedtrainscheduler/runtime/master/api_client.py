@@ -96,3 +96,9 @@ class ManagerMasterClient(BaseClient):
         ).model_dump()
 
         return await self._make_request("/api/task/submit", data)
+
+    async def get_task_log(self, task_id: str) -> Optional[dict]:
+        """
+        获取任务的日志
+        """
+        return await self._make_request(f"/api/task/log/{task_id}", {})

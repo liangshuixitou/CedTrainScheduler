@@ -100,3 +100,9 @@ class MasterWorkerClient(BaseClient):
             data_transfer_time=data_transfer_time,
         ).model_dump()
         return await self._make_request("/api/task/inst/start", data)
+
+    async def get_task_log(self, task_id: str, inst_id: int, gpu_id: str) -> Optional[str]:
+        """
+        获取任务的日志
+        """
+        return await self._make_request(f"/api/task/log/{task_id}/{inst_id}/{gpu_id}", {})

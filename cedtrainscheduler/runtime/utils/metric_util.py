@@ -2,8 +2,6 @@ import json
 from dataclasses import dataclass
 from statistics import mean
 
-from cedtrainscheduler.runtime.types.task import TaskWrapRuntimeInfo
-
 
 @dataclass
 class TaskMetrics:

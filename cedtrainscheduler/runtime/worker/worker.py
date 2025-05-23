@@ -1,4 +1,5 @@
 import asyncio
+import os
 from asyncio import Lock
 
 from cedtrainscheduler.runtime.components import BaseServer
@@ -16,6 +17,7 @@ from cedtrainscheduler.runtime.worker.backend.docker_backend import DockerBacken
 from cedtrainscheduler.runtime.worker.backend.python_backend import PythonBackend
 from cedtrainscheduler.runtime.worker.executor import Executor
 from cedtrainscheduler.runtime.worker.service import WorkerService
+from cedtrainscheduler.runtime.workload.script import ScriptGenerator
 from cedtrainscheduler.runtime.workload.workload import WorkloadType
 
 WORKER_HEARTBEAT_INTERVAL = 5
@@ -154,3 +156,11 @@ class Worker(BaseServer, WorkerService):
             plan_runtime=plan_runtime,
             data_transfer_time=data_transfer_time,
         )
+
+    async def handle_task_log(self, task_id: str, inst_id: int, gpu_id: str) -> str:
+        file_path = ScriptGenerator.get_task_log_file(task_id, gpu_id, inst_id)
+        if not os.path.exists(file_path):
+            self.logger.error(f"File not found: {file_path}")
+            raise FileNotFoundError(f"File not found: {file_path}")
+        with open(file_path) as f:
+            return f.read()

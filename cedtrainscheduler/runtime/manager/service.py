@@ -30,3 +30,7 @@ class ManagerService(ABC):
     @abstractmethod
     async def handle_metrics(self) -> dict:
         pass
+
+    @abstractmethod
+    async def handle_task_log(self, task_id: str) -> dict:
+        pass
