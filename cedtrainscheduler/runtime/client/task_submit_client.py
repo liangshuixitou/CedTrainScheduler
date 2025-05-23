@@ -54,6 +54,7 @@ async def benchmark(task_submit_client: TaskSubmitClient, csv_path: str):
     for task_meta in task_list:
         await asyncio.sleep(3)
         await task_submit_client.submit_task(task_meta)
+        print(task_meta)
         print(f"Submitted task_id: {task_meta.task_id}")
 
 
