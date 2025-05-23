@@ -159,8 +159,11 @@ class Worker(BaseServer, WorkerService):
 
     async def handle_task_log(self, task_id: str, inst_id: int, gpu_id: str) -> str:
         file_path = ScriptGenerator.get_task_log_file(task_id, gpu_id, inst_id)
+        self.logger.info(f"Task {task_id} {inst_id} {gpu_id} log file: {file_path}")
         if not os.path.exists(file_path):
             self.logger.error(f"File not found: {file_path}")
             raise FileNotFoundError(f"File not found: {file_path}")
         with open(file_path) as f:
-            return f.read()
+            log = f.read()
+        self.logger.info(f"Task {task_id} log: {log}")
+        return log

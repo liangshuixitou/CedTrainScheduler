@@ -77,6 +77,10 @@ class TaskManager:
         self.task_queue_map: dict[str, list[TaskInst]] = {}
         self.task_lock = Lock()
 
+    async def get_task_info(self, task_id: str) -> TaskWrapRuntimeInfo:
+        async with self.task_lock:
+            return self.task_infos[task_id]
+
     async def add_task_info(self, task_info: TaskWrapRuntimeInfo):
         async with self.task_lock:
             self.task_infos[task_info.task_meta.task_id] = task_info

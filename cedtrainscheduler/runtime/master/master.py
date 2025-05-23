@@ -165,7 +165,7 @@ class Master(BaseServer, MasterService):
                 continue
 
             task_log_files[inst_id] = await worker_client.get_task_log(task_id, inst_id, gpu_id)
-
+        self.logger.info(f"Task {task_id} log files: {task_log_files}")
         return task_log_files
 
     async def _start_task(self, task: TaskWrapRuntimeInfo):
