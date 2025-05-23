@@ -1,6 +1,7 @@
 import os
 
 from cedtrainscheduler.runtime.workload.workload import WORKLOAD_INFOS
+from cedtrainscheduler.runtime.workload.workload import WorkloadType
 
 LOG_BASE_DIR = "~/logs/train_logs"
 
@@ -21,7 +22,7 @@ class ScriptGenerator:
     ) -> str:
         workload_info = WORKLOAD_INFOS.get(task_name.lower())
         if not workload_info:
-            raise ValueError(f"Workload info not found for task name: {task_name}")
+            workload_info = WORKLOAD_INFOS.get(WorkloadType.DEFAULT.value)
 
         script_file_path = workload_info.script_file_path
 

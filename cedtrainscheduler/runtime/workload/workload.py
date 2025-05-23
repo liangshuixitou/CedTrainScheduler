@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class WorkloadType(str, Enum):
+    DEFAULT = "resnet50"
     RESNET50 = "resnet50"
     RESNET18 = "resnet18"
     MOBILENETV3 = "mobilenetv3"

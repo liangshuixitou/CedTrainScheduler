@@ -69,15 +69,15 @@ class Manager(BaseServer, ManagerService):
 
     async def _scheduler_daemon(self):
         """调度器守护进程"""
-        try:
-            while self._running:
+        while self._running:
+            try:
                 await self._schedule()
-                await asyncio.sleep(MANAGER_SCHEDULER_INTERVAL)
-        except asyncio.CancelledError:
-            self.logger.info("Scheduler daemon cancelled")
-        except Exception as e:
-            self.logger.exception(f"Scheduler daemon error: {e}")
-            raise
+            except asyncio.CancelledError:
+                self.logger.info("Scheduler daemon cancelled")
+                break
+            except Exception as e:
+                self.logger.exception(f"Scheduler daemon error: {e}")
+            await asyncio.sleep(MANAGER_SCHEDULER_INTERVAL)
 
     async def _save_task_record_daemon(self):
         try:
