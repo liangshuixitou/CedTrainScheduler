@@ -36,6 +36,7 @@ class ManagerAPIServer:
         async def handle_task_submit(request: ManagerTaskSubmitModel):
             """处理来自Client的任务提交"""
             # 使用 Pydantic 模型的转换方法生成自定义类对象
+            self.logger.info(f"Received task submit request: {request}")
             task_meta = request.task.to_task_meta()
             return await self.manager_service.handle_task_submit(task_meta)
 
