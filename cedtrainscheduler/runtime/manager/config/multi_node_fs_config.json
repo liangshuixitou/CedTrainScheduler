@@ -41,6 +41,69 @@
           "terminal-worker-1"
         ]
       }
+    },
+    {
+      "model_name": "BERT",
+      "task_type": "Text Classification",
+      "batch_sizes": [
+        32,
+        64,
+        128
+      ],
+      "dataset": {
+        "size_mb": 750,
+        "storage_nodes": [
+          "terminal-worker-1"
+        ]
+      },
+      "model": {
+        "size_mb": 45,
+        "storage_nodes": [
+          "terminal-worker-1"
+        ]
+      }
+    },
+    {
+      "model_name": "LSTM",
+      "task_type": "Text Generation",
+      "batch_sizes": [
+        32,
+        64,
+        128
+      ],
+      "dataset": {
+        "size_mb": 750,
+        "storage_nodes": [
+          "terminal-worker-1"
+        ]
+      },
+      "model": {
+        "size_mb": 45,
+        "storage_nodes": [
+          "terminal-worker-1"
+        ]
+      }
+    },
+    {
+      "model_name": "Transformer",
+      "task_type": "Text Generation",
+      "batch_sizes": [
+        32,
+        64,
+        128
+      ],
+      "dataset": {
+        "size_mb": 750,
+        "storage_nodes": [
+          "terminal-worker-1"
+        ]
+      },
+      "model": {
+        "size_mb": 45,
+        "storage_nodes": [
+          "terminal-worker-1"
+        ]
+      }
     }
   ]
 }
