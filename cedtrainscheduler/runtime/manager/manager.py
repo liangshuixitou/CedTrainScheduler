@@ -140,8 +140,10 @@ class Manager(BaseServer, ManagerService):
         return task_metrics
 
     async def handle_task_log(self, task_id: str) -> dict:
-        task_log = await self.task_manager.get_task_log(task_id)
-        return task_log
+        task_wrap_runtime_info = await self.task_manager.get_task_info(task_id)
+        cluster = await self.cluster_manager.get_cluster_by_gpu_id(task_wrap_runtime_info.schedule_infos[0].gpu_id)
+        master_client = await self.cluster_manager.get_master_client_by_cluster_id(cluster.cluster_id)
+        return await master_client.get_task_log(task_id)
 
     async def _calculate_data_transfer_time(
         self, task_wrap_runtime_info: TaskWrapRuntimeInfo, cluster_id: str
